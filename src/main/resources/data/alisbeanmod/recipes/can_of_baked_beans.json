@@ -1,0 +1,15 @@
+{
+  "type": "alisbeanmod:canning",
+  "ingredients": [
+    {
+      "item": "alisbeanmod:tin_can"
+    },
+    {
+      "item": "alisbeanmod:bowl_of_baked_beans"
+    }
+  ],
+  "output": {
+    "item": "alisbeanmod:can_of_baked_beans"
+  },
+  "processtime": 100
+}

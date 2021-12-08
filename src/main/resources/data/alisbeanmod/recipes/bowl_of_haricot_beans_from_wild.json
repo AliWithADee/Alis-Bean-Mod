@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alisbeanmod:wild_haricot_beans",
+      "count": 7
+    },
+    {
+      "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "item": "alisbeanmod:bowl_of_haricot_beans",
+    "count": 1
+  }
+}

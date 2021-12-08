@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "alisbeanmod:tin_ore"
+  },
+  "result": "alisbeanmod:tin_ingot",
+  "experience": 0.7,
+  "cookingtime": 100
+}

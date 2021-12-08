@@ -1,0 +1,23 @@
+{
+  "itemGroup.alis_bean_mod_tab": "Ali's Bean Mod",
+
+  "item.alisbeanmod.wild_haricot_beans": "Wild Haricot Beans",
+  "item.alisbeanmod.haricot_beans": "Haricot Beans",
+  "item.alisbeanmod.bowl_of_haricot_beans": "Bowl of Haricot Beans",
+  "item.alisbeanmod.boiling_haricot_beans": "Boiling Bowl of Haricot Beans",
+  "item.alisbeanmod.tomato": "Tomato",
+  "item.alisbeanmod.corn": "Corn",
+  "item.alisbeanmod.mortar_and_pestle": "Mortar and Pestle",
+  "item.alisbeanmod.corn_flour": "Corn Flour",
+  "item.alisbeanmod.tomato_paste": "Tomato Paste",
+  "item.alisbeanmod.bowl_of_baked_beans": "Bowl of Baked Beans",
+  "item.alisbeanmod.tin_ingot": "Tin Ingot",
+  "item.alisbeanmod.tin_can": "Tin Can",
+  "item.alisbeanmod.can_of_baked_beans": "Can of Baked Beans",
+
+  "block.alisbeanmod.tin_ore": "Tin Ore",
+  "block.alisbeanmod.tin_block": "Block of Tin",
+  "block.alisbeanmod.canning_machine": "Canning Machine",
+
+  "screen.alisbeanmod.canning_machine": "Canning Machine"
+}

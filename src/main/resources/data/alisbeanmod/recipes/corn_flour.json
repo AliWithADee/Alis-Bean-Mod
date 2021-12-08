@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alisbeanmod:corn"
+    },
+    {
+      "item": "alisbeanmod:mortar_and_pestle"
+    }
+  ],
+  "result": {
+    "item": "alisbeanmod:corn_flour",
+    "count": 1
+  }
+}

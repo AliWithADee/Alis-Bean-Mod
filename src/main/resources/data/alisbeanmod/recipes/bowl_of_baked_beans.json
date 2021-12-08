@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alisbeanmod:boiling_haricot_beans",
+      "count": 7
+    },
+    {
+      "item": "alisbeanmod:corn_flour"
+    },
+    {
+      "item": "alisbeanmod:tomato_paste"
+    }
+  ],
+  "result": {
+    "item": "alisbeanmod:bowl_of_baked_beans",
+    "count": 1
+  }
+}

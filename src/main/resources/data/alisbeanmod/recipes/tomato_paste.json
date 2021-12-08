@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "alisbeanmod:tomato"
+    },
+    {
+      "item": "alisbeanmod:mortar_and_pestle"
+    }
+  ],
+  "result": {
+    "item": "alisbeanmod:tomato_paste",
+    "count": 1
+  }
+}
