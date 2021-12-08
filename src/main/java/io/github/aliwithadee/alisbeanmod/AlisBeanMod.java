@@ -1,5 +1,9 @@
 package io.github.aliwithadee.alisbeanmod;
 
+import io.github.aliwithadee.alisbeanmod.client.ClientSetup;
+import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlockEntities;
+import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlocks;
+import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralContainers;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,10 +25,16 @@ public class AlisBeanMod {
     public AlisBeanMod() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        // General Module
         GeneralItems.register(eventBus);
+        GeneralBlocks.register(eventBus);
+        GeneralBlockEntities.register(eventBus);
+        GeneralContainers.register(eventBus);
+        //GeneralRecipeTypes.register(eventBus);
 
         // Register the setup method for modloading
         eventBus.addListener(this::setup);
+        eventBus.addListener(ClientSetup::setup);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
