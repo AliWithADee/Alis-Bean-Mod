@@ -1,14 +1,19 @@
 package io.github.aliwithadee.alisbeanmod.common.general.block;
 
+import io.github.aliwithadee.alisbeanmod.core.data.recipe.general.CanningMachineRecipe;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlockEntities;
+import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralItems;
+import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -34,6 +39,62 @@ public class CanningMachineBE extends BlockEntity implements Container {
         super(GeneralBlockEntities.CANNING_MACHINE_BE.get(), pos, state);
     }
 
+    private ItemStackHandler createHandler() {
+        return new ItemStackHandler(4) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                switch (slot) {
+                    case 1: return stack.getItem() == GeneralItems.TIN_CAN.get();
+                    case 2: return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
+                    case 3: return false;
+                    default: return true;
+                }
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                if (!isItemValid(slot, stack)) {
+                    return stack;
+                }
+                return super.insertItem(slot, stack, simulate);
+            }
+        };
+    };
+
+    public ItemStackHandler getItemHandler() {
+        return itemHandler;
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return handler.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+
+    // Craft the output of the current recipe and consume the inputs
+    private void craft(CanningMachineRecipe recipe) {
+        ItemStack output = recipe.getResultItem();
+        ItemStack existing = itemHandler.getStackInSlot(2);
+
+        // If there is nothing in the output slot, set the output slot to the output
+        if (existing.isEmpty()) itemHandler.setStackInSlot(2, output);
+            // Else, grow what is already there by 1
+        else existing.grow(1);
+
+        // Extract inputs
+        itemHandler.extractItem(0, 1, false);
+        itemHandler.extractItem(1, 1, false);
+    }
+
     @Override
     public void load(CompoundTag tag) {
         itemHandler.deserializeNBT(tag.getCompound("inv"));
@@ -50,64 +111,9 @@ public class CanningMachineBE extends BlockEntity implements Container {
         return super.save(tag);
     }
 
-    private ItemStackHandler createHandler() {
-        return new ItemStackHandler(3) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                setChanged();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                switch (slot) {
-                    case 2: return false;
-                    default: return true;
-                }
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (slot == 2) {
-                    return stack;
-                }
-                return super.insertItem(slot, stack, simulate);
-            }
-        };
-    };
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    public ItemStackHandler getItemHandler() {
-        return itemHandler;
-    }
-
-    // Craft the output of the current recipe and consume the inputs
-    /*
-    private void craft(CanningMachineRecipe recipe) {
-        ItemStack output = recipe.getRecipeOutput();
-        ItemStack existing = itemHandler.getStackInSlot(2);
-
-        // If there is nothing in the output slot, set the output slot to the output
-        if (existing.isEmpty()) itemHandler.setStackInSlot(2, output);
-            // Else, grow what is already there by 1
-        else existing.grow(1);
-
-        // Extract inputs
-        itemHandler.extractItem(0, 1, false);
-        itemHandler.extractItem(1, 1, false);
-    }
-
     // Can we craft this recipe?
     private boolean canCraft(CanningMachineRecipe recipe) {
-        ItemStack output = recipe.getRecipeOutput();
+        ItemStack output = recipe.getResultItem();
         ItemStack existing = itemHandler.getStackInSlot(2);
         int limit = Math.min(itemHandler.getSlotLimit(2), output.getMaxStackSize());
 
@@ -120,27 +126,26 @@ public class CanningMachineBE extends BlockEntity implements Container {
             limit -= existing.getCount();
         }
 
-        // If the limit is 0 or less then we cannot craft, so return
-        if (limit <= 0) return false;
-        // Else, we can craft!
-        return true;
+        // If the limit is 0 or less then we cannot craft, so return false
+        return limit > 0;
     }
 
-    private Optional<CanningMachineRecipe> getRecipe() {
+    private Optional<CanningMachineRecipe> getRecipe(BlockEntity blockEntity) {
+
         // getRecipeFor() will call the tryMatch() method in our recipe type class,
         // which returns whether the block entity inventory matches an existing recipe we've defined.
         Optional<CanningMachineRecipe> recipe = level.getRecipeManager()
-                .getRecipeFor(GeneralRecipeTypes.CANNING_RECIPE, this, level);
+                .getRecipeFor(GeneralRecipeTypes.CANNING_RECIPE, (CanningMachineBE) blockEntity, level);
 
         return recipe;
     }
 
     // Called every tick, from block class, on the server
-    public void tickServer(BlockState state) {
+    public void tickServer(BlockEntity blockEntity) {
         if(level.isClientSide())
             return;
 
-        Optional<CanningMachineRecipe> recipe = getRecipe();
+        Optional<CanningMachineRecipe> recipe = getRecipe(blockEntity);
 
         // If we are currently processing
         if (processTime > 0 && curProcessTime < processTime) {
@@ -188,12 +193,6 @@ public class CanningMachineBE extends BlockEntity implements Container {
             });
             // If recipe is not valid, do nothing
         }
-    }
-     */
-
-    // Called every tick, from block class, on the server
-    public void tickServer(BlockState state) {
-
     }
 
     @Override

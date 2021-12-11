@@ -30,9 +30,8 @@ public class GeneralBlocks {
                     .strength(6f).requiresCorrectToolForDrops()));
 
     // Machines
-    public static final RegistryObject<Block> CANNING_MACHINE = registerBlock("canning_machine",
-            () -> new CanningMachineBlock(BlockBehaviour.Properties.of(Material.METAL)
-                    .strength(8f).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> CANNING_MACHINE = registerBlock(
+            "canning_machine", CanningMachineBlock::new);
 
     // Helper methods that let us create a Block AND a BlockItem for it at the same time
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
@@ -42,7 +41,7 @@ public class GeneralBlocks {
     }
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         GeneralItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(ModItemGroups.ALIS_BEAN_MOD_GROUP)));
+                new Item.Properties().tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL)));
     }
 
     public static void register(IEventBus eventBus) {

@@ -1,5 +1,6 @@
 {
-  "itemGroup.alis_bean_mod_tab": "Ali's Bean Mod",
+  "itemGroup.alis_bean_mod_general": "Ali's Bean Mod",
+  "itemGroup.alis_bean_mod_magic": "Bean Magic",
 
   "item.alisbeanmod.wild_haricot_beans": "Wild Haricot Beans",
   "item.alisbeanmod.haricot_beans": "Haricot Beans",
