@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -31,9 +30,10 @@ public class CanningMachineContainer extends AbstractContainerMenu {
 
         if (blockEntity != null) {
             blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 56, 17));
-                addSlot(new SlotItemHandler(h, 1, 56, 53));
-                addSlot(new SlotItemHandler(h, 2, 116, 35));
+                addSlot(new SlotItemHandler(h, 0, 71, 30)); // input
+                addSlot(new SlotItemHandler(h, 1, 71, 56)); // tin can
+                addSlot(new SlotItemHandler(h, 2, 45, 43)); // fuel
+                addSlot(new SlotItemHandler(h, 3, 131, 43)); // output
             });
         }
 
@@ -83,17 +83,17 @@ public class CanningMachineContainer extends AbstractContainerMenu {
             ItemStack stack = slot.getItem(); // Get the item in the slot that was clicked
             itemstack = stack.copy(); // Set itemstack as a copy of it
 
-            if (index < 3) { // If slot clicked is in gui inventory
+            if (index < 4) { // If slot clicked is in gui inventory
 
                 // Try merging item stack with first available slot,
                 // from index 3 (first slot of player inv) to 38 (last slot of player inv).
-                if (!this.moveItemStackTo(stack, 3, 39, false)) {
+                if (!this.moveItemStackTo(stack, 4, 38, false)) {
                     return ItemStack.EMPTY; // If we cannot do the merge, return empty item stack
                 }
                 slot.onQuickCraft(stack, itemstack);
             } else {
-                if (index < 39) {
-                    if (!this.moveItemStackTo(stack, 0, 3, false)) {
+                if (index < 38) {
+                    if (!this.moveItemStackTo(stack, 0, 4, false)) {
                         return ItemStack.EMPTY; // If we cannot do the merge, return empty item stack
                     }
                 }
