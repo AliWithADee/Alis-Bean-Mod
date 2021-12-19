@@ -3,6 +3,7 @@ package io.github.aliwithadee.alisbeanmod.common.general.container;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlocks;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralContainers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -11,7 +12,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -28,12 +28,34 @@ public class CanningMachineContainer extends AbstractContainerMenu {
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
 
-        if (blockEntity != null) {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 71, 30)); // input
-                addSlot(new SlotItemHandler(h, 1, 71, 56)); // tin can
-                addSlot(new SlotItemHandler(h, 2, 45, 43)); // fuel
-                addSlot(new SlotItemHandler(h, 3, 131, 43)); // output
+        if (blockEntity != null && blockEntity instanceof Container containerProvider) {
+
+            addSlot(new Slot(containerProvider, 0, 71, 30) { // input
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return containerProvider.canPlaceItem(0, stack);
+                }
+            });
+
+            addSlot(new Slot(containerProvider, 1, 71, 56) { // tin can
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return containerProvider.canPlaceItem(1, stack);
+                }
+            });
+
+            addSlot(new Slot(containerProvider, 2, 45, 43) { // fuel
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return containerProvider.canPlaceItem(2, stack);
+                }
+            });
+
+            addSlot(new Slot(containerProvider, 3, 131, 43) { // output
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return containerProvider.canPlaceItem(3, stack);
+                }
             });
         }
 
@@ -79,20 +101,20 @@ public class CanningMachineContainer extends AbstractContainerMenu {
         Slot slot = this.slots.get(index);
 
         // If slot shift-clicked is NOT empty
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack stack = slot.getItem(); // Get the item in the slot that was clicked
             itemstack = stack.copy(); // Set itemstack as a copy of it
 
             if (index < 4) { // If slot clicked is in gui inventory
 
                 // Try merging item stack with first available slot,
-                // from index 3 (first slot of player inv) to 38 (last slot of player inv).
-                if (!this.moveItemStackTo(stack, 4, 38, false)) {
+                // from index 4 (first slot of player inv) to 38 (last slot of player inv).
+                if (!this.moveItemStackTo(stack, 4, 40, false)) {
                     return ItemStack.EMPTY; // If we cannot do the merge, return empty item stack
                 }
                 slot.onQuickCraft(stack, itemstack);
             } else {
-                if (index < 38) {
+                if (index < 40) {
                     if (!this.moveItemStackTo(stack, 0, 4, false)) {
                         return ItemStack.EMPTY; // If we cannot do the merge, return empty item stack
                     }

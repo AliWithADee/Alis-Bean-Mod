@@ -7,7 +7,10 @@ import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralItems;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.Container;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -17,106 +20,62 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class CanningMachineBE extends BlockEntity implements Container {
+public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
 
-    private final ItemStackHandler itemHandler = createItemHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
-
-    private final BeanEnergyConsumerStorage energyStorage = createEnergyStorage();
-    private final LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
+    protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+    private static final int[] SLOTS_FOR_SOUTH = new int[]{1}; // tin-can
+    private static final int[] SLOTS_FOR_EAST = new int[]{2}; // fuel
+    private static final int[] SLOTS_FOR_DOWN = new int[]{3}; // output
+    private static final int[] SLOTS_FOR_SIDES = new int[]{0}; // input slot by default
+    private static final int OUTPUT_SLOT_LIMIT = 1;
 
     private int processTime = 0;
     private int curProcessTime = 0;
 
+    private final BeanEnergyConsumerStorage energyStorage;
+
     public CanningMachineBE(BlockPos pos, BlockState state) {
         super(GeneralBlockEntities.CANNING_MACHINE_BE.get(), pos, state);
-    }
 
-    private ItemStackHandler createItemHandler() {
-        return new ItemStackHandler(4) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                setChanged();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return switch (slot) {
-                    case 1 -> stack.getItem() == GeneralItems.TIN_CAN.get();
-                    case 2 -> ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
-                    case 3 -> false;
-                    default -> true;
-                };
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!isItemValid(slot, stack)) {
-                    return stack;
-                }
-                return super.insertItem(slot, stack, simulate);
-            }
-        };
+        energyStorage = createEnergyStorage();
     }
 
     private BeanEnergyConsumerStorage createEnergyStorage() {
-        return new BeanEnergyConsumerStorage(10000, 1000) {
+        return new BeanEnergyConsumerStorage(10000, 1000, true) {
             @Override
             protected void onEnergyChanged() {
                 setChanged();
             }
-
-            @Override
-            public boolean canCreate() {
-                return true;
-            }
         };
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-        if (cap == CapabilityEnergy.ENERGY) {
-            return energy.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    // Craft the output of the current recipe and consume the inputs
     private void craft(CanningMachineRecipe recipe) {
         ItemStack output = recipe.getResultItem();
-        ItemStack existing = itemHandler.getStackInSlot(3);
-
+        ItemStack existing = getItem(3);
         // If there is nothing in the output slot, set the output slot to the output
-        if (existing.isEmpty()) itemHandler.setStackInSlot(3, output);
+        if (existing.isEmpty()) setItem(3, output);
             // Else, grow what is already there by 1
         else existing.grow(1);
-
         // Extract inputs
-        itemHandler.extractItem(0, 1, false);
-        itemHandler.extractItem(1, 1, false);
+        removeItem(0, 1);
+        removeItem(1, 1);
     }
 
     // Can we craft this recipe?
     private boolean canCraft(CanningMachineRecipe recipe) {
 
         ItemStack output = recipe.getResultItem();
-        ItemStack existing = itemHandler.getStackInSlot(3);
-        int limit = Math.min(itemHandler.getSlotLimit(3), output.getMaxStackSize());
+        ItemStack existing = getItem(3);
+        int limit = Math.min(OUTPUT_SLOT_LIMIT, output.getMaxStackSize());
 
         // If there is something in the output slot
         if (!existing.isEmpty())
@@ -157,7 +116,9 @@ public class CanningMachineBE extends BlockEntity implements Container {
                 processTime = 0;
                 curProcessTime = 0;
             }
+            //setChanged();
         } else {
+
             // If we are not processing something
 
             // Is there a valid recipe?
@@ -177,9 +138,9 @@ public class CanningMachineBE extends BlockEntity implements Container {
                         // Reset processing time
                         processTime = 0;
                         curProcessTime = 0;
-                        // This is saying: "Something has changed! We must save this chunk!"
-                        setChanged();
                     }
+                    // This is saying: "Something has changed! We must save this chunk!"
+                    //setChanged();
                 }
 
             });
@@ -187,18 +148,67 @@ public class CanningMachineBE extends BlockEntity implements Container {
         }
     }
 
+    @Override
+    public void load(CompoundTag tag) {
+        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(tag, this.items);
+        processTime = tag.getInt("processTime");
+        curProcessTime = tag.getInt("curProcessTime");
+        energyStorage.setEnergy(tag.getInt("energy"));
+        super.load(tag);
+    }
 
-    // ----------------- Container Implementations -----------------
+    @Override
+    public CompoundTag save(CompoundTag tag) {
+        ContainerHelper.saveAllItems(tag, this.items);
+        tag.putInt("processTime", processTime);
+        tag.putInt("curProcessTime", curProcessTime);
+        tag.putInt("energy", energyStorage.getEnergyStored());
+        return super.save(tag);
+    }
+
+
+    // ----------------- WorldlyContainer Implementations -----------------
+
+
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+        return switch (side) {
+            case SOUTH -> SLOTS_FOR_SOUTH;
+            case EAST -> SLOTS_FOR_EAST;
+            case DOWN -> SLOTS_FOR_DOWN;
+            default -> SLOTS_FOR_SIDES;
+        };
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
+        return this.canPlaceItem(slot, stack);
+    }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return switch (slot) {
+            case 1 -> stack.getItem() == GeneralItems.TIN_CAN.get();
+            case 2 -> ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
+            case 3 -> false;
+            default -> true;
+        };
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        return side == Direction.DOWN && slot == 3;
+    }
 
     @Override
     public int getContainerSize() {
-        return 4;
+        return this.items.size();
     }
 
     @Override
     public boolean isEmpty() {
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            ItemStack stack = itemHandler.getStackInSlot(i);
+        for (ItemStack stack : this.items) {
             if (!stack.isEmpty()) {
                 return false;
             }
@@ -208,24 +218,23 @@ public class CanningMachineBE extends BlockEntity implements Container {
 
     @Override
     public ItemStack getItem(int slot) {
-        return itemHandler.getStackInSlot(slot);
+        return this.items.get(slot);
     }
 
     @Override
     public ItemStack removeItem(int slot, int count) {
-        return itemHandler.extractItem(slot, count, false);
+        return ContainerHelper.removeItem(this.items, slot, count);
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
-        ItemStack stack = itemHandler.getStackInSlot(slot);
-        itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
-        return stack;
+        return ContainerHelper.takeItem(this.items, slot);
     }
 
     @Override
     public void setItem(int slot, ItemStack stack) {
-        itemHandler.setStackInSlot(slot, stack);
+        this.items.set(slot, stack);
+        this.setChanged();
     }
 
     @Override
@@ -239,8 +248,56 @@ public class CanningMachineBE extends BlockEntity implements Container {
 
     @Override
     public void clearContent() {
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+        this.items.clear();
+        this.setChanged();
+    }
+
+
+    // ----------------- Capabilities -----------------
+
+
+    private LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this,
+            Direction.SOUTH, Direction.EAST, Direction.DOWN);
+    //      Tin Cans         Fuel            Output
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (!this.remove && side != null) {
+            if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+                if (side == Direction.SOUTH) {
+                    System.out.println("South. Tin-can slot.");
+                    return handlers[0].cast();
+                }
+                else if (side == Direction.EAST) {
+                    System.out.println("East. Fuel slot.");
+                    return handlers[1].cast();
+                }
+                else if (side == Direction.DOWN) {
+                    System.out.println("Down. Output slot.");
+                    return handlers[2].cast();
+                }
+                System.out.println("Default input slot.");
+
+            } else if (cap == CapabilityEnergy.ENERGY) {
+                return LazyOptional.of(() -> energyStorage).cast();
+            }
         }
+        return LazyOptional.empty();
+    }
+
+    @Override
+    public void invalidateCaps() {
+        for (LazyOptional<? extends IItemHandler> handler : handlers) {
+            handler.invalidate();
+        }
+        super.invalidateCaps();
+    }
+
+    @Override
+    public void reviveCaps() {
+        this.handlers = SidedInvWrapper.create(this, Direction.SOUTH, Direction.EAST, Direction.DOWN);
+        //                                               Tin Cans         Fuel            Output
+        super.reviveCaps();
     }
 }

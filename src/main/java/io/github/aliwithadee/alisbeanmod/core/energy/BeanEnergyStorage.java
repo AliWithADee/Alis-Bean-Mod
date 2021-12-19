@@ -23,6 +23,10 @@ public class BeanEnergyStorage extends EnergyStorage {
         return false;
     }
 
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     // ENERGY PRODUCERS
 
     public void createEnergy(int energy) {
