@@ -1,5 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.common.general.block;
 
+import io.github.aliwithadee.alisbeanmod.common.general.menu.CanningMachineMenu;
 import io.github.aliwithadee.alisbeanmod.core.data.recipe.general.CanningMachineRecipe;
 import io.github.aliwithadee.alisbeanmod.core.energy.BeanEnergyConsumerStorage;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlockEntities;
@@ -9,9 +10,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,19 +36,42 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
+public class CanningMachineBE extends BlockEntity implements WorldlyContainer, MenuProvider {
 
-    protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
     private static final int[] SLOTS_FOR_SOUTH = new int[]{1}; // tin-can
     private static final int[] SLOTS_FOR_EAST = new int[]{2}; // fuel
     private static final int[] SLOTS_FOR_DOWN = new int[]{3}; // output
     private static final int[] SLOTS_FOR_SIDES = new int[]{0}; // input slot by default
     private static final int OUTPUT_SLOT_LIMIT = 1;
 
+    protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+    private final BeanEnergyConsumerStorage energyStorage;
     private int processTime = 0;
     private int curProcessTime = 0;
 
-    private final BeanEnergyConsumerStorage energyStorage;
+    protected final ContainerData data = new ContainerData() {
+        @Override
+        public int get(int index) {
+            return switch (index) {
+                case 0 -> CanningMachineBE.this.processTime;
+                case 1 -> CanningMachineBE.this.curProcessTime;
+                default -> 0;
+            };
+        }
+
+        @Override
+        public void set(int index, int value) {
+            switch (index) {
+                case 0: CanningMachineBE.this.processTime = value;
+                case 1: CanningMachineBE.this.curProcessTime = value;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    };
 
     public CanningMachineBE(BlockPos pos, BlockState state) {
         super(GeneralBlockEntities.CANNING_MACHINE_BE.get(), pos, state);
@@ -99,7 +129,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
                 (CanningMachineBE) blockEntity, level);
 
         // If we are currently processing
-        if (processTime > 0 && curProcessTime < processTime) {
+        if (processTime > 0 && curProcessTime <= processTime) {
             // If recipe is valid
             recipe.ifPresent(foundRecipe -> {
                 // If we can't craft stop processing
@@ -131,7 +161,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
                     // If processTime == 0 then we need to START processing
                     if (processTime == 0) {
                         processTime = foundRecipe.getProcessTime();
-                    } else if (curProcessTime >= processTime) {
+                    } else if (curProcessTime > processTime) {
                         // If processTime is not 0 and curProcessTime >= processTime,
                         // then we have FINISHED processing, and we can craft the item
                         craft(foundRecipe);
@@ -167,9 +197,12 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
         return super.save(tag);
     }
 
-
     // ----------------- WorldlyContainer Implementations -----------------
 
+    @Override
+    public int getContainerSize() {
+        return this.items.size();
+    }
 
     @Override
     public int[] getSlotsForFace(Direction side) {
@@ -179,11 +212,6 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
             case DOWN -> SLOTS_FOR_DOWN;
             default -> SLOTS_FOR_SIDES;
         };
-    }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
-        return this.canPlaceItem(slot, stack);
     }
 
     @Override
@@ -197,16 +225,6 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
     }
 
     @Override
-    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-        return side == Direction.DOWN && slot == 3;
-    }
-
-    @Override
-    public int getContainerSize() {
-        return this.items.size();
-    }
-
-    @Override
     public boolean isEmpty() {
         for (ItemStack stack : this.items) {
             if (!stack.isEmpty()) {
@@ -217,8 +235,20 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
     }
 
     @Override
+    public void clearContent() {
+        this.items.clear();
+        this.setChanged();
+    }
+
+    @Override
     public ItemStack getItem(int slot) {
         return this.items.get(slot);
+    }
+
+    @Override
+    public void setItem(int slot, ItemStack stack) {
+        this.items.set(slot, stack);
+        this.setChanged();
     }
 
     @Override
@@ -232,9 +262,13 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
     }
 
     @Override
-    public void setItem(int slot, ItemStack stack) {
-        this.items.set(slot, stack);
-        this.setChanged();
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
+        return this.canPlaceItem(slot, stack);
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        return side == Direction.DOWN && slot == 3;
     }
 
     @Override
@@ -246,15 +280,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
         }
     }
 
-    @Override
-    public void clearContent() {
-        this.items.clear();
-        this.setChanged();
-    }
-
-
     // ----------------- Capabilities -----------------
-
 
     private LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this,
             Direction.SOUTH, Direction.EAST, Direction.DOWN);
@@ -266,18 +292,14 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
         if (!this.remove && side != null) {
             if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
                 if (side == Direction.SOUTH) {
-                    System.out.println("South. Tin-can slot.");
                     return handlers[0].cast();
                 }
                 else if (side == Direction.EAST) {
-                    System.out.println("East. Fuel slot.");
                     return handlers[1].cast();
                 }
                 else if (side == Direction.DOWN) {
-                    System.out.println("Down. Output slot.");
                     return handlers[2].cast();
                 }
-                System.out.println("Default input slot.");
 
             } else if (cap == CapabilityEnergy.ENERGY) {
                 return LazyOptional.of(() -> energyStorage).cast();
@@ -299,5 +321,18 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer {
         this.handlers = SidedInvWrapper.create(this, Direction.SOUTH, Direction.EAST, Direction.DOWN);
         //                                               Tin Cans         Fuel            Output
         super.reviveCaps();
+    }
+
+    // ----------------- MenuProvider -----------------
+
+    @Override
+    public Component getDisplayName() {
+        return new TranslatableComponent("screen.alisbeanmod.canning_machine");
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
+        return new CanningMachineMenu(id, this.level, this.getBlockPos(), player.getInventory(), player, this.data);
     }
 }

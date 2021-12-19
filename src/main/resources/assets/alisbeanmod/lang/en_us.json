@@ -20,5 +20,7 @@
   "block.alisbeanmod.tin_block": "Block of Tin",
   "block.alisbeanmod.canning_machine": "Canning Machine",
 
-  "screen.alisbeanmod.canning_machine": "Canning Machine"
+  "screen.alisbeanmod.canning_machine": "Canning Machine",
+  "tooltip.alisbeanmod.canning_machine": "The power to can in the palm of your hand..."
+
 }

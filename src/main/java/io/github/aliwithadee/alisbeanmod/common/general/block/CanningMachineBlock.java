@@ -1,6 +1,5 @@
 package io.github.aliwithadee.alisbeanmod.common.general.block;
 
-import io.github.aliwithadee.alisbeanmod.common.general.container.CanningMachineContainer;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -10,9 +9,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -82,7 +79,7 @@ public class CanningMachineBlock extends Block implements EntityBlock {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> list, TooltipFlag flags) {
-        list.add(new TranslatableComponent("tooltip.canning_machine"));
+        list.add(new TranslatableComponent("tooltip.alisbeanmod.canning_machine"));
     }
 
     @Override
@@ -94,30 +91,12 @@ public class CanningMachineBlock extends Block implements EntityBlock {
             BlockEntity blockEntity = level.getBlockEntity(pos);
 
             if(blockEntity instanceof CanningMachineBE) {
-                MenuProvider menuProvider = createMenuProvider(level, pos);
-
-                NetworkHooks.openGui(((ServerPlayer) player), menuProvider, blockEntity.getBlockPos());
+                NetworkHooks.openGui(((ServerPlayer) player), (MenuProvider) blockEntity, blockEntity.getBlockPos());
             } else {
-                throw new IllegalStateException("Container provider is missing!");
+                throw new IllegalStateException("Menu provider is missing!");
             }
         }
         return InteractionResult.SUCCESS;
-    }
-
-    private MenuProvider createMenuProvider(Level level, BlockPos pos) {
-        return new MenuProvider() {
-
-            @Override
-            public Component getDisplayName() {
-                return new TranslatableComponent("screen.alisbeanmod.canning_machine");
-            }
-
-            @Nullable
-            @Override
-            public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
-                return new CanningMachineContainer(windowId, level, pos, playerInventory, playerEntity);
-            }
-        };
     }
 
     @Override

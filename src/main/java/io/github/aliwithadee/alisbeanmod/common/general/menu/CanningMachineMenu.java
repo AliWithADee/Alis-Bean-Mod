@@ -1,70 +1,72 @@
-package io.github.aliwithadee.alisbeanmod.common.general.container;
+package io.github.aliwithadee.alisbeanmod.common.general.menu;
 
+import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBE;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlocks;
 import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralContainers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class CanningMachineContainer extends AbstractContainerMenu {
-    private final BlockEntity blockEntity;
-    private final Player playerEntity;
-    private final IItemHandler playerInventory;
+public class CanningMachineMenu extends AbstractContainerMenu {
+    private final CanningMachineBE blockEntity;
+    private final ContainerData data;
+    private final Player player;
+    private final IItemHandler playerInv;
 
-    public CanningMachineContainer(int windowId, Level level, BlockPos pos, Inventory playerInventory, Player player) {
+    public CanningMachineMenu(int windowId, Level level, BlockPos pos, Inventory playerInv, Player player) {
+        this(windowId, level, pos, playerInv, player, new SimpleContainerData(2));
+    }
+
+    public CanningMachineMenu(int windowId, Level level, BlockPos pos, Inventory playerInv, Player player, ContainerData containerData) {
         super(GeneralContainers.CANNING_MACHINE_CONTAINER.get(), windowId);
 
-        blockEntity = level.getBlockEntity(pos);
-        this.playerEntity = player;
-        this.playerInventory = new InvWrapper(playerInventory);
+        blockEntity = (CanningMachineBE) level.getBlockEntity(pos);
+        this.data = containerData;
+        this.player = player;
+        this.playerInv = new InvWrapper(playerInv);
 
-        if (blockEntity != null && blockEntity instanceof Container containerProvider) {
+        addSlot(new Slot(blockEntity, 0, 71, 30) { // input
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return blockEntity.canPlaceItem(0, stack);
+            }
+        });
 
-            addSlot(new Slot(containerProvider, 0, 71, 30) { // input
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return containerProvider.canPlaceItem(0, stack);
-                }
-            });
+        addSlot(new Slot(blockEntity, 1, 71, 56) { // tin can
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return blockEntity.canPlaceItem(1, stack);
+            }
+        });
 
-            addSlot(new Slot(containerProvider, 1, 71, 56) { // tin can
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return containerProvider.canPlaceItem(1, stack);
-                }
-            });
+        addSlot(new Slot(blockEntity, 2, 45, 43) { // fuel
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return blockEntity.canPlaceItem(2, stack);
+            }
+        });
 
-            addSlot(new Slot(containerProvider, 2, 45, 43) { // fuel
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return containerProvider.canPlaceItem(2, stack);
-                }
-            });
-
-            addSlot(new Slot(containerProvider, 3, 131, 43) { // output
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return containerProvider.canPlaceItem(3, stack);
-                }
-            });
-        }
+        addSlot(new Slot(blockEntity, 3, 131, 43) { // output
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return blockEntity.canPlaceItem(3, stack);
+            }
+        });
 
         layoutPlayerInventorySlots(8, 84);
+
+        this.addDataSlots(containerData);
     }
 
     @Override
     public boolean stillValid(Player playerIn) {
-        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), playerEntity, GeneralBlocks.CANNING_MACHINE.get());
+        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), player, GeneralBlocks.CANNING_MACHINE.get());
     }
 
     // Used in layoutPlayerInventorySlots() method
@@ -89,10 +91,10 @@ public class CanningMachineContainer extends AbstractContainerMenu {
     }
 
     private void layoutPlayerInventorySlots(int leftCol, int topRow) {
-        addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
+        addSlotBox(playerInv, 9, leftCol, topRow, 9, 18, 3, 18);
 
         topRow += 58;
-        addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
+        addSlotRange(playerInv, 0, leftCol, topRow, 9, 18);
     }
 
     @Override
@@ -115,8 +117,12 @@ public class CanningMachineContainer extends AbstractContainerMenu {
                 slot.onQuickCraft(stack, itemstack);
             } else {
                 if (index < 40) {
-                    if (!this.moveItemStackTo(stack, 0, 4, false)) {
-                        return ItemStack.EMPTY; // If we cannot do the merge, return empty item stack
+                    if (!this.moveItemStackTo(stack, 1, 2, false)) {
+                        if (!this.moveItemStackTo(stack, 2, 3, false)) {
+                            if (!this.moveItemStackTo(stack, 0, 1, false)) {
+                                return ItemStack.EMPTY; // If we cannot do the merge, return empty item stack
+                            }
+                        }
                     }
                 }
             }
@@ -136,5 +142,11 @@ public class CanningMachineContainer extends AbstractContainerMenu {
         }
 
         return itemstack;
+    }
+
+    public int getCanningProgress() {
+        int processTime = this.data.get(0);
+        int curProcessTime = this.data.get(1);
+        return processTime != 0 && curProcessTime != 0 ? curProcessTime * 22 / processTime : 0;
     }
 }
