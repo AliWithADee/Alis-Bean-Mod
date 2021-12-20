@@ -1,0 +1,11 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "up": "alisbeanmod:block/canning_machine_side",
+    "down": "alisbeanmod:block/canning_machine_side",
+    "north": "alisbeanmod:block/canning_machine_front_lit",
+    "east": "alisbeanmod:block/canning_machine_side",
+    "south": "alisbeanmod:block/canning_machine_side",
+    "west": "alisbeanmod:block/canning_machine_side"
+  }
+}

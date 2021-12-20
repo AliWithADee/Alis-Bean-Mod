@@ -23,10 +23,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -38,16 +40,18 @@ import java.util.Optional;
 
 public class CanningMachineBE extends BlockEntity implements WorldlyContainer, MenuProvider {
 
-    private static final int[] SLOTS_FOR_SOUTH = new int[]{1}; // tin-can
-    private static final int[] SLOTS_FOR_EAST = new int[]{2}; // fuel
-    private static final int[] SLOTS_FOR_DOWN = new int[]{3}; // output
-    private static final int[] SLOTS_FOR_SIDES = new int[]{0}; // input slot by default
-    private static final int OUTPUT_SLOT_LIMIT = 1;
+    private final int[] SLOTS_FOR_SOUTH = new int[]{1}; // tin-can
+    private final int[] SLOTS_FOR_EAST = new int[]{2}; // fuel
+    private final int[] SLOTS_FOR_DOWN = new int[]{3}; // output
+    private final int[] SLOTS_FOR_SIDES = new int[]{0}; // input slot by default
+    private final int OUTPUT_SLOT_LIMIT = 1;
+    private final int ENERGY_PER_TICK = 5;
 
     protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
-    private final BeanEnergyConsumerStorage energyStorage;
+    private final BeanEnergyConsumerStorage energyStorage = createEnergyStorage();
     private int processTime = 0;
     private int curProcessTime = 0;
+    private boolean lit = false;
 
     protected final ContainerData data = new ContainerData() {
         @Override
@@ -55,28 +59,25 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
             return switch (index) {
                 case 0 -> CanningMachineBE.this.processTime;
                 case 1 -> CanningMachineBE.this.curProcessTime;
+                case 2 -> CanningMachineBE.this.energyStorage.getMaxEnergyStored();
+                case 3 -> CanningMachineBE.this.energyStorage.getEnergyStored();
                 default -> 0;
             };
         }
 
         @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0: CanningMachineBE.this.processTime = value;
-                case 1: CanningMachineBE.this.curProcessTime = value;
-            }
+        public void set(int pIndex, int pValue) {
+
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 4;
         }
     };
 
     public CanningMachineBE(BlockPos pos, BlockState state) {
         super(GeneralBlockEntities.CANNING_MACHINE_BE.get(), pos, state);
-
-        energyStorage = createEnergyStorage();
     }
 
     private BeanEnergyConsumerStorage createEnergyStorage() {
@@ -110,14 +111,31 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
         // If there is something in the output slot
         if (!existing.isEmpty())
         {
-            // If we cannot stack with what is already there, then return
+            // If we cannot stack with what is already there, then return false
             if (!ItemHandlerHelper.canItemStacksStack(output, existing)) return false;
             // Else, set the limit to the limit - how much is already there
             limit -= existing.getCount();
         }
 
+        // If there is not enough energy to craft, then return false
+        if (energyStorage.getEnergyStored() < ENERGY_PER_TICK) return false;
+
         // If the limit is 0 or less then we cannot craft, so return false
         return limit > 0;
+    }
+
+    private void burnFuel() {
+        ItemStack fuel = getItem(2);
+
+        if (!fuel.isEmpty()) {
+            int burnTime = ForgeHooks.getBurnTime(fuel, RecipeType.SMELTING);
+            int energy = burnTime / 10;
+
+            if (burnTime > 0 && energyStorage.canAccept(energy)) {
+                removeItem(2, 1);
+                energyStorage.createEnergy(energy);
+            }
+        }
     }
 
     // Called every tick, from block class, on the server
@@ -125,56 +143,76 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
         if(level.isClientSide())
             return;
 
+        lit = false;
         Optional<CanningMachineRecipe> recipe = level.getRecipeManager().getRecipeFor(GeneralRecipeTypes.CANNING_RECIPE,
                 (CanningMachineBE) blockEntity, level);
 
-        // If we are currently processing
-        if (processTime > 0 && curProcessTime <= processTime) {
-            // If recipe is valid
+        burnFuel();
+
+        // If there is something to process AND we haven't finished processing it
+        if (processTime > 0 && curProcessTime < processTime) {
+            // If recipe is still present
             recipe.ifPresent(foundRecipe -> {
-                // If we can't craft stop processing
+                // If we can't craft anymore
                 if (!canCraft(foundRecipe)){
+                    // Reset / stop processing
                     processTime = 0;
                     curProcessTime = 0;
+                    // Stay lit until next tick (stops annoying flashing)
+                    lit = true;
                 } else {
-                    // Otherwise, continue processing...
+                    // If we can craft
+                    // Increase processing time
                     curProcessTime++;
+                    // Set block to lit
+                    lit = true;
+                    // Consume energy
+                    energyStorage.consumeEnergy(ENERGY_PER_TICK);
                 }
             });
-            // If recipe is not valid, then we need to stop processing
+            // If recipe is no longer present
             if (recipe.isEmpty()) {
+                // Reset / stop processing
                 processTime = 0;
                 curProcessTime = 0;
+                // Stay lit until next tick (stops annoying flashing)
+                lit = true;
             }
-            //setChanged();
         } else {
 
-            // If we are not processing something
+            // If there isn't anything to process OR we have finished processing
 
-            // Is there a valid recipe?
+            // If recipe is present
             recipe.ifPresent(foundRecipe -> {
-                // If the recipe is valid then,
-                // We have either FINISHED processing something or we need to START processing something
 
                 // If we can craft the result
                 if (canCraft(foundRecipe)) {
-                    // If processTime == 0 then we need to START processing
+                    // If there isn't anything to process
                     if (processTime == 0) {
+                        // START processing this recipe
                         processTime = foundRecipe.getProcessTime();
-                    } else if (curProcessTime > processTime) {
-                        // If processTime is not 0 and curProcessTime >= processTime,
-                        // then we have FINISHED processing, and we can craft the item
+                        // Stay lit until next tick (stops annoying flashing)
+                        lit = true;
+                    } else if (curProcessTime >= processTime) {
+                        // If we have finished processing this recipe
+                        // Craft the result
                         craft(foundRecipe);
-                        // Reset processing time
+                        // Reset / stop processing
                         processTime = 0;
                         curProcessTime = 0;
+                        // Stay lit until next tick (stops annoying flashing)
+                        lit = true;
                     }
-                    // This is saying: "Something has changed! We must save this chunk!"
-                    //setChanged();
                 }
-
             });
-            // If recipe is not valid, do nothing
+            // If recipe is not present, lit remains = false
+        }
+
+        // If lit was set to true, ensure the block is lit
+        // Otherwise, ensure the block is not lit
+        BlockState state = level.getBlockState(worldPosition);
+        if (state.getValue(BlockStateProperties.LIT) != lit) {
+            level.setBlock(worldPosition, state.setValue(BlockStateProperties.LIT, lit), 3);
         }
     }
 
@@ -182,18 +220,20 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     public void load(CompoundTag tag) {
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, this.items);
+        energyStorage.setEnergy(tag.getInt("energy"));
         processTime = tag.getInt("processTime");
         curProcessTime = tag.getInt("curProcessTime");
-        energyStorage.setEnergy(tag.getInt("energy"));
+        lit = tag.getBoolean("lit");
         super.load(tag);
     }
 
     @Override
     public CompoundTag save(CompoundTag tag) {
         ContainerHelper.saveAllItems(tag, this.items);
+        tag.putInt("energy", energyStorage.getEnergyStored());
         tag.putInt("processTime", processTime);
         tag.putInt("curProcessTime", curProcessTime);
-        tag.putInt("energy", energyStorage.getEnergyStored());
+        tag.putBoolean("lit", lit);
         return super.save(tag);
     }
 
@@ -205,7 +245,9 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     }
 
     @Override
-    public int[] getSlotsForFace(Direction side) {
+    public int[] getSlotsForFace(Direction direction) {
+
+        Direction side = getLocalDirection(direction);
         return switch (side) {
             case SOUTH -> SLOTS_FOR_SOUTH;
             case EAST -> SLOTS_FOR_EAST;
@@ -283,29 +325,49 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     // ----------------- Capabilities -----------------
 
     private LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this,
-            Direction.SOUTH, Direction.EAST, Direction.DOWN);
-    //      Tin Cans         Fuel            Output
+            Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
+    //      Anything         Fuel            Tin Can          Anything
+
+    private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
     @Nonnull
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (!this.remove && side != null) {
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction direction) {
+
+        if (!this.remove && direction != null) {
+
             if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-                if (side == Direction.SOUTH) {
+                if (direction == Direction.NORTH) {
                     return handlers[0].cast();
                 }
-                else if (side == Direction.EAST) {
+                else if (direction == Direction.EAST) {
                     return handlers[1].cast();
                 }
-                else if (side == Direction.DOWN) {
+                else if (direction == Direction.SOUTH) {
                     return handlers[2].cast();
+                }
+                else if (direction == Direction.WEST) {
+                    return handlers[3].cast();
                 }
 
             } else if (cap == CapabilityEnergy.ENERGY) {
-                return LazyOptional.of(() -> energyStorage).cast();
+                return energy.cast();
             }
         }
         return LazyOptional.empty();
+    }
+
+    private Direction getLocalDirection(Direction globalDirection) {
+        Direction facing = getBlockState().getValue(BlockStateProperties.FACING);
+        if (globalDirection == Direction.UP || globalDirection == Direction.DOWN){
+            return globalDirection;
+        }
+        return switch (facing) {
+            case EAST -> globalDirection.getCounterClockWise();
+            case WEST -> globalDirection.getClockWise();
+            case SOUTH -> globalDirection.getOpposite();
+            default -> globalDirection;
+        };
     }
 
     @Override
@@ -313,13 +375,16 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
         for (LazyOptional<? extends IItemHandler> handler : handlers) {
             handler.invalidate();
         }
+        energy.invalidate();
         super.invalidateCaps();
     }
 
     @Override
     public void reviveCaps() {
-        this.handlers = SidedInvWrapper.create(this, Direction.SOUTH, Direction.EAST, Direction.DOWN);
-        //                                               Tin Cans         Fuel            Output
+        this.handlers = SidedInvWrapper.create(this,
+                Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
+        //      Anything         Fuel            Tin Can          Anything
+        this.energy = LazyOptional.of(() -> energyStorage);
         super.reviveCaps();
     }
 

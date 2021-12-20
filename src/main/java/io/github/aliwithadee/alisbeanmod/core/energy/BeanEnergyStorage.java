@@ -27,6 +27,10 @@ public class BeanEnergyStorage extends EnergyStorage {
         this.energy = energy;
     }
 
+    public boolean canAccept(int energy) {
+        return this.capacity - this.energy >= energy;
+    }
+
     // ENERGY PRODUCERS
 
     public void createEnergy(int energy) {
@@ -36,7 +40,7 @@ public class BeanEnergyStorage extends EnergyStorage {
 
         this.energy += energy;
         if (this.energy > getMaxEnergyStored()) {
-            this.energy = getEnergyStored();
+            this.energy = getMaxEnergyStored();
         }
         onEnergyChanged();
     }

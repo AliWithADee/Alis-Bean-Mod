@@ -23,25 +23,37 @@ public class GeneralBlocks {
     // Blocks
     public static final RegistryObject<Block> TIN_ORE = registerBlock("tin_ore",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(3f).requiresCorrectToolForDrops()));
+                    .strength(3f).requiresCorrectToolForDrops()), false);
 
     public static final RegistryObject<Block> TIN_BLOCK = registerBlock("tin_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(6f).requiresCorrectToolForDrops()));
+                    .strength(6f).requiresCorrectToolForDrops()), false);
 
     // Machines
-    public static final RegistryObject<Block> CANNING_MACHINE = registerBlock(
-            "canning_machine", CanningMachineBlock::new);
+    public static final RegistryObject<Block> CANNING_MACHINE = registerBlock("canning_machine",
+            CanningMachineBlock::new, true);
 
-    // Helper methods that let us create a Block AND a BlockItem for it at the same time
-    private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
-        RegistryObject<T> regObject = BLOCKS.register(name, block); // Register the Block
-        registerBlockItem(name, regObject); // Register the BlockItem
+
+    // ----------- Helper Methods -----------
+
+
+    private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, boolean machine) {
+        RegistryObject<T> regObject = BLOCKS.register(name, block);
+
+        if (machine) registerMachineItem(name, regObject);
+        else registerBlockItem(name, regObject);
+
         return regObject;
     }
+
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         GeneralItems.ITEMS.register(name, () -> new BlockItem(block.get(),
                 new Item.Properties().tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL)));
+    }
+
+    private static <T extends Block> void registerMachineItem(String name, RegistryObject<T> block) {
+        GeneralItems.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties().tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL).stacksTo(1))); // TODO: Machines Tab?
     }
 
     public static void register(IEventBus eventBus) {

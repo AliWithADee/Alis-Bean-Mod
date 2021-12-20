@@ -15,9 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -39,7 +37,8 @@ public class CanningMachineBlock extends Block implements EntityBlock {
         super(BlockBehaviour.Properties.of(Material.METAL)
                 .strength(8f)
                 .requiresCorrectToolForDrops()
-                .sound(SoundType.METAL));
+                .sound(SoundType.METAL)
+                .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 14 : 0));
     }
 
     @Nullable
@@ -68,13 +67,15 @@ public class CanningMachineBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.FACING);
+        builder.add(BlockStateProperties.FACING, BlockStateProperties.LIT);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return defaultBlockState().setValue(BlockStateProperties.FACING, context.getNearestLookingDirection().getOpposite());
+        return defaultBlockState()
+                .setValue(BlockStateProperties.FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(BlockStateProperties.LIT, false);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class CanningMachineMenu extends AbstractContainerMenu {
     private final IItemHandler playerInv;
 
     public CanningMachineMenu(int windowId, Level level, BlockPos pos, Inventory playerInv, Player player) {
-        this(windowId, level, pos, playerInv, player, new SimpleContainerData(2));
+        this(windowId, level, pos, playerInv, player, new SimpleContainerData(4));
     }
 
     public CanningMachineMenu(int windowId, Level level, BlockPos pos, Inventory playerInv, Player player, ContainerData containerData) {
@@ -31,28 +31,28 @@ public class CanningMachineMenu extends AbstractContainerMenu {
         this.player = player;
         this.playerInv = new InvWrapper(playerInv);
 
-        addSlot(new Slot(blockEntity, 0, 71, 30) { // input
+        addSlot(new Slot(blockEntity, 0, 71, 26) { // input
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(0, stack);
             }
         });
 
-        addSlot(new Slot(blockEntity, 1, 71, 56) { // tin can
+        addSlot(new Slot(blockEntity, 1, 71, 52) { // tin can
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(1, stack);
             }
         });
 
-        addSlot(new Slot(blockEntity, 2, 45, 43) { // fuel
+        addSlot(new Slot(blockEntity, 2, 45, 39) { // fuel
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(2, stack);
             }
         });
 
-        addSlot(new Slot(blockEntity, 3, 131, 43) { // output
+        addSlot(new Slot(blockEntity, 3, 131, 39) { // output
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(3, stack);
@@ -148,5 +148,13 @@ public class CanningMachineMenu extends AbstractContainerMenu {
         int processTime = this.data.get(0);
         int curProcessTime = this.data.get(1);
         return processTime != 0 && curProcessTime != 0 ? curProcessTime * 22 / processTime : 0;
+    }
+
+    public int getMaxEnergy() {
+        return this.data.get(2);
+    }
+
+    public int getEnergy() {
+        return this.data.get(3);
     }
 }
