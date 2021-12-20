@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -15,7 +14,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -35,8 +36,8 @@ public class CanningMachineBlock extends Block implements EntityBlock {
 
     public CanningMachineBlock() {
         super(BlockBehaviour.Properties.of(Material.METAL)
-                .strength(8f)
                 .requiresCorrectToolForDrops()
+                .strength(4.0f)
                 .sound(SoundType.METAL)
                 .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 14 : 0));
     }
@@ -75,7 +76,7 @@ public class CanningMachineBlock extends Block implements EntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState()
                 .setValue(BlockStateProperties.FACING, context.getHorizontalDirection().getOpposite())
-                .setValue(BlockStateProperties.LIT, false);
+                .setValue(BlockStateProperties.LIT, false); // TODO: Should we set this to false?
     }
 
     @Override
@@ -98,18 +99,5 @@ public class CanningMachineBlock extends Block implements EntityBlock {
             }
         }
         return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.is(newState.getBlock())) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-
-            if (blockEntity instanceof CanningMachineBE) {
-                Containers.dropContents(level, pos, (CanningMachineBE) blockEntity);
-            }
-
-            super.onRemove(state, level, pos, newState, isMoving);
-        }
     }
 }

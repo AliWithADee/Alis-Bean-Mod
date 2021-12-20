@@ -6,6 +6,7 @@
     "north": "alisbeanmod:block/canning_machine_front",
     "east": "alisbeanmod:block/canning_machine_side",
     "south": "alisbeanmod:block/canning_machine_side",
-    "west": "alisbeanmod:block/canning_machine_side"
+    "west": "alisbeanmod:block/canning_machine_side",
+    "particle": "alisbeanmod:block/canning_machine_side"
   }
 }

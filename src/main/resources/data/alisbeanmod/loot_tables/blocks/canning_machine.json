@@ -6,13 +6,40 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "alisbeanmod:canning_machine",
           "functions": [
             {
-              "function": "minecraft:copy_name",
-              "source": "block_entity"
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Items",
+                  "target": "BlockEntityTag.Items",
+                  "op": "replace"
+                },
+                {
+                  "source": "Energy",
+                  "target": "BlockEntityTag.Energy",
+                  "op": "replace"
+                },
+                {
+                  "source": "ProcessTime",
+                  "target": "BlockEntityTag.ProcessTime",
+                  "op": "replace"
+                },
+                {
+                  "source": "CurProcessTime",
+                  "target": "BlockEntityTag.CurProcessTime",
+                  "op": "replace"
+                },
+                {
+                  "source": "Lit",
+                  "target": "BlockEntityTag.Lit",
+                  "op": "replace"
+                }
+              ]
             }
-          ],
-          "name": "alisbeanmod:canning_machine"
+          ]
         }
       ],
       "conditions": [

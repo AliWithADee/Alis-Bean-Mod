@@ -12,12 +12,12 @@ public class ModTags {
 
     public static class Blocks {
 
-        // Create new tag under Alis Bean Mod name space
+        // Create new block tag under Alis Bean Mod name space
         private static Tags.IOptionalNamedTag<Block> createTag(String name) {
             return BlockTags.createOptional(new ResourceLocation(AlisBeanMod.MOD_ID, name));
         }
 
-        // Create new tag under Forge name space
+        // Create new block tag under Forge name space
         private static Tags.IOptionalNamedTag<Block> createForgeTag(String name) {
             return BlockTags.createOptional(new ResourceLocation("forge", name));
         }
@@ -28,12 +28,12 @@ public class ModTags {
         // To add items to this tag go to -> data/forge/tags/items/ingots/tin.json
         public static final Tags.IOptionalNamedTag<Item> TIN_INGOT = createForgeTag("ingots/tin");
 
-        // Create new tag under Alis Bean Mod name space
+        // Create new item tag under Alis Bean Mod name space
         private static Tags.IOptionalNamedTag<Item> createTag(String name) {
             return ItemTags.createOptional(new ResourceLocation(AlisBeanMod.MOD_ID, name));
         }
 
-        // Create new tag under Forge name space
+        // Create new item tag under Forge name space
         private static Tags.IOptionalNamedTag<Item> createForgeTag(String name) {
             return ItemTags.createOptional(new ResourceLocation("forge", name));
         }

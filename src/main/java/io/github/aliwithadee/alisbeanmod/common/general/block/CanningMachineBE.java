@@ -44,14 +44,16 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     private final int[] SLOTS_FOR_EAST = new int[]{2}; // fuel
     private final int[] SLOTS_FOR_DOWN = new int[]{3}; // output
     private final int[] SLOTS_FOR_SIDES = new int[]{0}; // input slot by default
-    private final int OUTPUT_SLOT_LIMIT = 1;
-    private final int ENERGY_PER_TICK = 5;
 
     protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
-    private final BeanEnergyConsumerStorage energyStorage = createEnergyStorage();
     private int processTime = 0;
     private int curProcessTime = 0;
     private boolean lit = false;
+
+    private final BeanEnergyConsumerStorage energyStorage = createEnergyStorage();
+    private final int ENERGY_CAPACITY = 5000;
+    private final int MAX_ENERGY_RECEIVE = 500;
+    private final int ENERGY_PER_TICK = 5;
 
     protected final ContainerData data = new ContainerData() {
         @Override
@@ -81,7 +83,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     }
 
     private BeanEnergyConsumerStorage createEnergyStorage() {
-        return new BeanEnergyConsumerStorage(10000, 1000, true) {
+        return new BeanEnergyConsumerStorage(ENERGY_CAPACITY, MAX_ENERGY_RECEIVE, true) {
             @Override
             protected void onEnergyChanged() {
                 setChanged();
@@ -103,6 +105,8 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
 
     // Can we craft this recipe?
     private boolean canCraft(CanningMachineRecipe recipe) {
+
+        int OUTPUT_SLOT_LIMIT = 1;
 
         ItemStack output = recipe.getResultItem();
         ItemStack existing = getItem(3);
@@ -220,20 +224,20 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     public void load(CompoundTag tag) {
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, this.items);
-        energyStorage.setEnergy(tag.getInt("energy"));
-        processTime = tag.getInt("processTime");
-        curProcessTime = tag.getInt("curProcessTime");
-        lit = tag.getBoolean("lit");
+        energyStorage.setEnergy(tag.getInt("Energy"));
+        processTime = tag.getInt("ProcessTime");
+        curProcessTime = tag.getInt("CurProcessTime");
+        lit = tag.getBoolean("Lit");
         super.load(tag);
     }
 
     @Override
     public CompoundTag save(CompoundTag tag) {
         ContainerHelper.saveAllItems(tag, this.items);
-        tag.putInt("energy", energyStorage.getEnergyStored());
-        tag.putInt("processTime", processTime);
-        tag.putInt("curProcessTime", curProcessTime);
-        tag.putBoolean("lit", lit);
+        tag.putInt("Energy", energyStorage.getEnergyStored());
+        tag.putInt("ProcessTime", processTime);
+        tag.putInt("CurProcessTime", curProcessTime);
+        tag.putBoolean("Lit", lit);
         return super.save(tag);
     }
 

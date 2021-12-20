@@ -23,11 +23,11 @@ public class GeneralBlocks {
     // Blocks
     public static final RegistryObject<Block> TIN_ORE = registerBlock("tin_ore",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(3f).requiresCorrectToolForDrops()), false);
+                    .requiresCorrectToolForDrops().strength(2.0f)), false);
 
     public static final RegistryObject<Block> TIN_BLOCK = registerBlock("tin_block",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(6f).requiresCorrectToolForDrops()), false);
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+                    .requiresCorrectToolForDrops().strength(4.0f)), false);
 
     // Machines
     public static final RegistryObject<Block> CANNING_MACHINE = registerBlock("canning_machine",
