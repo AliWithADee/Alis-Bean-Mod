@@ -10,13 +10,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(AlisBeanMod.MOD_ID)
 public class AlisBeanMod {
 
     public static final String MOD_ID = "alisbeanmod";
 
-    // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
     public AlisBeanMod() {
@@ -29,7 +27,7 @@ public class AlisBeanMod {
         GeneralContainers.register(eventBus);
         GeneralRecipeTypes.register(eventBus);
 
-        // Register the setup method for modloading
+        // Register the setup method for mod loading
         eventBus.addListener(this::setup);
         eventBus.addListener(ClientSetup::setup);
 

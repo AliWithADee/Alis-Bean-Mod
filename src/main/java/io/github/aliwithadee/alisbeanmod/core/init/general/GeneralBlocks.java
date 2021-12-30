@@ -2,10 +2,13 @@ package io.github.aliwithadee.alisbeanmod.core.init.general;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBlock;
+import io.github.aliwithadee.alisbeanmod.common.general.block.HaricotCropBlock;
+import io.github.aliwithadee.alisbeanmod.common.general.block.WildHaricotCropBlock;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItemGroups;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,34 +20,54 @@ import java.util.function.Supplier;
 
 public class GeneralBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, AlisBeanMod.MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(
+            ForgeRegistries.BLOCKS, AlisBeanMod.MOD_ID);
 
     // Blocks
     public static final RegistryObject<Block> TIN_ORE = registerBlock("tin_ore",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-                    .requiresCorrectToolForDrops().strength(2.0f)), false);
+                    .requiresCorrectToolForDrops().strength(2.0f)));
 
     public static final RegistryObject<Block> TIN_BLOCK = registerBlock("tin_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
-                    .requiresCorrectToolForDrops().strength(4.0f)), false);
+                    .requiresCorrectToolForDrops().strength(4.0f)));
+
+    // Crops
+    public static final RegistryObject<Block> HARICOT_CROP = registerCrop("haricot_crop",
+            () -> new HaricotCropBlock(BlockBehaviour.Properties.of(Material.PLANT)
+                    .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
+
+    public static final RegistryObject<Block> WILD_HARICOT_CROP = registerCrop("wild_haricot_crop",
+            () -> new WildHaricotCropBlock(BlockBehaviour.Properties.of(Material.PLANT)
+                    .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
 
     // Machines
-    public static final RegistryObject<Block> CANNING_MACHINE = registerBlock("canning_machine",
-            CanningMachineBlock::new, true);
+    public static final RegistryObject<Block> CANNING_MACHINE = registerMachine(
+            "canning_machine", CanningMachineBlock::new);
 
 
-    // ----------- Helper Methods -----------
+    // ----------- Block registry Helper Methods -----------
 
 
-    private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, boolean machine) {
+    private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> regObject = BLOCKS.register(name, block);
-
-        if (machine) registerMachineItem(name, regObject);
-        else registerBlockItem(name, regObject);
+        registerBlockItem(name, regObject);
 
         return regObject;
     }
+
+    private static <T extends Block>RegistryObject<T> registerMachine(String name, Supplier<T> block) {
+        RegistryObject<T> regObject = BLOCKS.register(name, block);
+        registerMachineItem(name, regObject);
+
+        return regObject;
+    }
+
+    private static <T extends Block>RegistryObject<T> registerCrop(String name, Supplier<T> block) {
+        return BLOCKS.register(name, block);
+    }
+
+    // ----------- Block Item registry Helper Methods -----------
 
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         GeneralItems.ITEMS.register(name, () -> new BlockItem(block.get(),

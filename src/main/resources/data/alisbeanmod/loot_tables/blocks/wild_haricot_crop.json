@@ -1,0 +1,148 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:wild_haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "0"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:wild_haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "1"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:wild_haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "2"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:wild_haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "3"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:wild_haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:wild_haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "5"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:wild_haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "6"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:haricot_beans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "alisbeanmod:wild_haricot_crop",
+              "properties": {
+                "age": "7"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:haricot_beans",
+          "functions": [
+            {
+              "function": "minecraft:apply_bonus",
+              "enchantment": "minecraft:fortune",
+              "formula": "minecraft:binomial_with_bonus_count",
+              "parameters": {
+                "extra": 3,
+                "probability": 0.5714286
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "alisbeanmod:wild_haricot_crop",
+          "properties": {
+            "age": "7"
+          }
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "function": "minecraft:explosion_decay"
+    }
+  ]
+}

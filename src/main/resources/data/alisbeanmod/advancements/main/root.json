@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "alisbeanmod:haricot_beans"
+    },
+    "title": {
+      "translate": "advancements.alisbeanmod.main.root.title"
+    },
+    "description": {
+      "translate": "advancements.alisbeanmod.main.root.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "alisbeanmod:textures/gui/advancements/main_bg.png"
+  },
+  "criteria": {
+    "obtain_beans": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alisbeanmod:wild_haricot_beans",
+              "alisbeanmod:haricot_beans"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

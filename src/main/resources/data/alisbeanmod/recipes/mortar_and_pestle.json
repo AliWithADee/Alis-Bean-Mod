@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  t",
+    " s ",
+    " b "
+  ],
+  "key": {
+    "t": {
+      "item": "minecraft:stick"
+    },
+    "s": {
+      "tag": "forge:stone"
+    },
+    "b": {
+      "item": "minecraft:bowl"
+    }
+  },
+  "result": {
+    "item": "alisbeanmod:mortar_and_pestle",
+    "count": 1
+  }
+}

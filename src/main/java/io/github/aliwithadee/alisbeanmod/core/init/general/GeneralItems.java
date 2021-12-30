@@ -7,6 +7,7 @@ import io.github.aliwithadee.alisbeanmod.core.init.ModFoods;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItemGroups;
 import net.minecraft.world.item.BowlFoodItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fmllegacy.RegistryObject;
@@ -19,12 +20,12 @@ public class GeneralItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, AlisBeanMod.MOD_ID);
 
     public static final RegistryObject<Item> WILD_HARICOT_BEANS = ITEMS.register("wild_haricot_beans",
-            () -> new Item(new Item.Properties().tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL)
-                    .food(ModFoods.HARICOT_BEANS)));
+            () -> new ItemNameBlockItem(GeneralBlocks.WILD_HARICOT_CROP.get(), new Item.Properties()
+                    .tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL).food(ModFoods.HARICOT_BEANS)));
 
     public static final RegistryObject<Item> HARICOT_BEANS = ITEMS.register("haricot_beans",
-            () -> new Item(new Item.Properties().tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL)
-                    .food(ModFoods.HARICOT_BEANS)));
+            () -> new ItemNameBlockItem(GeneralBlocks.HARICOT_CROP.get(), new Item.Properties()
+                    .tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL).food(ModFoods.HARICOT_BEANS)));
 
     public static final RegistryObject<Item> BOWL_OF_HARICOT_BEANS = ITEMS.register("bowl_of_haricot_beans",
             () -> new Item(new Item.Properties().tab(ModItemGroups.ALIS_BEAN_MOD_GENERAL)

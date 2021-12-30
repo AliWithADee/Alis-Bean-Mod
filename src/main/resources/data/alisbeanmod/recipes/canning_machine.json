@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ihi",
+    "rcr",
+    "ibi"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "h": {
+      "item": "minecraft:hopper"
+    },
+    "c": {
+      "item": "alisbeanmod:tin_can"
+    },
+    "b": {
+      "item": "alisbeanmod:tin_block"
+    }
+  },
+  "result": {
+    "item": "alisbeanmod:canning_machine",
+    "count": 1
+  }
+}
