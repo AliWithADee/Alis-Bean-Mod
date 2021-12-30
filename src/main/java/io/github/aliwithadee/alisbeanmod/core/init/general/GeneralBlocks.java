@@ -3,6 +3,7 @@ package io.github.aliwithadee.alisbeanmod.core.init.general;
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBlock;
 import io.github.aliwithadee.alisbeanmod.common.general.block.HaricotCropBlock;
+import io.github.aliwithadee.alisbeanmod.common.general.block.TestTeleportBlock;
 import io.github.aliwithadee.alisbeanmod.common.general.block.WildHaricotCropBlock;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItemGroups;
 import net.minecraft.world.item.BlockItem;
@@ -44,6 +45,10 @@ public class GeneralBlocks {
     // Machines
     public static final RegistryObject<Block> CANNING_MACHINE = registerMachine(
             "canning_machine", CanningMachineBlock::new);
+
+    // Test
+    public static final RegistryObject<Block> TEST_TELEPORT_BLOCK = registerBlock(
+            "test_teleport_block", TestTeleportBlock::new);
 
 
     // ----------- Block registry Helper Methods -----------

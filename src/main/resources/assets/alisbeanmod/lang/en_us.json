@@ -22,6 +22,7 @@
   "block.alisbeanmod.tin_ore": "Tin Ore",
   "block.alisbeanmod.tin_block": "Block of Tin",
   "block.alisbeanmod.canning_machine": "Canning Machine",
+  "block.alisbeanmod.test_teleport_block":  "Beaniverse Teleporter",
 
   "screen.alisbeanmod.canning_machine": "Canning Machine",
   "tooltip.alisbeanmod.canning_machine": "The power to can in the palm of your hand..."
