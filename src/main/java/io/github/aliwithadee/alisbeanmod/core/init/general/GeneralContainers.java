@@ -5,11 +5,11 @@ import io.github.aliwithadee.alisbeanmod.common.general.menu.CanningMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class GeneralContainers {
 
@@ -18,7 +18,7 @@ public class GeneralContainers {
 
     public static final RegistryObject<MenuType<CanningMachineMenu>> CANNING_MACHINE_CONTAINER =
             CONTAINERS.register("canning_machine_container",
-                    () -> IForgeContainerType.create(((windowId, inv, data) -> {
+                    () -> IForgeMenuType.create(((windowId, inv, data) -> {
                         BlockPos pos = data.readBlockPos();
                         Level level = inv.player.getCommandSenderWorld();
                         return new CanningMachineMenu(windowId, level, pos, inv, inv.player);
