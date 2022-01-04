@@ -1,10 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.core.init.general;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBlock;
-import io.github.aliwithadee.alisbeanmod.common.general.block.HaricotCropBlock;
-import io.github.aliwithadee.alisbeanmod.common.general.block.TestTeleportBlock;
-import io.github.aliwithadee.alisbeanmod.common.general.block.WildHaricotCropBlock;
+import io.github.aliwithadee.alisbeanmod.common.general.block.*;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItemGroups;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -34,11 +31,11 @@ public class GeneralBlocks {
                     .requiresCorrectToolForDrops().strength(4.0f)));
 
     // Crops
-    public static final RegistryObject<Block> HARICOT_CROP = registerCrop("haricot_crop",
+    public static final RegistryObject<Block> HARICOT_CROP = registerBlockNoItem("haricot_crop",
             () -> new HaricotCropBlock(BlockBehaviour.Properties.of(Material.PLANT)
                     .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
 
-    public static final RegistryObject<Block> WILD_HARICOT_CROP = registerCrop("wild_haricot_crop",
+    public static final RegistryObject<Block> WILD_HARICOT_CROP = registerBlockNoItem("wild_haricot_crop",
             () -> new WildHaricotCropBlock(BlockBehaviour.Properties.of(Material.PLANT)
                     .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
 
@@ -49,6 +46,13 @@ public class GeneralBlocks {
     // Test
     public static final RegistryObject<Block> TEST_TELEPORT_BLOCK = registerBlock(
             "test_teleport_block", TestTeleportBlock::new);
+
+    // Brewing
+    public static final RegistryObject<Block> BREWING_CAULDRON = registerBlock(
+            "brewing_cauldron", BrewingCauldronBlock::new);
+
+    public static final RegistryObject<Block> BREWING_CAULDRON_WATER = registerBlockNoItem(
+            "brewing_cauldron_water", BrewingCauldronWaterBlock::new);
 
 
     // ----------- Block registry Helper Methods -----------
@@ -68,7 +72,7 @@ public class GeneralBlocks {
         return regObject;
     }
 
-    private static <T extends Block>RegistryObject<T> registerCrop(String name, Supplier<T> block) {
+    private static <T extends Block>RegistryObject<T> registerBlockNoItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
     }
 

@@ -1,0 +1,15 @@
+{
+  "type": "alisbeanmod:wild_haricot_beans_from_grass",
+  "conditions": [
+    {
+      "condition": "block_state_property",
+      "block": "minecraft:grass"
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.0625
+    }
+  ],
+  "addition": "alisbeanmod:wild_haricot_beans",
+  "count": 1
+}
