@@ -3,8 +3,8 @@ package io.github.aliwithadee.alisbeanmod.core.data.recipe.general;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlocks;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralRecipeTypes;
+import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
+import io.github.aliwithadee.alisbeanmod.core.init.ModRecipeTypes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -78,7 +78,7 @@ public class CanningMachineRecipe implements Recipe<Container> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return GeneralRecipeTypes.CANNING_SERIALIZER.get();
+        return ModRecipeTypes.CANNING_SERIALIZER.get();
     }
 
     public int getProcessTime() {
@@ -86,7 +86,7 @@ public class CanningMachineRecipe implements Recipe<Container> {
     }
 
     public ItemStack getIcon() {
-        return new ItemStack(GeneralBlocks.CANNING_MACHINE.get());
+        return new ItemStack(ModBlocks.CANNING_MACHINE.get());
     }
 
     public static class CanningMachineRecipeType implements RecipeType<CanningMachineRecipe> {

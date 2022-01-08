@@ -3,6 +3,8 @@
   "values": [
     "alisbeanmod:tin_block",
     "alisbeanmod:tin_ore",
-    "alisbeanmod:canning_machine"
+    "alisbeanmod:canning_machine",
+    "alisbeanmod:cooking_pot",
+    "alisbeanmod:filled_cooking_pot"
   ]
 }

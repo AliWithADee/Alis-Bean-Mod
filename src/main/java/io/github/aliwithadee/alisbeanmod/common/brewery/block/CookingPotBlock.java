@@ -1,14 +1,12 @@
-package io.github.aliwithadee.alisbeanmod.common.general.block;
+package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlocks;
+import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
@@ -26,14 +24,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 @SuppressWarnings("deprecation")
-public class BrewingCauldronBlock extends Block {
+public class CookingPotBlock extends Block {
     protected static final VoxelShape INSIDE = box(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
     protected static final VoxelShape SHAPE = Shapes.join(Shapes.block(), Shapes.or(
             box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
             box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
             box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D), INSIDE), BooleanOp.ONLY_FIRST);
 
-    public BrewingCauldronBlock() {
+    public CookingPotBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.CAULDRON));
     }
 
@@ -67,12 +65,11 @@ public class BrewingCauldronBlock extends Block {
 
     protected InteractionResult emptyBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
         if (!level.isClientSide) {
-            Item item = stack.getItem();
             player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.BUCKET)));
-            player.awardStat(Stats.FILL_CAULDRON);
-            player.awardStat(Stats.ITEM_USED.get(item));
-            level.setBlockAndUpdate(pos, GeneralBlocks.BREWING_CAULDRON_WATER.get().defaultBlockState()
-                    .setValue(BrewingCauldronWaterBlock.LEVEL, BrewingCauldronWaterBlock.MAX_LEVEL));
+
+            level.setBlockAndUpdate(pos, ModBlocks.FILLED_COOKING_POT.get().defaultBlockState()
+                    .setValue(FilledCookingPotBlock.LEVEL, FilledCookingPotBlock.MAX_LEVEL));
+
             level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
         }

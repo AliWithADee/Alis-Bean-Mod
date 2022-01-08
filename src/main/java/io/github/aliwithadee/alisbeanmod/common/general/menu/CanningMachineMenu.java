@@ -1,8 +1,8 @@
 package io.github.aliwithadee.alisbeanmod.common.general.menu;
 
 import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBE;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlocks;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralContainers;
+import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
+import io.github.aliwithadee.alisbeanmod.core.init.ModContainers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ public class CanningMachineMenu extends AbstractContainerMenu {
     }
 
     public CanningMachineMenu(int windowId, Level level, BlockPos pos, Inventory playerInv, Player player, ContainerData containerData) {
-        super(GeneralContainers.CANNING_MACHINE_CONTAINER.get(), windowId);
+        super(ModContainers.CANNING_MACHINE_CONTAINER.get(), windowId);
 
         blockEntity = (CanningMachineBE) level.getBlockEntity(pos);
         this.data = containerData;
@@ -66,7 +66,7 @@ public class CanningMachineMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player playerIn) {
-        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), player, GeneralBlocks.CANNING_MACHINE.get());
+        return stillValid(ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos()), player, ModBlocks.CANNING_MACHINE.get());
     }
 
     // Used in layoutPlayerInventorySlots() method

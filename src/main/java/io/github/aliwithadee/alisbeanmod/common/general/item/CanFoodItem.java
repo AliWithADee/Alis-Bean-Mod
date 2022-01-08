@@ -1,6 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.common.general.item;
 
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralItems;
+import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowlFoodItem;
@@ -18,6 +18,6 @@ public class CanFoodItem extends BowlFoodItem {
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
 
         ItemStack itemstack = super.finishUsingItem(pStack, pLevel, pEntityLiving);
-        return pEntityLiving instanceof Player && ((Player)pEntityLiving).getAbilities().instabuild ? itemstack : new ItemStack(GeneralItems.TIN_CAN.get());
+        return pEntityLiving instanceof Player && ((Player)pEntityLiving).getAbilities().instabuild ? itemstack : new ItemStack(ModItems.TIN_CAN.get());
     }
 }

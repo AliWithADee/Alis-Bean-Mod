@@ -3,9 +3,9 @@ package io.github.aliwithadee.alisbeanmod.common.general.block;
 import io.github.aliwithadee.alisbeanmod.common.general.menu.CanningMachineMenu;
 import io.github.aliwithadee.alisbeanmod.core.data.recipe.general.CanningMachineRecipe;
 import io.github.aliwithadee.alisbeanmod.core.energy.BeanEnergyConsumerStorage;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlockEntities;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralItems;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralRecipeTypes;
+import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
+import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
+import io.github.aliwithadee.alisbeanmod.core.init.ModRecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -79,7 +79,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     };
 
     public CanningMachineBE(BlockPos pos, BlockState state) {
-        super(GeneralBlockEntities.CANNING_MACHINE_BE.get(), pos, state);
+        super(ModBlockEntities.CANNING_MACHINE_BE.get(), pos, state);
     }
 
     private BeanEnergyConsumerStorage createEnergyStorage() {
@@ -143,13 +143,12 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     }
 
     // Called every tick, from block class, on the server
-    public void tickServer(BlockEntity blockEntity) {
+    public void tickServer(CanningMachineBE blockEntity) {
         if(level.isClientSide())
             return;
 
         lit = false;
-        Optional<CanningMachineRecipe> recipe = level.getRecipeManager().getRecipeFor(GeneralRecipeTypes.CANNING_RECIPE,
-                (CanningMachineBE) blockEntity, level);
+        Optional<CanningMachineRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.CANNING_RECIPE, blockEntity, level);
 
         burnFuel();
 
@@ -263,7 +262,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         return switch (slot) {
-            case 1 -> stack.getItem() == GeneralItems.TIN_CAN.get();
+            case 1 -> stack.getItem() == ModItems.TIN_CAN.get();
             case 2 -> ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
             case 3 -> false;
             default -> true;

@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.core.init.general;
+package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.general.menu.CanningMachineMenu;
@@ -11,13 +11,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class GeneralContainers {
-
+public class ModContainers {
     public static DeferredRegister<MenuType<?>> CONTAINERS =
             DeferredRegister.create(ForgeRegistries.CONTAINERS, AlisBeanMod.MOD_ID);
 
     public static final RegistryObject<MenuType<CanningMachineMenu>> CANNING_MACHINE_CONTAINER =
-            CONTAINERS.register("canning_machine_container",
+            ModContainers.CONTAINERS.register("canning_machine_container",
                     () -> IForgeMenuType.create(((windowId, inv, data) -> {
                         BlockPos pos = data.readBlockPos();
                         Level level = inv.player.getCommandSenderWorld();

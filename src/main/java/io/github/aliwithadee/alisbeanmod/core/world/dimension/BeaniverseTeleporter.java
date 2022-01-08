@@ -1,7 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.core.world.dimension;
 
 import io.github.aliwithadee.alisbeanmod.common.general.block.TestTeleportBlock;
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlocks;
+import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -54,7 +54,7 @@ public class BeaniverseTeleporter implements ITeleporter {
                 }
             }
             if (doSetBlock) {
-                destinationWorld.setBlock(destinationPos, GeneralBlocks.TEST_TELEPORT_BLOCK.get().defaultBlockState(), 3);
+                destinationWorld.setBlock(destinationPos, ModBlocks.TEST_TELEPORT_BLOCK.get().defaultBlockState(), 3);
             }
         }
 

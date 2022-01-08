@@ -1,6 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.common.general.block;
 
-import io.github.aliwithadee.alisbeanmod.core.init.general.GeneralBlockEntities;
+import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -45,7 +45,7 @@ public class CanningMachineBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return GeneralBlockEntities.CANNING_MACHINE_BE.get().create(pos, state);
+        return ModBlockEntities.CANNING_MACHINE_BE.get().create(pos, state);
     }
 
     @Nullable
@@ -60,7 +60,7 @@ public class CanningMachineBlock extends Block implements EntityBlock {
             // which will then call tickServer() on our block entity.
             return (level1, pos, state1, blockEntity) -> {
                 if (blockEntity instanceof CanningMachineBE canningMachine) {
-                    canningMachine.tickServer(blockEntity);
+                    canningMachine.tickServer(canningMachine);
                 }
             };
         }
