@@ -1,6 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.item;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
+import io.github.aliwithadee.alisbeanmod.core.brewery.Drink;
 import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.brewery.ModDrinks;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -28,7 +29,7 @@ public class DrinkItem extends Item {
 
     @Override
     public ItemStack getDefaultInstance() {
-        return DrinkUtils.setDrink(super.getDefaultInstance(), ModDrinks.EMPTY);
+        return DrinkUtils.createDrinkItem(Drink.EMPTY);
     }
 
     @Override
@@ -96,9 +97,7 @@ public class DrinkItem extends Item {
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if (this.allowdedIn(tab)) {
             ModDrinks.getDrinks().forEach((name, drink) -> {
-                if (drink != ModDrinks.EMPTY && drink != ModDrinks.SCUFFED) {
-                    stacks.add(DrinkUtils.createDrinkItem(drink));
-                }
+                stacks.add(DrinkUtils.createDrinkItem(drink));
             });
         }
     }

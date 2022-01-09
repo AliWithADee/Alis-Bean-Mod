@@ -1,25 +1,24 @@
 package io.github.aliwithadee.alisbeanmod.core.brewery;
 
-import io.github.aliwithadee.alisbeanmod.common.brewery.item.PartialDrinkItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 
 public class DrinkRecipe {
 
     private final Drink drink;
-    private final PartialDrinkItem partialItem;
+    private final PartialDrink partialDrink;
     private final int cookTime;
     private final int distills;
     private final int barrelAge;
     private final NonNullList<ItemStack> ingredients;
 
-    public DrinkRecipe(Drink drink, PartialDrinkItem partialItem, int cookTime, int barrelAge, ItemStack... ingredients) {
-        this(drink, partialItem, cookTime, 0, barrelAge, ingredients);
+    public DrinkRecipe(Drink drink, PartialDrink partialDrink, int cookTime, int barrelAge, ItemStack... ingredients) {
+        this(drink, partialDrink, cookTime, 0, barrelAge, ingredients);
     }
 
-    public DrinkRecipe(Drink drink, PartialDrinkItem partialItem, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
+    public DrinkRecipe(Drink drink, PartialDrink partialDrink, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
         this.drink = drink;
-        this.partialItem = partialItem;
+        this.partialDrink = partialDrink;
         this.cookTime = cookTime;
         this.distills = distills;
         this.barrelAge = barrelAge;
@@ -30,12 +29,12 @@ public class DrinkRecipe {
         return drink.getName();
     }
 
-    public Drink getDrink() {
+    public Drink getResult() {
         return drink;
     }
 
-    public PartialDrinkItem getPartialItem() {
-        return partialItem;
+    public PartialDrink getPartialDrink() {
+        return partialDrink;
     }
 
     public int getCookTime() {

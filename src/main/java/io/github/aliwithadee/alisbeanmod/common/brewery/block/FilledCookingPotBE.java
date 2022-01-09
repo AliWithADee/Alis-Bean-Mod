@@ -62,6 +62,7 @@ public class FilledCookingPotBE extends BlockEntity {
 
     public ItemStack getResult() {
         if (stacksInPot.isEmpty()) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
+        else if (minutes == 0) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.MUNDANE);
 
         int DIFF_FOR_SCUFFED = 25;
         Map<String, DrinkRecipe> recipes = ModDrinks.getRecipes();
@@ -92,8 +93,10 @@ public class FilledCookingPotBE extends BlockEntity {
             return;
 
         if (cooking) {
+            int before = minutes;
             ticks++;
-            minutes = (ticks / 20) / 60;
+            minutes = (ticks) / 60;
+            if (minutes > before) System.out.println(minutes + " Minutes");
         }
     }
 
@@ -114,8 +117,6 @@ public class FilledCookingPotBE extends BlockEntity {
         } else {
             stacksInPot.set(index, new ItemStack(stack.getItem(), current.getCount() + stack.getCount()));
         }
-        System.out.println(stack);
-        System.out.println(index);
         System.out.println(stacksInPot);
     }
 

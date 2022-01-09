@@ -1,22 +1,17 @@
 package io.github.aliwithadee.alisbeanmod.core.events;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.common.brewery.item.DrinkItem;
-import io.github.aliwithadee.alisbeanmod.common.brewery.item.PartialDrinkItem;
 import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
-import io.github.aliwithadee.alisbeanmod.core.brewery.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.data.loot.ItemFromGrassModifier;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 
@@ -47,6 +42,6 @@ public class ModEventBusEvents {
                 ModItems.DRINK.get());
         event.getItemColors().register((stack, tintIndex) ->
                         tintIndex > 0 ? -1 : DrinkUtils.getPartialDrinkColor(stack),
-                ModItems.GRAPE_MUST.get());
+                ModItems.PARTIAL_DRINK.get());
     }
 }

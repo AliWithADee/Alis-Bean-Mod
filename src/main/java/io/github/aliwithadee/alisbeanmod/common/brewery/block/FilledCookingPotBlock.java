@@ -1,11 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
-import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
-import io.github.aliwithadee.alisbeanmod.core.brewery.ModDrinks;
-import io.github.aliwithadee.alisbeanmod.core.brewery.PartialDrink;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
-import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,8 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;

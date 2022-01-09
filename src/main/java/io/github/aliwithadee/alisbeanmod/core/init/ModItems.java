@@ -82,8 +82,8 @@ public class ModItems {
     public static final RegistryObject<Item> DRINK = ITEMS.register("drink",
             () -> new DrinkItem(new Item.Properties().tab(BREWERY_TAB).stacksTo(1)));
 
-    public static final RegistryObject<PartialDrinkItem> GRAPE_MUST = ITEMS.register("grape_must",
-            () -> new PartialDrinkItem(new Item.Properties().tab(BREWERY_TAB).stacksTo(1), 12720968));
+    public static final RegistryObject<PartialDrinkItem> PARTIAL_DRINK = ITEMS.register("partial_drink",
+            () -> new PartialDrinkItem(new Item.Properties().tab(BREWERY_TAB).stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

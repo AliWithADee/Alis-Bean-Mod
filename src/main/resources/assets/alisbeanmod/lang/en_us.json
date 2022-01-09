@@ -3,7 +3,7 @@
   "advancements.alisbeanmod.main.root.desc": "Come into contact with beans for the first time!",
 
   "itemGroup.alis_bean_mod_general": "Ali's Bean Mod",
-  "itemGroup.alis_bean_mod_magic": "Bean Magic",
+  "itemGroup.alis_bean_mod_brewery": "Bean Brewery",
 
   "item.alisbeanmod.wild_haricot_beans": "Wild Haricot Beans",
   "item.alisbeanmod.haricot_beans": "Haricot Beans",
@@ -24,7 +24,7 @@
   "drink.alisbeanmod.beer": "Beer",
   "drink.alisbeanmod.cider": "Cider",
   "drink.alisbeanmod.dark_cider": "Dark Cider",
-  "item.alisbeanmod.grape_must": "Grape Must",
+  "drink.alisbeanmod.grape_must": "Grape Must",
 
   "block.alisbeanmod.tin_ore": "Tin Ore",
   "block.alisbeanmod.tin_block": "Block of Tin",

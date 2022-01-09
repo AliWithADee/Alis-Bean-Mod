@@ -361,7 +361,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     }
 
     private Direction getLocalDirection(Direction globalDirection) {
-        Direction facing = getBlockState().getValue(BlockStateProperties.FACING);
+        Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         if (globalDirection == Direction.UP || globalDirection == Direction.DOWN){
             return globalDirection;
         }

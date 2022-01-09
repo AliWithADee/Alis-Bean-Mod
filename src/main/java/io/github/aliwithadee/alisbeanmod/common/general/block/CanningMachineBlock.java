@@ -68,15 +68,15 @@ public class CanningMachineBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.FACING, BlockStateProperties.LIT);
+        builder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState()
-                .setValue(BlockStateProperties.FACING, context.getHorizontalDirection().getOpposite())
-                .setValue(BlockStateProperties.LIT, false); // TODO: Should we set this to false?
+                .setValue(BlockStateProperties.HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite())
+                .setValue(BlockStateProperties.LIT, false);
     }
 
     @Override
