@@ -1,7 +1,11 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
+import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.brewery.ModDrinks;
+import io.github.aliwithadee.alisbeanmod.core.brewery.PartialDrink;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
+import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -36,13 +41,12 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
     protected InteractionResult addIngredient(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
         if (isFull(state)) {
             if (!level.isClientSide) {
+                FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
+                blockEntity.addIngredient(new ItemStack(stack.getItem(), 1));
+                if (!blockEntity.isCooking()) blockEntity.startCooking();
+
                 player.getItemInHand(hand).shrink(1);
                 level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-                FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
-                if (!blockEntity.isCooking()) {
-                    blockEntity.startCooking();
-                }
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -53,9 +57,8 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
     protected InteractionResult fillBottle(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
         if (!level.isClientSide) {
             FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
-            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player,
-                    PotionUtils.setPotion(new ItemStack(Items.POTION), blockEntity.getResult())));
 
+            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, blockEntity.getResult()));
             lowerFillLevel(state, level, pos);
 
             level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);

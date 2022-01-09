@@ -2,6 +2,7 @@ package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.brewery.item.DrinkItem;
+import io.github.aliwithadee.alisbeanmod.common.brewery.item.PartialDrinkItem;
 import io.github.aliwithadee.alisbeanmod.common.general.item.CanFoodItem;
 import io.github.aliwithadee.alisbeanmod.common.general.item.MultiuseItem;
 import net.minecraft.world.item.*;
@@ -77,6 +78,12 @@ public class ModItems {
     public static final RegistryObject<Item> CAN_OF_BAKED_BEANS = ITEMS.register("can_of_baked_beans",
             () -> new CanFoodItem(new Item.Properties().tab(GENERAL_TAB)
                     .food(ModFoods.CAN_OF_BAKED_BEANS).stacksTo(1).craftRemainder(TIN_CAN.get())));
+
+    public static final RegistryObject<Item> DRINK = ITEMS.register("drink",
+            () -> new DrinkItem(new Item.Properties().tab(BREWERY_TAB).stacksTo(1)));
+
+    public static final RegistryObject<PartialDrinkItem> GRAPE_MUST = ITEMS.register("grape_must",
+            () -> new PartialDrinkItem(new Item.Properties().tab(BREWERY_TAB).stacksTo(1), 12720968));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

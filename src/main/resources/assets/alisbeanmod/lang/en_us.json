@@ -19,6 +19,13 @@
   "item.alisbeanmod.tin_can": "Tin Can",
   "item.alisbeanmod.can_of_baked_beans": "Can of Baked Beans",
 
+  "drink.alisbeanmod.empty": "Empty Drink",
+  "drink.alisbeanmod.scuffed": "Scuffed Beverage",
+  "drink.alisbeanmod.beer": "Beer",
+  "drink.alisbeanmod.cider": "Cider",
+  "drink.alisbeanmod.dark_cider": "Dark Cider",
+  "item.alisbeanmod.grape_must": "Grape Must",
+
   "block.alisbeanmod.tin_ore": "Tin Ore",
   "block.alisbeanmod.tin_block": "Block of Tin",
   "block.alisbeanmod.canning_machine": "Canning Machine",

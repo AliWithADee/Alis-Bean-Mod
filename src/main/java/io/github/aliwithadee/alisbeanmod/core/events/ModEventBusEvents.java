@@ -2,6 +2,7 @@ package io.github.aliwithadee.alisbeanmod.core.events;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.brewery.item.DrinkItem;
+import io.github.aliwithadee.alisbeanmod.common.brewery.item.PartialDrinkItem;
 import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.brewery.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.data.loot.ItemFromGrassModifier;
@@ -37,5 +38,15 @@ public class ModEventBusEvents {
         event.getBlockColors().register((state, level, pos, tintIndex) ->
                         level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1,
                 ModBlocks.FILLED_COOKING_POT.get());
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(ColorHandlerEvent.Item event) {
+        event.getItemColors().register((stack, tintIndex) ->
+                        tintIndex > 0 ? -1 : DrinkUtils.getDrinkColor(stack),
+                ModItems.DRINK.get());
+        event.getItemColors().register((stack, tintIndex) ->
+                        tintIndex > 0 ? -1 : DrinkUtils.getPartialDrinkColor(stack),
+                ModItems.GRAPE_MUST.get());
     }
 }
