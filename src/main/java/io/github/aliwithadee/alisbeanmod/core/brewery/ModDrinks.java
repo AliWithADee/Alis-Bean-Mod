@@ -9,48 +9,48 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModDrinks {
-    private static final Map<String, Drink> DRINKS = new HashMap<>();
-    private static final Map<String, PartialDrink> PARTIAL_DRINKS = new HashMap<>();
-    private static final Map<String, DrinkRecipe> RECIPES = new HashMap<>();
 
-    public static final Drink SCUFFED = createDrink(new Drink("scuffed", 78953176, 0.0f,
-            new MobEffectInstance(MobEffects.POISON, 900)));
-    public static final Drink BEER = createDrink(new Drink("beer", 12421704, 3.0f));
-    public static final Drink CIDER = createDrink(new Drink("cider", 12080187, 2.0f));
-    public static final Drink DARK_CIDER = createDrink(new Drink("dark_cider", 9850939, 2.0f));
+    public static final Map<String, BaseDrink> DRINKS = new HashMap<>();
+    public static final Map<String, DrinkRecipe> RECIPES = new HashMap<>();
 
-    public static final PartialDrink GRAPE_MUST = createPartialDrink(new PartialDrink("grape_must", 12720968));
+    public static final BaseDrink SCUFFED = createDrink(new BaseDrink("scuffed", 78953176, 0.0f,
+            new MobEffectInstance(MobEffects.POISON, 500)));
+    public static final BaseDrink BEER = createDrink(new BaseDrink("beer", 12421704, 3.0f));
+    public static final BaseDrink CIDER = createDrink(new BaseDrink("cider", 12080187, 3.0f,
+            new MobEffectInstance(MobEffects.ABSORPTION, 500)));
+    public static final BaseDrink DARK_CIDER = createDrink(new BaseDrink("dark_cider", 9850939, 3.0f,
+            new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 500)));
+    public static final BaseDrink GRAPE_MUST = createDrink(new BaseDrink("grape_must", 12720968));
 
-    public static final DrinkRecipe BEER_RECIPE = createRecipe(new DrinkRecipe(BEER, GRAPE_MUST, 3, 5,
+    public static final Drink DEFAULT = new Drink(SCUFFED);
+
+    public static final DrinkRecipe CIDER_RECIPE = createRecipe(
+            new DrinkRecipe(CIDER, GRAPE_MUST, 3, 5,
             new ItemStack(Items.WHEAT, 6),
             new ItemStack(Items.SUGAR, 4)));
 
+    public static final DrinkRecipe DARK_CIDER_RECIPE = createRecipe(
+            new DrinkRecipe(DARK_CIDER, GRAPE_MUST, 3, 5,
+                    new ItemStack(Items.WHEAT, 10),
+                    new ItemStack(Items.SUGAR, 2)));
+
     // ---------- Methods ----------
 
-    private static Drink createDrink(Drink drink) {
+    private static BaseDrink createDrink(BaseDrink drink) {
         DRINKS.put(drink.getName(), drink);
         return drink;
     }
 
-    private static PartialDrink createPartialDrink(PartialDrink drink) {
-        PARTIAL_DRINKS.put(drink.getName(), drink);
-        return drink;
-    }
-
     private static DrinkRecipe createRecipe(DrinkRecipe recipe) {
-        RECIPES.put(recipe.getName(), recipe);
+        RECIPES.put(recipe.getResult().getName(), recipe);
         return recipe;
     }
 
-    public static Map<String, Drink> getDrinks() {
-        return DRINKS;
+    public static BaseDrink getDrink(String name) {
+        return DRINKS.get(name);
     }
 
-    public static Map<String, PartialDrink> getPartialDrinks() {
-        return PARTIAL_DRINKS;
-    }
-
-    public static Map<String, DrinkRecipe> getRecipes() {
-        return RECIPES;
+    public static DrinkRecipe getRecipe(String name) {
+        return RECIPES.get(name);
     }
 }

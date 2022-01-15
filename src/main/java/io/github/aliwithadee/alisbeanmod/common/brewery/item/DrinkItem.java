@@ -1,6 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.item;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
+import io.github.aliwithadee.alisbeanmod.core.brewery.BaseDrink;
 import io.github.aliwithadee.alisbeanmod.core.brewery.Drink;
 import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.brewery.ModDrinks;
@@ -29,7 +30,7 @@ public class DrinkItem extends Item {
 
     @Override
     public ItemStack getDefaultInstance() {
-        return DrinkUtils.createDrinkItem(Drink.EMPTY);
+        return DrinkUtils.setDrink(super.getDefaultInstance(), ModDrinks.DEFAULT);
     }
 
     @Override
@@ -44,6 +45,7 @@ public class DrinkItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        System.out.println(player.getItemInHand(hand).getTag()); // TODO: Remove debug print statements
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
@@ -59,12 +61,12 @@ public class DrinkItem extends Item {
                 if (effectInstance.getEffect().isInstantenous()) {
                     effectInstance.getEffect().applyInstantenousEffect(player, player, entity, effectInstance.getAmplifier(), 1.0D);
                 } else {
-                    entity.addEffect(effectInstance);
+                    entity.addEffect(new MobEffectInstance(effectInstance));
                 }
             }
         }
 
-        // TODO: Increase player alcohol levels
+        // TODO: Alcohol level system with Capabilities
 
         if (player != null && !player.getAbilities().instabuild) {
             stack.shrink(1);
@@ -96,8 +98,8 @@ public class DrinkItem extends Item {
     @Override
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if (this.allowdedIn(tab)) {
-            ModDrinks.getDrinks().forEach((name, drink) -> {
-                stacks.add(DrinkUtils.createDrinkItem(drink));
+            ModDrinks.DRINKS.forEach((name, baseDrink) -> {
+                stacks.add(DrinkUtils.createDrinkItem(new Drink(baseDrink)));
             });
         }
     }

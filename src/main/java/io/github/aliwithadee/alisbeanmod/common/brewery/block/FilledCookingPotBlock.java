@@ -3,6 +3,7 @@ package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -21,15 +22,19 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 @SuppressWarnings("deprecation")
 public class FilledCookingPotBlock extends CookingPotBlock implements EntityBlock {
     public static final int MIN_LEVEL = 1;
     public static final int MAX_LEVEL = 3;
     public static final IntegerProperty LEVEL = IntegerProperty.create("level", MIN_LEVEL, MAX_LEVEL);
+    public static final BooleanProperty BOILING = BooleanProperty.create("boiling");
 
     @Override
     protected InteractionResult addIngredient(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
@@ -37,7 +42,6 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
             if (!level.isClientSide) {
                 FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
                 blockEntity.addIngredient(new ItemStack(stack.getItem(), 1));
-                if (!blockEntity.isCooking()) blockEntity.startCooking();
 
                 player.getItemInHand(hand).shrink(1);
                 level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -105,7 +109,7 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(LEVEL);
+        builder.add(LEVEL, BOILING);
     }
 
     @Override
@@ -130,6 +134,33 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
                     cookingPotBE.tickServer(cookingPotBE);
                 }
             };
+        }
+    }
+
+    private void spawnBubble(Level level, BlockPos pos, Random random) {
+
+        double h_offset = 0.25d;
+        double v_offset = 1.15d;
+
+        level.addParticle(ParticleTypes.SMOKE, pos.getX() + h_offset,
+                pos.getY() + v_offset, pos.getZ() + h_offset + random.nextDouble(1 - h_offset*2),
+                0d, 0.015d + random.nextDouble(0.075d), 0d);
+
+        level.addParticle(ParticleTypes.BUBBLE_POP, pos.getX() + h_offset,
+                pos.getY() + v_offset, pos.getZ() + h_offset + random.nextDouble(1 - h_offset*2),
+                0d, 0.015d + random.nextDouble(0.075d), 0d);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+        if (state.getValue(BOILING)) {
+            float chance = 0.65f;
+
+            for (int i = 0; i < 4; i++) {
+                if (chance > random.nextFloat()) {
+                    spawnBubble(level, pos, random);
+                }
+            }
         }
     }
 }

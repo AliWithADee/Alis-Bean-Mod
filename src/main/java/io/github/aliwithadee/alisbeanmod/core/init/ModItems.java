@@ -2,7 +2,6 @@ package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.brewery.item.DrinkItem;
-import io.github.aliwithadee.alisbeanmod.common.brewery.item.PartialDrinkItem;
 import io.github.aliwithadee.alisbeanmod.common.general.item.CanFoodItem;
 import io.github.aliwithadee.alisbeanmod.common.general.item.MultiuseItem;
 import net.minecraft.world.item.*;
@@ -81,9 +80,6 @@ public class ModItems {
 
     public static final RegistryObject<Item> DRINK = ITEMS.register("drink",
             () -> new DrinkItem(new Item.Properties().tab(BREWERY_TAB).stacksTo(1)));
-
-    public static final RegistryObject<PartialDrinkItem> PARTIAL_DRINK = ITEMS.register("partial_drink",
-            () -> new PartialDrinkItem(new Item.Properties().tab(BREWERY_TAB).stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

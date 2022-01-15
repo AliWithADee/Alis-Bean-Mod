@@ -31,8 +31,13 @@
   "block.alisbeanmod.canning_machine": "Canning Machine",
   "block.alisbeanmod.test_teleport_block":  "Beaniverse Teleporter",
   "block.alisbeanmod.cooking_pot": "Cooking Pot",
+  "block.alisbeanmod.ageing_barrel": "Ageing Barrel",
+  "block.alisbeanmod.grading_table": "Grading Table",
 
   "screen.alisbeanmod.canning_machine": "Canning Machine",
+  "screen.alisbeanmod.ageing_barrel": "Ageing Barrel",
+  "screen.alisbeanmod.grading_table": "Grading Table",
+
   "tooltip.alisbeanmod.canning_machine": "The power to can in the palm of your hand..."
 
 }

@@ -5,35 +5,31 @@ import net.minecraft.world.item.ItemStack;
 
 public class DrinkRecipe {
 
-    private final Drink drink;
-    private final PartialDrink partialDrink;
+    private final BaseDrink result;
+    private final BaseDrink partialDrink;
+    private final NonNullList<ItemStack> ingredients;
     private final int cookTime;
     private final int distills;
     private final int barrelAge;
-    private final NonNullList<ItemStack> ingredients;
 
-    public DrinkRecipe(Drink drink, PartialDrink partialDrink, int cookTime, int barrelAge, ItemStack... ingredients) {
-        this(drink, partialDrink, cookTime, 0, barrelAge, ingredients);
+    public DrinkRecipe(BaseDrink result, BaseDrink partialDrink, int cookTime, int barrelAge, ItemStack... ingredients) {
+        this(result, partialDrink, cookTime, 0, barrelAge, ingredients);
     }
 
-    public DrinkRecipe(Drink drink, PartialDrink partialDrink, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
-        this.drink = drink;
+    public DrinkRecipe(BaseDrink result, BaseDrink partialDrink, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
+        this.result = result;
         this.partialDrink = partialDrink;
+        this.ingredients = NonNullList.of(new ItemStack(null), ingredients);
         this.cookTime = cookTime;
         this.distills = distills;
         this.barrelAge = barrelAge;
-        this.ingredients = NonNullList.of(new ItemStack(null), ingredients);
     }
 
-    public String getName() {
-        return drink.getName();
+    public BaseDrink getResult() {
+        return result;
     }
 
-    public Drink getResult() {
-        return drink;
-    }
-
-    public PartialDrink getPartialDrink() {
+    public BaseDrink getPartialDrink() {
         return partialDrink;
     }
 

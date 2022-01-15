@@ -40,8 +40,5 @@ public class ModEventBusEvents {
         event.getItemColors().register((stack, tintIndex) ->
                         tintIndex > 0 ? -1 : DrinkUtils.getDrinkColor(stack),
                 ModItems.DRINK.get());
-        event.getItemColors().register((stack, tintIndex) ->
-                        tintIndex > 0 ? -1 : DrinkUtils.getPartialDrinkColor(stack),
-                ModItems.PARTIAL_DRINK.get());
     }
 }

@@ -1,9 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
-import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkRecipe;
-import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
-import io.github.aliwithadee.alisbeanmod.core.brewery.ModDrinks;
-import io.github.aliwithadee.alisbeanmod.core.brewery.PartialDrink;
+import io.github.aliwithadee.alisbeanmod.core.brewery.*;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -11,13 +8,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.Map;
-
 public class FilledCookingPotBE extends BlockEntity {
-
     private final NonNullList<ItemStack> stacksInPot = NonNullList.create();
     private boolean cooking = false;
     private int ticks = 0;
@@ -62,14 +58,11 @@ public class FilledCookingPotBE extends BlockEntity {
 
     public ItemStack getResult() {
         if (stacksInPot.isEmpty()) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
-        else if (minutes == 0) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.MUNDANE);
-
-        int DIFF_FOR_SCUFFED = 25;
-        Map<String, DrinkRecipe> recipes = ModDrinks.getRecipes();
+        if (minutes == 0) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.MUNDANE);
 
         DrinkRecipe result = null;
         int bestDiff = 0;
-        for (DrinkRecipe recipe : recipes.values()) {
+        for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
             if (canMakeRecipe(recipe)) {
                 int thisDiff = getRecipeDifference(recipe);
                 if (result != null) {
@@ -77,27 +70,15 @@ public class FilledCookingPotBE extends BlockEntity {
                         result = recipe;
                         bestDiff = thisDiff;
                     }
-                } else if (thisDiff < DIFF_FOR_SCUFFED) {
+                } else if (thisDiff <= BreweryConstants.MAX_RECIPE_DIFFERENCE) {
                     result = recipe;
                     bestDiff = thisDiff;
                 }
             }
         }
-        if (result == null) return DrinkUtils.createDrinkItem(ModDrinks.SCUFFED);
+        if (result == null) return DrinkUtils.createDrinkItem(new Drink(ModDrinks.SCUFFED));
 
-        return DrinkUtils.createPartialDrinkItem(new PartialDrink(result, stacksInPot, minutes));
-    }
-
-    public void tickServer(FilledCookingPotBE blockEntity) {
-        if (level.isClientSide())
-            return;
-
-        if (cooking) {
-            int before = minutes;
-            ticks++;
-            minutes = (ticks) / 60;
-            if (minutes > before) System.out.println(minutes + " Minutes");
-        }
+        return DrinkUtils.createDrinkItem(new Drink(result, stacksInPot, minutes));
     }
 
     public void addIngredient(ItemStack stack) {
@@ -117,16 +98,60 @@ public class FilledCookingPotBE extends BlockEntity {
         } else {
             stacksInPot.set(index, new ItemStack(stack.getItem(), current.getCount() + stack.getCount()));
         }
-        System.out.println(stacksInPot);
+        System.out.println(stacksInPot); // TODO: Remove debug print statements
     }
 
-    public boolean isCooking() {
+    public void tickServer(FilledCookingPotBE blockEntity) {
+        if (level.isClientSide())
+            return;
+
+        boolean boiling = isBoiling();
+
+        if (boiling) {
+            if (isCooking()) {
+                if (stacksInPot.isEmpty()) {
+                    stopCooking();
+                } else {
+                    cook();
+                }
+            } else {
+                if (!stacksInPot.isEmpty()) {
+                    startCooking();
+                }
+            }
+        } else {
+            if (isCooking()) {
+                stopCooking();
+            }
+        }
+
+        BlockState state = level.getBlockState(worldPosition);
+        if (state.getValue(FilledCookingPotBlock.BOILING) != boiling) {
+            level.setBlock(worldPosition, state.setValue(FilledCookingPotBlock.BOILING, boiling), 3);
+        }
+    }
+
+    private void cook() {
+        int before = minutes;
+        ticks++;
+        minutes = (ticks) / 60; // TODO: Don't forget to set timer back to irl minutes
+        if (minutes > before) System.out.println(minutes + " Minutes");
+    }
+
+    private boolean isBoiling() {
+        Block block = level.getBlockState(worldPosition.below()).getBlock();
+        return block == Blocks.FIRE || block == Blocks.LAVA || block == Blocks.MAGMA_BLOCK;
+    }
+
+    private boolean isCooking() {
         return cooking;
     }
 
-    public void startCooking() {
+    private void startCooking() {
         cooking = true;
-        ticks = 0;
-        minutes = 0;
+    }
+
+    private void stopCooking() {
+        cooking = false;
     }
 }

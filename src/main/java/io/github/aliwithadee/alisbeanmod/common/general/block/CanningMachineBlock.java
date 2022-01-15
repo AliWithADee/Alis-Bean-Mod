@@ -1,7 +1,9 @@
 package io.github.aliwithadee.alisbeanmod.common.general.block;
 
+import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,6 +26,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
@@ -33,13 +37,17 @@ import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class CanningMachineBlock extends Block implements EntityBlock {
+    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    private static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public CanningMachineBlock() {
         super(BlockBehaviour.Properties.of(Material.METAL)
                 .requiresCorrectToolForDrops()
                 .strength(4.0f)
                 .sound(SoundType.METAL)
-                .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 14 : 0));
+                .lightLevel(state -> state.getValue(LIT) ? 14 : 0));
+
+        registerDefaultState(stateDefinition.any().setValue(LIT, false));
     }
 
     @Nullable
@@ -68,20 +76,18 @@ public class CanningMachineBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT);
+        builder.add(FACING, LIT);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return defaultBlockState()
-                .setValue(BlockStateProperties.HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite())
-                .setValue(BlockStateProperties.LIT, false);
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> list, TooltipFlag flags) {
-        list.add(new TranslatableComponent("tooltip.alisbeanmod.canning_machine"));
+        list.add(new TranslatableComponent("tooltip." + AlisBeanMod.MOD_ID + ".canning_machine"));
     }
 
     @Override

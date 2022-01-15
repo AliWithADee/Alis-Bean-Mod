@@ -221,23 +221,22 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
 
     @Override
     public void load(CompoundTag tag) {
+        super.load(tag);
         this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, this.items);
         energyStorage.setEnergy(tag.getInt("Energy"));
         processTime = tag.getInt("ProcessTime");
         curProcessTime = tag.getInt("CurProcessTime");
         lit = tag.getBoolean("Lit");
-        super.load(tag);
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    public void saveAdditional(CompoundTag tag) {
         ContainerHelper.saveAllItems(tag, this.items);
         tag.putInt("Energy", energyStorage.getEnergyStored());
         tag.putInt("ProcessTime", processTime);
         tag.putInt("CurProcessTime", curProcessTime);
         tag.putBoolean("Lit", lit);
-        return super.save(tag);
     }
 
     // ----------------- WorldlyContainer Implementations -----------------
