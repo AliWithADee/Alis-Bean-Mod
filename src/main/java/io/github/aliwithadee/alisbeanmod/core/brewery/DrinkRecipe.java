@@ -41,7 +41,7 @@ public class DrinkRecipe {
         return distills;
     }
 
-    public int getBarrelAge() {
+    public int getBarrelYears() {
         return barrelAge;
     }
 

@@ -29,8 +29,7 @@ public class DrinkUtils {
         CompoundTag tag = stack.getOrCreateTag();
         tag.putString("Drink", drink.getName());
 
-        int rating = drink.getRating();
-        if (drink.getRecipe() != null) {
+        if (drink.inProgress()) {
             CompoundTag dataTag = new CompoundTag();
 
             dataTag.putString("Result", drink.getRecipe().getResult().getName());
@@ -40,10 +39,10 @@ public class DrinkUtils {
             dataTag.putInt("Age", drink.getBarrelAge());
 
             tag.put("Data", dataTag);
-        } else if (rating > 0 && rating <= 5) {
+        } else if (drink.isComplete()) {
             CompoundTag dataTag = new CompoundTag();
 
-            dataTag.putInt("Rating", rating);
+            dataTag.putInt("Rating", drink.getRating());
             tag.put("Data", dataTag);
         }
 
@@ -70,9 +69,9 @@ public class DrinkUtils {
         Drink drink = getDrink(stack);
 
         int rating = drink.getRating();
-        if (rating > 0 && rating <= 5) tooltips.add(new TextComponent("Rating: " + rating).withStyle(ChatFormatting.GRAY));
+        if (drink.isComplete()) tooltips.add(new TextComponent("Rating: " + rating).withStyle(ChatFormatting.GRAY));
 
-        if (!drink.isFinished()) {
+        if (drink.inProgress()) {
             NonNullList<ItemStack> ingredients = drink.getIngredients();
             if (Screen.hasShiftDown()) {
                 tooltips.add(new TextComponent("Ingredients:").withStyle(ChatFormatting.GRAY));

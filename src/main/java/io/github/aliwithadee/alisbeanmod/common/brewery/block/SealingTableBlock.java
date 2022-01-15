@@ -23,10 +23,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class GradingTableBlock extends Block implements EntityBlock {
+public class SealingTableBlock extends Block implements EntityBlock {
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public GradingTableBlock() {
+    public SealingTableBlock() {
         super(BlockBehaviour.Properties.of(Material.WOOD)
                 .requiresCorrectToolForDrops()
                 .strength(2.0f)
@@ -38,7 +38,7 @@ public class GradingTableBlock extends Block implements EntityBlock {
         if(!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
 
-            if(blockEntity instanceof GradingTableBE) {
+            if(blockEntity instanceof SealingTableBE) {
                 NetworkHooks.openGui(((ServerPlayer) player), (MenuProvider) blockEntity, blockEntity.getBlockPos());
             } else {
                 throw new IllegalStateException("Menu provider is missing!");
@@ -73,7 +73,7 @@ public class GradingTableBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return ModBlockEntities.GRADING_TABLE_BE.get().create(pos, state);
+        return ModBlockEntities.SEALING_TABLE_BE.get().create(pos, state);
     }
 
     @Nullable
@@ -83,7 +83,7 @@ public class GradingTableBlock extends Block implements EntityBlock {
             return null;
         } else {
             return (level1, pos, state1, blockEntity) -> {
-                if (blockEntity instanceof GradingTableBE gradingTableBE) {
+                if (blockEntity instanceof SealingTableBE gradingTableBE) {
                     gradingTableBE.tickServer(gradingTableBE);
                 }
             };

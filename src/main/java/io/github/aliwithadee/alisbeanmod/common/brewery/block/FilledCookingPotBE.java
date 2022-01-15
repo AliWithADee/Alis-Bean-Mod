@@ -42,10 +42,10 @@ public class FilledCookingPotBE extends BlockEntity {
     }
 
     // Integer showing how far the recipe ingredients are away from the stacks the pot
-    private int getRecipeDifference(DrinkRecipe recipe) {
+    private int getIngredientDifference(DrinkRecipe recipe) {
         int diff = 0;
         for (ItemStack stack : stacksInPot) {
-            int d = 0;
+            int d;
             if (stackInList(stack, recipe.getIngredients())) {
                 d = Math.abs(stack.getCount() - recipe.getIngredientCount(stack));
             } else {
@@ -64,7 +64,7 @@ public class FilledCookingPotBE extends BlockEntity {
         int bestDiff = 0;
         for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
             if (canMakeRecipe(recipe)) {
-                int thisDiff = getRecipeDifference(recipe);
+                int thisDiff = getIngredientDifference(recipe);
                 if (result != null) {
                     if (thisDiff < bestDiff) {
                         result = recipe;
@@ -134,7 +134,7 @@ public class FilledCookingPotBE extends BlockEntity {
     private void cook() {
         int before = minutes;
         ticks++;
-        minutes = (ticks) / 60; // TODO: Don't forget to set timer back to irl minutes
+        minutes = (ticks) / 100; // TODO: Don't forget to set timer back to irl minutes
         if (minutes > before) System.out.println(minutes + " Minutes");
     }
 
