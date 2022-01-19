@@ -39,7 +39,7 @@ public class DrinkUtils {
             dataTag.putInt("Age", drink.getBarrelAge());
 
             tag.put("Data", dataTag);
-        } else if (drink.isComplete()) {
+        } else if (drink.isGraded()) {
             CompoundTag dataTag = new CompoundTag();
 
             dataTag.putInt("Rating", drink.getRating());
@@ -69,7 +69,7 @@ public class DrinkUtils {
         Drink drink = getDrink(stack);
 
         int rating = drink.getRating();
-        if (drink.isComplete()) tooltips.add(new TextComponent("Rating: " + rating).withStyle(ChatFormatting.GRAY));
+        if (drink.isGraded()) tooltips.add(new TextComponent("Rating: " + rating).withStyle(ChatFormatting.GRAY));
 
         if (drink.inProgress()) {
             NonNullList<ItemStack> ingredients = drink.getIngredients();

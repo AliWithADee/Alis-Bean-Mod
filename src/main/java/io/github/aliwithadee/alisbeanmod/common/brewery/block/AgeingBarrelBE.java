@@ -30,105 +30,41 @@ public class AgeingBarrelBE extends BlockEntity implements Container, MenuProvid
         super(ModBlockEntities.AGEING_BARREL_BE.get(), pos, state);
     }
 
-    private boolean stackInList(ItemStack stack, NonNullList<ItemStack> list) {
-        for (ItemStack itemStack : list) {
-            if (stack.getItem() == itemStack.getItem()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Integer showing how far the recipe ingredients are away from the stacks the pot
-    private int getIngredientDifference(DrinkRecipe recipe, NonNullList<ItemStack> ingredients) {
-        int diff = 0;
-        for (ItemStack stack : ingredients) {
-            int d;
-            if (stackInList(stack, recipe.getIngredients())) {
-                d = Math.abs(stack.getCount() - recipe.getIngredientCount(stack));
-            } else {
-                d = stack.getCount();
-            }
-            diff += d;
-        }
-        return diff;
-    }
-
-    private int gradeDrink(Drink drink) {
-        DrinkRecipe recipe = drink.getRecipe();
-
-        int ing_rating;
-        int ing_diff = getIngredientDifference(recipe, drink.getIngredients());
-        if (ing_diff == 0) ing_rating = 5;
-        else if (0 < ing_diff && ing_diff <= BreweryConstants.ING_DIFF_GREAT) ing_rating = 4;
-        else if (BreweryConstants.ING_DIFF_GREAT < ing_diff && ing_diff <= BreweryConstants.ING_DIFF_FINE) ing_rating = 3;
-        else if (BreweryConstants.ING_DIFF_FINE < ing_diff && ing_diff <= BreweryConstants.ING_DIFF_POOR) ing_rating = 2;
-        else ing_rating = 1;
-
-        int cook_rating;
-        int cook_diff = Math.abs(recipe.getCookTime() - drink.getCookTime());
-        if (cook_diff == 0) cook_rating = 5;
-        else if (0 < cook_diff && cook_diff <= BreweryConstants.COOK_DIFF_GREAT) cook_rating = 4;
-        else if (BreweryConstants.COOK_DIFF_GREAT < cook_diff && cook_diff <= BreweryConstants.COOK_DIFF_FINE) cook_rating = 3;
-        else if (BreweryConstants.COOK_DIFF_FINE < cook_diff && cook_diff <= BreweryConstants.COOK_DIFF_POOR) cook_rating = 2;
-        else cook_rating = 1;
-
-        int distill_rating = 0;
-        if (recipe.getDistills() > 0) {
-            int distill_diff = Math.abs(recipe.getDistills() - drink.getDistills());
-            if (distill_diff == 0) distill_rating = 5;
-            else if (0 < distill_diff && distill_diff <= BreweryConstants.DISTILL_DIFF_GREAT) distill_rating = 4;
-            else if (BreweryConstants.DISTILL_DIFF_GREAT < distill_diff && distill_diff <= BreweryConstants.DISTILL_DIFF_FINE) distill_rating = 3;
-            else if (BreweryConstants.DISTILL_DIFF_FINE < distill_diff && distill_diff <= BreweryConstants.DISTILL_DIFF_POOR) distill_rating = 2;
-            else distill_rating = 1;
-        }
-
-        int age_rating = 0;
-        if (recipe.getBarrelYears() > 0) {
-            int age_diff = Math.abs(recipe.getBarrelYears() - drink.getBarrelYears());
-            if (age_diff == 0) age_rating = 5;
-            else if (0 < age_diff && age_diff <= BreweryConstants.AGE_DIFF_GREAT) age_rating = 4;
-            else if (BreweryConstants.AGE_DIFF_GREAT < age_diff && age_diff <= BreweryConstants.AGE_DIFF_FINE) age_rating = 3;
-            else if (BreweryConstants.AGE_DIFF_FINE < age_diff && age_diff <= BreweryConstants.AGE_DIFF_POOR) age_rating = 2;
-            else age_rating = 1;
-        }
-
-        float ratio;
-        if (distill_rating == 0) ratio = (ing_rating + cook_rating + age_rating) / (BreweryConstants.MAX_RATING * 3.0f);
-        else if (age_rating == 0) ratio = (ing_rating + cook_rating + distill_rating) / (BreweryConstants.MAX_RATING * 3.0f);
-        else ratio = (ing_rating + cook_rating + distill_rating + age_rating) / (BreweryConstants.MAX_RATING * 4.0f);
-
-        System.out.println("ratio:");
-        System.out.println(ratio);
-
-        return (int)(ratio * BreweryConstants.MAX_RATING);
-    }
-
     private void ageDrinks() {
         for (ItemStack stack : this.items) {
             if (stack.getItem() == ModItems.DRINK.get()) {
                 Drink drink = DrinkUtils.getDrink(stack);
                 if (drink.inProgress()) {
+                    DrinkRecipe recipe = drink.getRecipe();
                     CompoundTag tag = stack.getTag();
                     CompoundTag dataTag = tag.getCompound("Data");
 
                     int minutesBefore = dataTag.getInt("Age");
-                    int yearsBefore = minutesBefore / BreweryConstants.MINUTES_PER_BARREL_YEAR;
+                    int yearsBefore = minutesBefore / BreweryUtils.MINUTES_PER_BARREL_YEAR;
 
                     int minutesNow = minutesBefore + 1;
-                    int yearsNow = minutesNow / BreweryConstants.MINUTES_PER_BARREL_YEAR;
+                    int yearsNow = minutesNow / BreweryUtils.MINUTES_PER_BARREL_YEAR;
 
+                    // Increment age
                     dataTag.putInt("Age", minutesNow);
 
-                    String resultName = drink.getRecipe().getResult().getName();
-                    if (!drink.getName().equals(resultName) && yearsNow > 0) tag.putString("Drink", resultName);
+                    // Update drink, if not already graded
+                    if (!drink.isGraded()) {
+                        if (yearsNow > 0 && recipe.requiresAgeing()) {
+                            tag.putString("Drink", recipe.getResult().getName());
+                            int rating = BreweryUtils.gradeDrink(drink);
+                            if (rating > 0) dataTag.putInt("Rating", rating);
+                        }
+                    }
 
+                    // Update item tags
                     tag.put("Data", dataTag);
                     stack.setTag(tag);
 
-                    if (yearsNow > yearsBefore) {
+                    // Update drink rating, if years just increased
+                    if (drink.isGraded() && yearsNow > yearsBefore) {
                         Drink updated = DrinkUtils.getDrink(stack);
-                        int rating = gradeDrink(updated);
+                        int rating = BreweryUtils.gradeDrink(updated);
                         if (rating > 0) stack.getTag().getCompound("Data").putInt("Rating", rating);
                     }
                 }

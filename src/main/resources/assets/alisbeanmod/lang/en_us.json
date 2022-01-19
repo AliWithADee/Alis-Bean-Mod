@@ -31,10 +31,12 @@
   "block.alisbeanmod.canning_machine": "Canning Machine",
   "block.alisbeanmod.test_teleport_block":  "Beaniverse Teleporter",
   "block.alisbeanmod.cooking_pot": "Cooking Pot",
+  "block.alisbeanmod.brewing_alembic": "Brewing Alembic",
   "block.alisbeanmod.ageing_barrel": "Ageing Barrel",
   "block.alisbeanmod.sealing_table": "Sealing Table",
 
   "screen.alisbeanmod.canning_machine": "Canning Machine",
+  "screen.alisbeanmod.brewing_alembic": "Brewing Alembic",
   "screen.alisbeanmod.ageing_barrel": "Ageing Barrel",
   "screen.alisbeanmod.sealing_table": "Sealing Table",
 

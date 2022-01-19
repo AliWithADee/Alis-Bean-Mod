@@ -23,6 +23,12 @@ public class CanningMachineScreen extends AbstractContainerScreen<CanningMachine
     }
 
     @Override
+    protected void init() {
+        super.init();
+        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
+    }
+
+    @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         getEnergy();
         this.renderBackground(poseStack);
@@ -45,7 +51,7 @@ public class CanningMachineScreen extends AbstractContainerScreen<CanningMachine
         this.blit(poseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
 
         // Progress bar
-        int progress = this.menu.getCanningProgress();
+        int progress = this.menu.getCanningProgress(22);
         this.blit(poseStack, i + 95, j + 40, 176, 0, progress + 1, 14);
 
         // Energy Meter

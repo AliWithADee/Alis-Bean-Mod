@@ -23,64 +23,6 @@ public class FilledCookingPotBE extends BlockEntity {
         super(ModBlockEntities.FILLED_COOKING_POT_BE.get(), pos, state);
     }
 
-    private boolean stackInList(ItemStack stack, NonNullList<ItemStack> list) {
-        for (ItemStack itemStack : list) {
-            if (stack.getItem() == itemStack.getItem()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean canMakeRecipe(DrinkRecipe recipe) {
-        for (ItemStack ingredient : recipe.getIngredients()) {
-            if (!stackInList(ingredient, stacksInPot)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Integer showing how far the recipe ingredients are away from the stacks the pot
-    private int getIngredientDifference(DrinkRecipe recipe) {
-        int diff = 0;
-        for (ItemStack stack : stacksInPot) {
-            int d;
-            if (stackInList(stack, recipe.getIngredients())) {
-                d = Math.abs(stack.getCount() - recipe.getIngredientCount(stack));
-            } else {
-                d = stack.getCount();
-            }
-            diff += d;
-        }
-        return diff;
-    }
-
-    public ItemStack getResult() {
-        if (stacksInPot.isEmpty()) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
-        if (minutes == 0) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.MUNDANE);
-
-        DrinkRecipe result = null;
-        int bestDiff = 0;
-        for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
-            if (canMakeRecipe(recipe)) {
-                int thisDiff = getIngredientDifference(recipe);
-                if (result != null) {
-                    if (thisDiff < bestDiff) {
-                        result = recipe;
-                        bestDiff = thisDiff;
-                    }
-                } else if (thisDiff <= BreweryConstants.MAX_RECIPE_DIFFERENCE) {
-                    result = recipe;
-                    bestDiff = thisDiff;
-                }
-            }
-        }
-        if (result == null) return DrinkUtils.createDrinkItem(new Drink(ModDrinks.SCUFFED));
-
-        return DrinkUtils.createDrinkItem(new Drink(result, stacksInPot, minutes));
-    }
-
     public void addIngredient(ItemStack stack) {
         ItemStack current = ItemStack.EMPTY;
 
@@ -99,6 +41,42 @@ public class FilledCookingPotBE extends BlockEntity {
             stacksInPot.set(index, new ItemStack(stack.getItem(), current.getCount() + stack.getCount()));
         }
         System.out.println(stacksInPot); // TODO: Remove debug print statements
+    }
+
+    private boolean canMakeRecipe(DrinkRecipe recipe) {
+        for (ItemStack ingredient : recipe.getIngredients()) {
+            if (!BreweryUtils.stackInList(ingredient, stacksInPot)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public ItemStack getResult() {
+        if (stacksInPot.isEmpty()) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
+        if (minutes == 0) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.MUNDANE);
+
+        DrinkRecipe result = null;
+        int bestDiff = 0;
+        for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
+            if (canMakeRecipe(recipe)) {
+                int thisDiff = BreweryUtils.getIngredientDifference(recipe, stacksInPot);
+                if (result != null) {
+                    if (thisDiff < bestDiff) {
+                        result = recipe;
+                        bestDiff = thisDiff;
+                    }
+                } else if (thisDiff <= BreweryUtils.MAX_RECIPE_DIFFERENCE) {
+                    result = recipe;
+                    bestDiff = thisDiff;
+                }
+            }
+        }
+        if (result == null) return DrinkUtils.createDrinkItem(new Drink(ModDrinks.SCUFFED));
+
+        // TODO: Some drinks only need to be cooked, eg: coffee. They should finish here?
+
+        return DrinkUtils.createDrinkItem(new Drink(result, stacksInPot, minutes));
     }
 
     public void tickServer(FilledCookingPotBE blockEntity) {

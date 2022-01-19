@@ -1,5 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.common.general.block;
 
+import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.general.menu.CanningMachineMenu;
 import io.github.aliwithadee.alisbeanmod.core.data.recipe.general.CanningMachineRecipe;
 import io.github.aliwithadee.alisbeanmod.core.energy.BeanEnergyConsumerStorage;
@@ -394,7 +395,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent("screen.alisbeanmod.canning_machine");
+        return new TranslatableComponent("screen." + AlisBeanMod.MOD_ID + ".canning_machine");
     }
 
     @Nullable

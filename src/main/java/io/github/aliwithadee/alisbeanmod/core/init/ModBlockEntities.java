@@ -4,6 +4,7 @@ import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.brewery.block.AgeingBarrelBE;
 import io.github.aliwithadee.alisbeanmod.common.brewery.block.FilledCookingPotBE;
 import io.github.aliwithadee.alisbeanmod.common.brewery.block.SealingTableBE;
+import io.github.aliwithadee.alisbeanmod.common.brewery.block.BrewingAlembicBE;
 import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,6 +31,10 @@ public class ModBlockEntities {
     public static RegistryObject<BlockEntityType<SealingTableBE>> SEALING_TABLE_BE =
             BLOCK_ENTITIES.register("sealing_table_entity", () -> BlockEntityType.Builder.of(
                     SealingTableBE::new, ModBlocks.SEALING_TABLE.get()).build(null));
+
+    public static RegistryObject<BlockEntityType<BrewingAlembicBE>> BREWING_ALEMBIC_BE =
+            BLOCK_ENTITIES.register("brewing_alembic_entity", () -> BlockEntityType.Builder.of(
+                    BrewingAlembicBE::new, ModBlocks.BREWING_ALEMBIC.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

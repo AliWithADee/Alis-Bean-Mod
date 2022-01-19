@@ -24,7 +24,7 @@ public class CanningMachineMenu extends AbstractContainerMenu {
     }
 
     public CanningMachineMenu(int windowId, Level level, BlockPos pos, Inventory playerInv, Player player, ContainerData containerData) {
-        super(ModContainers.CANNING_MACHINE_CONTAINER.get(), windowId);
+        super(ModContainers.CANNING_MACHINE_MENU.get(), windowId);
 
         blockEntity = (CanningMachineBE) level.getBlockEntity(pos);
         this.data = containerData;
@@ -144,10 +144,10 @@ public class CanningMachineMenu extends AbstractContainerMenu {
         return itemstack;
     }
 
-    public int getCanningProgress() {
+    public int getCanningProgress(int barWidth) {
         int processTime = this.data.get(0);
         int curProcessTime = this.data.get(1);
-        return processTime != 0 && curProcessTime != 0 ? curProcessTime * 22 / processTime : 0;
+        return processTime != 0 && curProcessTime != 0 ? (curProcessTime * barWidth) / processTime : 0;
     }
 
     public int getMaxEnergy() {

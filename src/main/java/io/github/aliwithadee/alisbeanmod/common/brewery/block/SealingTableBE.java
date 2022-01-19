@@ -38,7 +38,7 @@ public class SealingTableBE extends BlockEntity implements Container, MenuProvid
 
             if (stack.getItem() == ModItems.DRINK.get()) {
                 Drink drink = DrinkUtils.getDrink(stack);
-                if (drink.inProgress() && drink.isComplete()) {
+                if (drink.inProgress() && drink.isGraded()) {
                     Drink newDrink = new Drink(drink.getRecipe().getResult(), drink.getRating());
                     ItemStack newStack = DrinkUtils.createDrinkItem(newDrink);
                     items.set(i, newStack);

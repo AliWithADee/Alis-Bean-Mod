@@ -7,13 +7,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class Drink {
-
-    // Final Drink
     private final String name;
     private final int color;
     private final int rating;
-
-    // Partial Drink
     private final DrinkRecipe recipe;
     private final NonNullList<ItemStack> ingredients;
     private final int cookTime;
@@ -31,7 +27,7 @@ public class Drink {
         this(base, 1);
     }
 
-    // Create drink from base drink
+    // Create drink from base drink with specified rating
     public Drink(BaseDrink base, int rating) {
         this(base.getName(), base.getColor(), rating, null, null, 0, 0, 0);
     }
@@ -72,7 +68,7 @@ public class Drink {
         return recipe != null;
     }
 
-    public boolean isComplete() {
+    public boolean isGraded() {
         return rating > 0;
     }
 
@@ -97,6 +93,6 @@ public class Drink {
     }
 
     public int getBarrelYears() {
-        return this.barrelAge / BreweryConstants.MINUTES_PER_BARREL_YEAR;
+        return this.barrelAge / BreweryUtils.MINUTES_PER_BARREL_YEAR;
     }
 }

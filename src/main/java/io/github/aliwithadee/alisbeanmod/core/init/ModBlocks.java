@@ -1,10 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.AgeingBarrelBlock;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.CookingPotBlock;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.FilledCookingPotBlock;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.SealingTableBlock;
+import io.github.aliwithadee.alisbeanmod.common.brewery.block.*;
 import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBlock;
 import io.github.aliwithadee.alisbeanmod.common.general.block.HaricotCropBlock;
 import io.github.aliwithadee.alisbeanmod.common.general.block.TestTeleportBlock;
@@ -59,6 +56,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> FILLED_COOKING_POT = registerBlockNoItem(
             "filled_cooking_pot", FilledCookingPotBlock::new, ModItems.BREWERY_TAB);
+
+    public static final RegistryObject<Block> BREWING_ALEMBIC = registerBlock(
+            "brewing_alembic", BrewingAlembicBlock::new, ModItems.BREWERY_TAB);
 
     public static final RegistryObject<Block> AGEING_BARREL = registerBlock(
             "ageing_barrel", AgeingBarrelBlock::new, ModItems.BREWERY_TAB);

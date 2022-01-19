@@ -12,10 +12,6 @@ public class DrinkRecipe {
     private final int distills;
     private final int barrelAge;
 
-    public DrinkRecipe(BaseDrink result, BaseDrink partialDrink, int cookTime, int barrelAge, ItemStack... ingredients) {
-        this(result, partialDrink, cookTime, 0, barrelAge, ingredients);
-    }
-
     public DrinkRecipe(BaseDrink result, BaseDrink partialDrink, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
         this.result = result;
         this.partialDrink = partialDrink;
@@ -43,6 +39,14 @@ public class DrinkRecipe {
 
     public int getBarrelYears() {
         return barrelAge;
+    }
+
+    public boolean requiresDistilling() {
+        return distills > 0;
+    }
+
+    public boolean requiresAgeing() {
+        return barrelAge > 0;
     }
 
     public NonNullList<ItemStack> getIngredients() {

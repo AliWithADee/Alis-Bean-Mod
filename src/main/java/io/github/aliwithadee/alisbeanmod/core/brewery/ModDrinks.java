@@ -25,14 +25,19 @@ public class ModDrinks {
     public static final Drink DEFAULT = new Drink(SCUFFED);
 
     public static final DrinkRecipe CIDER_RECIPE = createRecipe(
-            new DrinkRecipe(CIDER, GRAPE_MUST, 1, 3,
+            new DrinkRecipe(CIDER, GRAPE_MUST, 1, 3, 3,
             new ItemStack(Items.WHEAT, 6),
             new ItemStack(Items.SUGAR, 4)));
 
     public static final DrinkRecipe DARK_CIDER_RECIPE = createRecipe(
-            new DrinkRecipe(DARK_CIDER, GRAPE_MUST, 2, 3,
-                    new ItemStack(Items.WHEAT, 9),
+            new DrinkRecipe(DARK_CIDER, GRAPE_MUST, 2, 0, 3,
+                    new ItemStack(Items.WHEAT, 13),
                     new ItemStack(Items.SUGAR, 2)));
+
+    public static final DrinkRecipe BEER_RECIPE = createRecipe(
+            new DrinkRecipe(BEER, GRAPE_MUST, 1, 3, 0,
+                    new ItemStack(Items.WHEAT, 8),
+                    new ItemStack(Items.SUGAR, 6)));
 
     // ---------- Methods ----------
 
