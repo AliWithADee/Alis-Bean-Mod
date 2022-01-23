@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "alisbeanmod:block/brewing_alembic"
+    },
+    "facing=east": {
+      "model": "alisbeanmod:block/brewing_alembic",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "alisbeanmod:block/brewing_alembic",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alisbeanmod:block/brewing_alembic",
+      "y": 270
+    }
+  }
+}

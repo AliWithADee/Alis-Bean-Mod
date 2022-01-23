@@ -1,6 +1,10 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
 import io.github.aliwithadee.alisbeanmod.core.brewery.*;
+import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
+import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkRecipe;
+import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.brewery.drink.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

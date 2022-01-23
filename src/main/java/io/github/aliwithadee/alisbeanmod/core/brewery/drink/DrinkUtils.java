@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.core.brewery;
+package io.github.aliwithadee.alisbeanmod.core.brewery.drink;
 
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.ChatFormatting;
@@ -23,6 +23,10 @@ public class DrinkUtils {
 
         return new Drink(base.getName(), base.getColor(), dataTag.getInt("Rating"), ModDrinks.getRecipe(dataTag.getString("Result")),
                 getIngredients(dataTag), dataTag.getInt("CookTime"), dataTag.getInt("Distills"), dataTag.getInt("Age"));
+    }
+
+    public static int getDrinkColor(ItemStack stack) {
+        return getDrink(stack).getColor();
     }
 
     public static ItemStack setDrink(ItemStack stack, Drink drink) {
@@ -51,21 +55,33 @@ public class DrinkUtils {
         return stack;
     }
 
-    public static ItemStack removeDrink(ItemStack stack) {
-        stack.removeTagKey("Drink");
-        stack.removeTagKey("Data");
-        return stack;
-    }
-
     public static ItemStack createDrinkItem(Drink drink) {
         return setDrink(new ItemStack(ModItems.DRINK.get()), drink);
     }
 
-    public static int getDrinkColor(ItemStack stack) {
-        return getDrink(stack).getColor();
+    private static void saveIngredients(CompoundTag tag, NonNullList<ItemStack> ingredients) {
+        ListTag listTag = new ListTag();
+        for (ItemStack stack : ingredients) {
+            if (!stack.isEmpty()) {
+                CompoundTag compoundTag = new CompoundTag();
+                stack.save(compoundTag);
+                listTag.add(compoundTag);
+            }
+        }
+        tag.put("Ingredients", listTag);
     }
 
-    public static void addDrinkTooltip(ItemStack stack, List<Component> tooltips, float durationFactor) {
+    private static NonNullList<ItemStack> getIngredients(CompoundTag tag) {
+        NonNullList<ItemStack> ingredients = NonNullList.create();
+        ListTag listTag = tag.getList("Ingredients", 10);
+        for (int i = 0; i < listTag.size(); i++) {
+            CompoundTag compoundTag = listTag.getCompound(i);
+            ingredients.add(ItemStack.of(compoundTag));
+        }
+        return ingredients;
+    }
+
+    public static void addDrinkTooltip(ItemStack stack, List<Component> tooltips) {
         Drink drink = getDrink(stack);
 
         int rating = drink.getRating();
@@ -94,27 +110,5 @@ public class DrinkUtils {
             if (years == 1) tooltips.add(new TextComponent("Aged for 1 year").withStyle(ChatFormatting.GRAY));
             else if (years > 1) tooltips.add(new TextComponent("Aged for " + years + " years").withStyle(ChatFormatting.GRAY));
         }
-    }
-
-    private static void saveIngredients(CompoundTag tag, NonNullList<ItemStack> ingredients) {
-        ListTag listTag = new ListTag();
-        for (ItemStack stack : ingredients) {
-            if (!stack.isEmpty()) {
-                CompoundTag compoundTag = new CompoundTag();
-                stack.save(compoundTag);
-                listTag.add(compoundTag);
-            }
-        }
-        tag.put("Ingredients", listTag);
-    }
-
-    private static NonNullList<ItemStack> getIngredients(CompoundTag tag) {
-        NonNullList<ItemStack> ingredients = NonNullList.create();
-        ListTag listTag = tag.getList("Ingredients", 10);
-        for (int i = 0; i < listTag.size(); i++) {
-            CompoundTag compoundTag = listTag.getCompound(i);
-            ingredients.add(ItemStack.of(compoundTag));
-        }
-        return ingredients;
     }
 }

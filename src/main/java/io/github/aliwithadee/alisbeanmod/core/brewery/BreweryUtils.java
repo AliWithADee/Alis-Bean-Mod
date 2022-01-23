@@ -1,19 +1,13 @@
 package io.github.aliwithadee.alisbeanmod.core.brewery;
 
+import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
+import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkRecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 
 public class BreweryUtils {
-    // 1 tick               = 3.6 minecraft seconds
-    // 1 minecraft second   = 0.0138 seconds
-    // 1 minecraft minute   = 0.83 seconds
-
-    // 1 minecraft second   = 0.27 ticks
-    // 1 minecraft minute   = 16 ticks
-    // 1 minecraft hour     = 1000 ticks
-    // 1 minecraft day      = 24000 ticks
-
-    // 1 minecraft day  =  1 barrel age year
+    // 1440 minecraft minutes  =  1 minecraft day
+    // 1 minecraft day         =  1 barrel age year
     public static final int MINUTES_PER_BARREL_YEAR = 20; // TODO: Don't forget to set this to actual value
     public static final int MAX_RECIPE_DIFFERENCE = 25;
     public static final int MAX_RATING = 5;
@@ -33,8 +27,6 @@ public class BreweryUtils {
     public static final int AGE_DIFF_GREAT = 2;
     public static final int AGE_DIFF_FINE = 3;
     public static final int AGE_DIFF_POOR = 4;
-
-    // TODO: Bean mod config file
 
     public static boolean stackInList(ItemStack stack, NonNullList<ItemStack> list) {
         for (ItemStack itemStack : list) {

@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.core.brewery;
+package io.github.aliwithadee.alisbeanmod.core.brewery.drink;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;

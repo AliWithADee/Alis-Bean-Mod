@@ -1,13 +1,15 @@
 package io.github.aliwithadee.alisbeanmod.core.events;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.core.brewery.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.CapabilityAlcohol;
+import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.data.loot.ItemFromGrassModifier;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,5 +42,10 @@ public class ModEventBusEvents {
         event.getItemColors().register((stack, tintIndex) ->
                         tintIndex > 0 ? -1 : DrinkUtils.getDrinkColor(stack),
                 ModItems.DRINK.get());
+    }
+
+    @SubscribeEvent
+    public static void registerCaps(RegisterCapabilitiesEvent event) {
+        CapabilityAlcohol.register(event);
     }
 }
