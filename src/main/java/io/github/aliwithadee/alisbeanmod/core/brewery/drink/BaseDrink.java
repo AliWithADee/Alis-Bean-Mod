@@ -1,6 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.core.brewery.drink;
 
 import com.google.common.collect.ImmutableList;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.world.effect.MobEffectInstance;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class BaseDrink {
     private BaseDrink(String name, int color, float strength, List<MobEffectInstance> effects) {
         this.name = name;
         this.color = color;
-        this.strength = strength;
+        this.strength = strength >= BeanModConfig.MIN_STRENGTH && strength <= BeanModConfig.MAX_STRENGTH ? strength : 1.0f;
         this.effects = ImmutableList.copyOf(effects);
     }
 

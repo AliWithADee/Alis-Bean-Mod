@@ -6,6 +6,7 @@ import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkRecipe;
 import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.brewery.drink.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -60,27 +61,25 @@ public class FilledCookingPotBE extends BlockEntity {
         if (stacksInPot.isEmpty()) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
         if (minutes == 0) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.MUNDANE);
 
-        DrinkRecipe result = null;
+        DrinkRecipe resultRecipe = null;
         int bestDiff = 0;
         for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
             if (canMakeRecipe(recipe)) {
                 int thisDiff = BreweryUtils.getIngredientDifference(recipe, stacksInPot);
-                if (result != null) {
+                if (resultRecipe != null) {
                     if (thisDiff < bestDiff) {
-                        result = recipe;
+                        resultRecipe = recipe;
                         bestDiff = thisDiff;
                     }
-                } else if (thisDiff <= BreweryUtils.MAX_RECIPE_DIFFERENCE) {
-                    result = recipe;
+                } else if (thisDiff <= BeanModConfig.MAX_RECIPE_DIFFERENCE) {
+                    resultRecipe = recipe;
                     bestDiff = thisDiff;
                 }
             }
         }
-        if (result == null) return DrinkUtils.createDrinkItem(new Drink(ModDrinks.SCUFFED));
+        if (resultRecipe == null) return DrinkUtils.createDrinkItem(new Drink(ModDrinks.SCUFFED));
 
-        // TODO: Some drinks only need to be cooked, eg: coffee. They should finish here?
-
-        return DrinkUtils.createDrinkItem(new Drink(result, stacksInPot, minutes));
+        return DrinkUtils.createDrinkItem(new Drink(resultRecipe, stacksInPot, minutes));
     }
 
     public void tickServer(FilledCookingPotBE blockEntity) {

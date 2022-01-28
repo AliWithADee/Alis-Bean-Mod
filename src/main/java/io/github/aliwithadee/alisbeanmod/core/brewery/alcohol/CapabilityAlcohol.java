@@ -6,7 +6,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 
 public class CapabilityAlcohol {
-    public static final Capability<IAlcoholCapability> ALCOHOL_CAPABILITY = CapabilityManager.get(new CapabilityToken<IAlcoholCapability>() {
+    public static final Capability<IAlcoholCapability> ALCOHOL_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
     public static void register(RegisterCapabilitiesEvent event) {

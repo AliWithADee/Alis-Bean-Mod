@@ -1,5 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.core.brewery.drink;
 
+import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
@@ -13,17 +14,24 @@ public class ModDrinks {
     public static final Map<String, BaseDrink> DRINKS = new HashMap<>();
     public static final Map<String, DrinkRecipe> RECIPES = new HashMap<>();
 
+    // Alcoholic Drinks
     public static final BaseDrink SCUFFED = createDrink(new BaseDrink("scuffed", 78953176, 0.0f,
             new MobEffectInstance(MobEffects.POISON, 500)));
-    public static final BaseDrink BEER = createDrink(new BaseDrink("beer", 12421704, 3.0f));
-    public static final BaseDrink CIDER = createDrink(new BaseDrink("cider", 12080187, 3.0f,
+    public static final BaseDrink BEER = createDrink(new BaseDrink("beer", 12421704, 1.0f));
+    public static final BaseDrink CIDER = createDrink(new BaseDrink("cider", 12080187, 1.0f,
             new MobEffectInstance(MobEffects.ABSORPTION, 500)));
-    public static final BaseDrink DARK_CIDER = createDrink(new BaseDrink("dark_cider", 9850939, 3.0f,
+    public static final BaseDrink DARK_CIDER = createDrink(new BaseDrink("dark_cider", 9850939, 1.0f,
             new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 500)));
+
+    // Non-alcoholic Drinks
+    public static final BaseDrink COFFEE = createDrink(new BaseDrink("coffee", 9850939));
+
+    // Partial Drinks
     public static final BaseDrink GRAPE_MUST = createDrink(new BaseDrink("grape_must", 12720968));
 
     public static final Drink DEFAULT = new Drink(SCUFFED);
 
+    // Drink Recipes
     public static final DrinkRecipe CIDER_RECIPE = createRecipe(
             new DrinkRecipe(CIDER, GRAPE_MUST, 1, 3, 3,
             new ItemStack(Items.WHEAT, 6),
@@ -38,6 +46,9 @@ public class ModDrinks {
             new DrinkRecipe(BEER, GRAPE_MUST, 1, 3, 0,
                     new ItemStack(Items.WHEAT, 8),
                     new ItemStack(Items.SUGAR, 6)));
+
+    public static final DrinkRecipe COFFEE_RECIPE = createRecipe(
+            new DrinkRecipe(COFFEE, 2, new ItemStack(ModItems.COFFEE_BEANS.get(), 6)));
 
     // ---------- Methods ----------
 

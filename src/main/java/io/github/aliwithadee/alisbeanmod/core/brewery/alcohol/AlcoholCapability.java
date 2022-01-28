@@ -5,7 +5,9 @@ import net.minecraft.nbt.CompoundTag;
 public class AlcoholCapability implements IAlcoholCapability {
     private static final String NBT_ALCOHOL = "alcohol";
 
-    private float alcohol = 10;
+    // TODO: Rename capability classes etc
+
+    private float alcohol = 0;
 
     @Override
     public float getAlcohol() {

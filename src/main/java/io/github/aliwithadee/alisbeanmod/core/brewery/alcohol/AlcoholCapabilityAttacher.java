@@ -24,7 +24,6 @@ public class AlcoholCapabilityAttacher {
         @NotNull
         @Override
         public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-            System.out.println("getting cap from alcohol provider");
             return CapabilityAlcohol.ALCOHOL_CAPABILITY.orEmpty(cap, this.optionalAlcohol);
         }
 

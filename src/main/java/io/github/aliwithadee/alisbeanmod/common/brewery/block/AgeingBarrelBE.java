@@ -7,6 +7,7 @@ import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkRecipe;
 import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -43,10 +44,10 @@ public class AgeingBarrelBE extends BlockEntity implements Container, MenuProvid
                     CompoundTag dataTag = tag.getCompound("Data");
 
                     int minutesBefore = dataTag.getInt("Age");
-                    int yearsBefore = minutesBefore / BreweryUtils.MINUTES_PER_BARREL_YEAR;
+                    int yearsBefore = minutesBefore / BeanModConfig.MINUTES_PER_BARREL_YEAR;
 
                     int minutesNow = minutesBefore + 1;
-                    int yearsNow = minutesNow / BreweryUtils.MINUTES_PER_BARREL_YEAR;
+                    int yearsNow = minutesNow / BeanModConfig.MINUTES_PER_BARREL_YEAR;
 
                     // Increment age
                     dataTag.putInt("Age", minutesNow);

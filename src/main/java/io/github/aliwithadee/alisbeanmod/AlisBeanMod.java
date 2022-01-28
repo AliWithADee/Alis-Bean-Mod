@@ -2,9 +2,12 @@ package io.github.aliwithadee.alisbeanmod;
 
 import io.github.aliwithadee.alisbeanmod.client.ClientSetup;
 import io.github.aliwithadee.alisbeanmod.core.init.*;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -30,6 +33,9 @@ public class AlisBeanMod {
         // Register the setup method for mod loading
         eventBus.addListener(this::setup);
         eventBus.addListener(ClientSetup::setup);
+
+        // Config file
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BeanModConfig.SPEC, MOD_ID + ".toml");
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

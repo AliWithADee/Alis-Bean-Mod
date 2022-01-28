@@ -6,6 +6,7 @@ import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.IAlcoholCapability
 import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
 import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.brewery.drink.ModDrinks;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -47,16 +48,9 @@ public class DrinkItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        System.out.println(player.getItemInHand(hand).getTag()); // TODO: Remove debug print statements
-
-        // TODO: Remove debug
-        System.out.println("\n");
-        LazyOptional<IAlcoholCapability> cap = player.getCapability(CapabilityAlcohol.ALCOHOL_CAPABILITY);
-        cap.ifPresent((alcohol) -> {
-            System.out.println("Alcohol: " + alcohol.getAlcohol());
-            alcohol.addAlcohol(1);
-        });
-
+        if (!level.isClientSide) {
+            System.out.println(player.getItemInHand(hand).getTag()); // TODO: Remove debug print statements
+        }
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
@@ -67,8 +61,10 @@ public class DrinkItem extends Item {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
         }
 
+        Drink drink = DrinkUtils.getDrink(stack);
+
         if (!level.isClientSide) {
-            for(MobEffectInstance effectInstance : DrinkUtils.getDrink(stack).getEffects()) {
+            for(MobEffectInstance effectInstance : drink.getEffects()) {
                 if (effectInstance.getEffect().isInstantenous()) {
                     effectInstance.getEffect().applyInstantenousEffect(player, player, entity, effectInstance.getAmplifier(), 1.0D);
                 } else {
@@ -77,7 +73,15 @@ public class DrinkItem extends Item {
             }
         }
 
-        // TODO: Alcohol level system with Capabilities
+        if (!level.isClientSide && player != null && drink.getStrength() > 0) {
+            LazyOptional<IAlcoholCapability> cap = player.getCapability(CapabilityAlcohol.ALCOHOL_CAPABILITY);
+            cap.ifPresent((alcoholCap) -> {
+                float increase = BeanModConfig.BASE_ALCOHOL_INCREASE * drink.getStrength();
+                alcoholCap.addAlcohol(increase);
+
+                System.out.println("Alcohol increase to: " + alcoholCap.getAlcohol());
+            });
+        }
 
         if (player != null && !player.getAbilities().instabuild) {
             stack.shrink(1);

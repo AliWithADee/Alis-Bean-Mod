@@ -40,6 +40,9 @@ public class ModItems {
             () -> new ItemNameBlockItem(ModBlocks.HARICOT_CROP.get(), new Item.Properties()
                     .tab(GENERAL_TAB).food(ModFoods.HARICOT_BEANS)));
 
+    public static final RegistryObject<Item> COFFEE_BEANS = ITEMS.register("coffee_beans",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.COFFEE_BEANS)));
+
     public static final RegistryObject<Item> BOWL_OF_HARICOT_BEANS = ITEMS.register("bowl_of_haricot_beans",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB)
                     .stacksTo(1).craftRemainder(Items.BOWL)));

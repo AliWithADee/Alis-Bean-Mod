@@ -12,6 +12,11 @@ public class DrinkRecipe {
     private final int distills;
     private final int barrelAge;
 
+    // Non-alcoholic drinks
+    public DrinkRecipe(BaseDrink result, int cookTime, ItemStack... ingredients) {
+        this(result, null, cookTime, 0, 0, ingredients);
+    }
+
     public DrinkRecipe(BaseDrink result, BaseDrink partialDrink, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
         this.result = result;
         this.partialDrink = partialDrink;
@@ -25,7 +30,8 @@ public class DrinkRecipe {
         return result;
     }
 
-    public BaseDrink getPartialDrink() {
+    public BaseDrink getCookingResult() {
+        if (partialDrink == null) return result;
         return partialDrink;
     }
 

@@ -1,10 +1,11 @@
 package io.github.aliwithadee.alisbeanmod.core.brewery.drink;
 
-import io.github.aliwithadee.alisbeanmod.core.brewery.BreweryUtils;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Drink {
@@ -17,18 +18,18 @@ public class Drink {
     private final int distills;
     private final int barrelAge;
 
-    // Create drink from recipe (after cooking)
+    // Create drink after cooking
     public Drink(DrinkRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime) {
-        this(recipe.getPartialDrink().getName(), recipe.getPartialDrink().getColor(), 0, recipe, ingredients,
+        this(recipe.getCookingResult().getName(), recipe.getCookingResult().getColor(), 0, recipe, ingredients,
                 cookTime, 0, 0);
     }
 
-    // Create drink from base drink
+    // Create finished drink from base drink
     public Drink(BaseDrink base) {
         this(base, 1);
     }
 
-    // Create drink from base drink with specified rating
+    // Create finished drink from base drink with specified rating
     public Drink(BaseDrink base, int rating) {
         this(base.getName(), base.getColor(), rating, null, null, 0, 0, 0);
     }
@@ -58,11 +59,29 @@ public class Drink {
     }
 
     public float getStrength() {
-        return ModDrinks.getDrink(this.name).getStrength(); // TODO: Rating affects strength & effects
+        float baseStrength = ModDrinks.getDrink(this.name).getStrength();
+        System.out.println("Base Strength: " + baseStrength);
+        float ratingModifier = (float) this.rating / BeanModConfig.MAX_RATING;
+
+        System.out.println("Rating modifier: " + ratingModifier);
+        float strength = baseStrength * ratingModifier;
+        System.out.println("Strength: " + strength);
+        return strength;
     }
 
     public List<MobEffectInstance> getEffects() {
-        return ModDrinks.getDrink(this.name).getEffects();
+        List<MobEffectInstance> newList = new ArrayList<>();
+        float ratingModifier = (float) this.rating / BeanModConfig.MAX_RATING;
+
+        List<MobEffectInstance> list = ModDrinks.getDrink(this.name).getEffects();
+        System.out.println("List before: " + list);
+        for (MobEffectInstance effectInstance : list) {
+            int duration = effectInstance.getDuration();
+            newList.add(new MobEffectInstance(effectInstance.getEffect(), (int) (duration * ratingModifier)));
+        }
+        System.out.println("List After: " + newList);
+
+        return newList;
     }
 
     public boolean inProgress() {
@@ -94,6 +113,6 @@ public class Drink {
     }
 
     public int getBarrelYears() {
-        return this.barrelAge / BreweryUtils.MINUTES_PER_BARREL_YEAR;
+        return this.barrelAge / BeanModConfig.MINUTES_PER_BARREL_YEAR;
     }
 }
