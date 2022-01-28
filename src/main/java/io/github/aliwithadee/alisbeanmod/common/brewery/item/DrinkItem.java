@@ -78,8 +78,9 @@ public class DrinkItem extends Item {
             cap.ifPresent((alcoholCap) -> {
                 float increase = BeanModConfig.BASE_ALCOHOL_INCREASE * drink.getStrength();
                 alcoholCap.addAlcohol(increase);
-
                 System.out.println("Alcohol increase to: " + alcoholCap.getAlcohol());
+                alcoholCap.setIntoxicatedPosition(player.position());
+                System.out.println("Set intoxicated position to current pos");
             });
         }
 

@@ -6,6 +6,7 @@ import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.CapabilityAlcohol;
 import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.IAlcoholCapability;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -26,13 +27,24 @@ public class ForgeEventBusEvents {
         if (event.side.isServer()) {
             if (event.phase == TickEvent.Phase.END) {
                 playerTicks++;
-            } else if (event.phase == TickEvent.Phase.START && playerTicks >= BeanModConfig.ALCOHOL_DECREASE_TICKS) {
-                playerTicks = 0;
+            } else if (event.phase == TickEvent.Phase.START) {
                 LazyOptional<IAlcoholCapability> cap = event.player.getCapability(CapabilityAlcohol.ALCOHOL_CAPABILITY);
                 cap.ifPresent((alcoholCap) -> {
                     if (alcoholCap.getAlcohol() > 0) {
-                        alcoholCap.removeAlcohol(1f);
-                        System.out.println("Alcohol decreased to: " + alcoholCap.getAlcohol());
+
+                        if (playerTicks >= BeanModConfig.ALCOHOL_DECREASE_TICKS) {
+                            playerTicks = 0;
+                            alcoholCap.removeAlcohol(1f);
+                            System.out.println("Alcohol decreased to: " + alcoholCap.getAlcohol());
+                        }
+
+                        Vec3 oldPos = alcoholCap.getIntoxicatedPosition();
+                        Vec3 newPos = event.player.position();
+                        if (oldPos != null && newPos != oldPos) {
+                            // Player is moving
+                            alcoholCap.setIntoxicatedPosition(newPos);
+                            System.out.println("Moved");
+                        }
                     }
                 });
             }
