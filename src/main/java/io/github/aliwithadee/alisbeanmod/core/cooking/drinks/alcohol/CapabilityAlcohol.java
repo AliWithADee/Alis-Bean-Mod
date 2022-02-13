@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.core.brewery.alcohol;
+package io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol;
 
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;

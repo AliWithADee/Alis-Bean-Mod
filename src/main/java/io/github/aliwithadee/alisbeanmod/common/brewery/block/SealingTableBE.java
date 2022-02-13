@@ -1,8 +1,8 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.core.BlockPos;
@@ -41,8 +41,7 @@ public class SealingTableBE extends BlockEntity implements Container, MenuProvid
                 Drink drink = DrinkUtils.getDrink(stack);
                 if (drink.inProgress() && drink.isGraded()) {
                     Drink newDrink = new Drink(drink.getRecipe().getResult(), drink.getRating());
-                    ItemStack newStack = DrinkUtils.createDrinkItem(newDrink);
-                    items.set(i, newStack);
+                    items.set(i, DrinkUtils.createDrinkItem(newDrink));
 
                     level.playSound(null, worldPosition, SoundEvents.BOTTLE_FILL_DRAGONBREATH, SoundSource.BLOCKS, 1.0F, 1.0F);
                 }

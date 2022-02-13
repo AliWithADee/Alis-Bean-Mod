@@ -31,31 +31,38 @@ public class CanningMachineMenu extends AbstractContainerMenu {
         this.player = player;
         this.playerInv = new InvWrapper(playerInv);
 
-        addSlot(new Slot(blockEntity, 0, 71, 26) { // input
+        addSlot(new Slot(blockEntity, 0, 33, 27) { // input
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(0, stack);
             }
         });
 
-        addSlot(new Slot(blockEntity, 1, 71, 52) { // tin can
+        addSlot(new Slot(blockEntity, 1, 33, 49) { // tin can
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(1, stack);
             }
         });
 
-        addSlot(new Slot(blockEntity, 2, 45, 39) { // fuel
+        addSlot(new Slot(blockEntity, 2, 109, 49) { // fuel
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(2, stack);
             }
         });
 
-        addSlot(new Slot(blockEntity, 3, 131, 39) { // output
+        addSlot(new Slot(blockEntity, 3, 85, 27) { // output
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(3, stack);
+            }
+        });
+
+        addSlot(new Slot(blockEntity, 4, 85, 49) { // container output
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return blockEntity.canPlaceItem(4, stack);
             }
         });
 
@@ -107,16 +114,16 @@ public class CanningMachineMenu extends AbstractContainerMenu {
             ItemStack stack = slot.getItem(); // Get the item in the slot that was clicked
             itemstack = stack.copy(); // Set itemstack as a copy of it
 
-            if (index < 4) { // If slot clicked is in gui inventory
+            if (index < 5) { // If slot clicked is in gui inventory
 
                 // Try merging item stack with first available slot,
                 // from index 4 (first slot of player inv) to 38 (last slot of player inv).
-                if (!this.moveItemStackTo(stack, 4, 40, false)) {
+                if (!this.moveItemStackTo(stack, 5, 41, false)) {
                     return ItemStack.EMPTY; // If we cannot do the merge, return empty item stack
                 }
                 slot.onQuickCraft(stack, itemstack);
             } else {
-                if (index < 40) {
+                if (index < 41) {
                     if (!this.moveItemStackTo(stack, 1, 2, false)) {
                         if (!this.moveItemStackTo(stack, 2, 3, false)) {
                             if (!this.moveItemStackTo(stack, 0, 1, false)) {

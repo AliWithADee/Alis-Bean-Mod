@@ -1,10 +1,9 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
-import io.github.aliwithadee.alisbeanmod.core.brewery.*;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkRecipe;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.ModDrinks;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkRecipe;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.core.BlockPos;
@@ -50,7 +49,7 @@ public class FilledCookingPotBE extends BlockEntity {
 
     private boolean canMakeRecipe(DrinkRecipe recipe) {
         for (ItemStack ingredient : recipe.getIngredients()) {
-            if (!BreweryUtils.stackInList(ingredient, stacksInPot)) {
+            if (!stacksInPot.contains(ingredient)) {
                 return false;
             }
         }
@@ -65,7 +64,7 @@ public class FilledCookingPotBE extends BlockEntity {
         int bestDiff = 0;
         for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
             if (canMakeRecipe(recipe)) {
-                int thisDiff = BreweryUtils.getIngredientDifference(recipe, stacksInPot);
+                int thisDiff = DrinkUtils.getIngredientError(recipe, stacksInPot);
                 if (resultRecipe != null) {
                     if (thisDiff < bestDiff) {
                         resultRecipe = recipe;
@@ -79,7 +78,13 @@ public class FilledCookingPotBE extends BlockEntity {
         }
         if (resultRecipe == null) return DrinkUtils.createDrinkItem(new Drink(ModDrinks.SCUFFED));
 
-        return DrinkUtils.createDrinkItem(new Drink(resultRecipe, stacksInPot, minutes));
+        Drink drink = new Drink(resultRecipe, stacksInPot, minutes);
+
+        if (!resultRecipe.requiresAgeing() && !resultRecipe.requiresDistilling()) {
+            DrinkUtils.gradeDrink(drink);
+        }
+
+        return DrinkUtils.createDrinkItem(drink);
     }
 
     public void tickServer(FilledCookingPotBE blockEntity) {

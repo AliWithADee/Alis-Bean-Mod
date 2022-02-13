@@ -24,7 +24,7 @@ public class BrewingAlembicMenu extends AbstractContainerMenu {
     }
 
     public BrewingAlembicMenu(int windowId, Level level, BlockPos pos, Inventory playerInv, Player player, ContainerData containerData) {
-        super(ModContainers.BREWING_ALEMBIC_MENU.get(), windowId); //TODO: Menu reg
+        super(ModContainers.BREWING_ALEMBIC_MENU.get(), windowId);
 
         blockEntity = (BrewingAlembicBE) level.getBlockEntity(pos);
         this.data = containerData;

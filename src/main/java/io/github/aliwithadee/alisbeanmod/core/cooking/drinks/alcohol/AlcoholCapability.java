@@ -1,15 +1,11 @@
-package io.github.aliwithadee.alisbeanmod.core.brewery.alcohol;
+package io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.phys.Vec3;
 
 public class AlcoholCapability implements IAlcoholCapability {
-    private static final String NBT_ALCOHOL = "alcohol";
-
     // TODO: Rename capability classes etc
 
     private float alcohol = 0;
-    private Vec3 intoxicatedPosition = null;
 
     @Override
     public float getAlcohol() {
@@ -32,24 +28,14 @@ public class AlcoholCapability implements IAlcoholCapability {
     }
 
     @Override
-    public Vec3 getIntoxicatedPosition() {
-        return this.intoxicatedPosition;
-    }
-
-    @Override
-    public void setIntoxicatedPosition(Vec3 position) {
-        this.intoxicatedPosition = position;
-    }
-
-    @Override
     public CompoundTag serializeNBT() {
         final CompoundTag tag = new CompoundTag();
-        tag.putFloat(NBT_ALCOHOL, this.alcohol);
+        tag.putFloat("alcohol", this.alcohol);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        this.alcohol = tag.getFloat(NBT_ALCOHOL);
+        this.alcohol = tag.getFloat("alcohol");
     }
 }

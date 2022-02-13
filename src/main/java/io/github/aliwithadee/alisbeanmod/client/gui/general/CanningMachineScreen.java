@@ -52,13 +52,13 @@ public class CanningMachineScreen extends AbstractContainerScreen<CanningMachine
 
         // Progress bar
         int progress = this.menu.getCanningProgress(22);
-        this.blit(poseStack, i + 95, j + 40, 176, 0, progress + 1, 14);
+        this.blit(poseStack, i + 55, j + 39, 176, 0, progress + 1, 14);
 
         // Energy Meter
-        float e = capacity != 0 ? energy * 46f / capacity : 0;
+        float e = capacity != 0 ? energy * 38f / capacity : 0;
         int e_offset = e > 0 && e < 1 ? 1 : (int)e;
 
-        this.blit(poseStack, i + 25, j + 68 - e_offset, 176, 60 - e_offset, 10, e_offset + 1);
+        this.blit(poseStack, i + 133, j + 65 - e_offset, 176, 52 - e_offset, 10, e_offset + 1);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class CanningMachineScreen extends AbstractContainerScreen<CanningMachine
         int i = this.getGuiLeft();
         int j = this.getGuiTop();
 
-        if (mouseX >= (i + 25) && mouseX <= (i + 34)) {
-            if (mouseY >= (j + 22) && mouseY <= (j + 67)) {
+        if (mouseX >= (i + 133) && mouseX <= (i + 142)) {
+            if (mouseY >= (j + 27) && mouseY <= (j + 64)) {
                 TextComponent text = new TextComponent(energy + "BE/" + capacity + "BE");
 
                 this.renderTooltip(poseStack, text, mouseX, mouseY);

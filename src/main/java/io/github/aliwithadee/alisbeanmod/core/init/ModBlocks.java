@@ -2,10 +2,7 @@ package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.brewery.block.*;
-import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBlock;
-import io.github.aliwithadee.alisbeanmod.common.general.block.HaricotCropBlock;
-import io.github.aliwithadee.alisbeanmod.common.general.block.TestTeleportBlock;
-import io.github.aliwithadee.alisbeanmod.common.general.block.WildHaricotCropBlock;
+import io.github.aliwithadee.alisbeanmod.common.general.block.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -41,6 +38,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> WILD_HARICOT_CROP = registerBlockNoItem("wild_haricot_crop",
             () -> new WildHaricotCropBlock(BlockBehaviour.Properties.of(Material.PLANT)
                     .noCollission().randomTicks().instabreak().sound(SoundType.CROP)), ModItems.GENERAL_TAB);
+
+    public static final RegistryObject<Block> OBELISK = registerBlock(
+            "obelisk", ObeliskBlock::new, ModItems.GENERAL_TAB);
 
     // Machines
     public static final RegistryObject<Block> CANNING_MACHINE = registerNoStackBlock(

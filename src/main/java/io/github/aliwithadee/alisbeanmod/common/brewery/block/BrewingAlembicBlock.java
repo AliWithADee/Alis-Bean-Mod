@@ -1,7 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
-import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.CapabilityAlcohol;
-import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.IAlcoholCapability;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.CapabilityAlcohol;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.IAlcoholCapability;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;

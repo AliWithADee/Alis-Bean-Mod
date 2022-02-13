@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.core.brewery.drink;
+package io.github.aliwithadee.alisbeanmod.core.cooking.drinks;
 
 import com.google.common.collect.ImmutableList;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;

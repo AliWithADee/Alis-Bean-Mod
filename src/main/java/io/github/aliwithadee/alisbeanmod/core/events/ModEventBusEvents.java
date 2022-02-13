@@ -1,8 +1,8 @@
 package io.github.aliwithadee.alisbeanmod.core.events;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.CapabilityAlcohol;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.CapabilityAlcohol;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.data.loot.ItemFromGrassModifier;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
@@ -12,7 +12,6 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 

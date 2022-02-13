@@ -2,10 +2,9 @@ package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.brewery.menu.BrewingAlembicMenu;
-import io.github.aliwithadee.alisbeanmod.core.brewery.BreweryUtils;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkRecipe;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkRecipe;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.core.BlockPos;
@@ -91,35 +90,28 @@ public class BrewingAlembicBE extends BlockEntity implements Container, MenuProv
             if (stack.getItem() == ModItems.DRINK.get()) {
                 Drink drink = DrinkUtils.getDrink(stack);
                 if (drink.inProgress()) {
-                    DrinkRecipe recipe = drink.getRecipe();
-                    CompoundTag tag = stack.getTag();
-                    CompoundTag dataTag = tag.getCompound("Data");
-
-                    int distillsBefore = dataTag.getInt("Distills");
+                    int distillsBefore = drink.getDistills();
                     int distillsNow = distillsBefore + 1;
 
                     // Increment distills
-                    dataTag.putInt("Distills", distillsNow);
-
-                    // Update drink, if not already graded
-                    if (!drink.isGraded()) {
-                        if (recipe.requiresDistilling() && !recipe.requiresAgeing()) {
-                            tag.putString("Drink", recipe.getResult().getName());
-                            int rating = BreweryUtils.gradeDrink(drink);
-                            if (rating > 0) dataTag.putInt("Rating", rating);
-                        }
-                    }
-
-                    // Update item tags
-                    tag.put("Data", dataTag);
-                    stack.setTag(tag);
+                    drink.setDistills(distillsNow);
 
                     // Update Rating, if already graded
                     if (drink.isGraded()) {
-                        Drink updated = DrinkUtils.getDrink(stack);
-                        int rating = BreweryUtils.gradeDrink(updated);
-                        if (rating > 0) stack.getTag().getCompound("Data").putInt("Rating", rating);
+                        DrinkUtils.gradeDrink(drink);
                     }
+
+                    // Update drink, if not already graded
+                    DrinkRecipe recipe = drink.getRecipe();
+                    if (!drink.isGraded()) {
+                        if (recipe.requiresDistilling() && !recipe.requiresAgeing()) {
+                            drink.setName(recipe.getResult().getName());
+                            DrinkUtils.gradeDrink(drink);
+                        }
+                    }
+
+                    // Update stack
+                    DrinkUtils.setDrink(stack, drink);
 
                     // Output result
                     for (int o = 3; o < 6; o++) {

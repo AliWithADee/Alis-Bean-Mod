@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.core.brewery.alcohol;
+package io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import net.minecraft.core.Direction;

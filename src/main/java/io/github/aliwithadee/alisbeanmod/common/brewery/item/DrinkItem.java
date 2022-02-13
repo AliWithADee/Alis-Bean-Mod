@@ -1,11 +1,11 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.item;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.CapabilityAlcohol;
-import io.github.aliwithadee.alisbeanmod.core.brewery.alcohol.IAlcoholCapability;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.ModDrinks;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.CapabilityAlcohol;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.IAlcoholCapability;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
@@ -79,8 +79,6 @@ public class DrinkItem extends Item {
                 float increase = BeanModConfig.BASE_ALCOHOL_INCREASE * drink.getStrength();
                 alcoholCap.addAlcohol(increase);
                 System.out.println("Alcohol increase to: " + alcoholCap.getAlcohol());
-                alcoholCap.setIntoxicatedPosition(player.position());
-                System.out.println("Set intoxicated position to current pos");
             });
         }
 
@@ -115,7 +113,7 @@ public class DrinkItem extends Item {
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> stacks) {
         if (this.allowdedIn(tab)) {
             ModDrinks.DRINKS.forEach((name, baseDrink) -> {
-                stacks.add(DrinkUtils.createDrinkItem(new Drink(baseDrink)));
+                stacks.add(DrinkUtils.createDrinkItem(new Drink(baseDrink, 5)));
             });
         }
     }

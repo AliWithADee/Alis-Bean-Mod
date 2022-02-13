@@ -1,10 +1,9 @@
 package io.github.aliwithadee.alisbeanmod.common.brewery.block;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.core.brewery.*;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.Drink;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkRecipe;
-import io.github.aliwithadee.alisbeanmod.core.brewery.drink.DrinkUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkRecipe;
+import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
@@ -39,38 +38,31 @@ public class AgeingBarrelBE extends BlockEntity implements Container, MenuProvid
             if (stack.getItem() == ModItems.DRINK.get()) {
                 Drink drink = DrinkUtils.getDrink(stack);
                 if (drink.inProgress()) {
-                    DrinkRecipe recipe = drink.getRecipe();
-                    CompoundTag tag = stack.getTag();
-                    CompoundTag dataTag = tag.getCompound("Data");
-
-                    int minutesBefore = dataTag.getInt("Age");
+                    int minutesBefore = drink.getBarrelMinutes();
                     int yearsBefore = minutesBefore / BeanModConfig.MINUTES_PER_BARREL_YEAR;
 
                     int minutesNow = minutesBefore + 1;
                     int yearsNow = minutesNow / BeanModConfig.MINUTES_PER_BARREL_YEAR;
 
                     // Increment age
-                    dataTag.putInt("Age", minutesNow);
-
-                    // Update drink, if not already graded
-                    if (!drink.isGraded()) {
-                        if (yearsNow > 0 && recipe.requiresAgeing()) {
-                            tag.putString("Drink", recipe.getResult().getName());
-                            int rating = BreweryUtils.gradeDrink(drink);
-                            if (rating > 0) dataTag.putInt("Rating", rating);
-                        }
-                    }
-
-                    // Update item tags
-                    tag.put("Data", dataTag);
-                    stack.setTag(tag);
+                    drink.setBarrelMinutes(minutesNow);
 
                     // Update drink rating, if years just increased
                     if (drink.isGraded() && yearsNow > yearsBefore) {
-                        Drink updated = DrinkUtils.getDrink(stack);
-                        int rating = BreweryUtils.gradeDrink(updated);
-                        if (rating > 0) stack.getTag().getCompound("Data").putInt("Rating", rating);
+                        DrinkUtils.gradeDrink(drink);
                     }
+
+                    // Update drink, if not already graded
+                    DrinkRecipe recipe = drink.getRecipe();
+                    if (!drink.isGraded()) {
+                        if (yearsNow > 0 && recipe.requiresAgeing()) {
+                            drink.setName(recipe.getResult().getName());
+                            DrinkUtils.gradeDrink(drink);
+                        }
+                    }
+
+                    // Update stack
+                    DrinkUtils.setDrink(stack, drink);
                 }
             }
         }

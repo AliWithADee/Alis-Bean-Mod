@@ -17,7 +17,7 @@ public class BeanModConfig {
         SPEC = specPair.getRight();
     }
 
-    public static int MINUTES_PER_BARREL_YEAR; // TODO: Don't forget to set this to actual value
+    public static int MINUTES_PER_BARREL_YEAR;
     public static int MAX_RECIPE_DIFFERENCE;
     public static int MAX_RATING;
 
@@ -118,7 +118,7 @@ public class BeanModConfig {
                     .comment(" How many minecraft minutes does it take for the ageing barrel to age a drink.",
                             " Default = 1440",
                             " (1440 minecraft minutes  =  1 barrel age year)")
-                    .define("MINUTES_PER_BARREL_YEAR", 20);
+                    .define("MINUTES_PER_BARREL_YEAR", 20); // TODO: Don't forget to set this to actual value
 
             MAX_RECIPE_DIFFERENCE = builder
                     .comment(" Defines how far the ingredients in the cooking pot can be from the correct ingredients of a valid recipe.",

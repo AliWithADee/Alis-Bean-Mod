@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.core.brewery.drink;
+package io.github.aliwithadee.alisbeanmod.core.cooking.drinks;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -6,20 +6,15 @@ import net.minecraft.world.item.ItemStack;
 public class DrinkRecipe {
 
     private final BaseDrink result;
-    private final BaseDrink partialDrink;
+    private final BaseDrink cookingResult;
     private final NonNullList<ItemStack> ingredients;
     private final int cookTime;
     private final int distills;
     private final int barrelAge;
 
-    // Non-alcoholic drinks
-    public DrinkRecipe(BaseDrink result, int cookTime, ItemStack... ingredients) {
-        this(result, null, cookTime, 0, 0, ingredients);
-    }
-
-    public DrinkRecipe(BaseDrink result, BaseDrink partialDrink, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
+    public DrinkRecipe(BaseDrink result, BaseDrink cookingResult, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
         this.result = result;
-        this.partialDrink = partialDrink;
+        this.cookingResult = cookingResult;
         this.ingredients = NonNullList.of(new ItemStack(null), ingredients);
         this.cookTime = cookTime;
         this.distills = distills;
@@ -31,8 +26,8 @@ public class DrinkRecipe {
     }
 
     public BaseDrink getCookingResult() {
-        if (partialDrink == null) return result;
-        return partialDrink;
+        if (cookingResult == null) return result;
+        return cookingResult;
     }
 
     public int getCookTime() {

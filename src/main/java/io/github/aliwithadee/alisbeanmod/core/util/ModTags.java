@@ -9,9 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 
 public class ModTags {
-
     public static class Blocks {
-
         // Create new block tag under Alis Bean Mod name space
         private static Tags.IOptionalNamedTag<Block> createTag(String name) {
             return BlockTags.createOptional(new ResourceLocation(AlisBeanMod.MOD_ID, name));
@@ -24,7 +22,6 @@ public class ModTags {
     }
 
     public static class Items {
-
         // To add items to this tag go to -> data/forge/tags/items/ingots/tin.json
         public static final Tags.IOptionalNamedTag<Item> TIN_INGOT = createForgeTag("ingots/tin");
 

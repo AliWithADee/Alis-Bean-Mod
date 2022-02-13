@@ -43,10 +43,10 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
 
     private final int[] SLOTS_FOR_SOUTH = new int[]{1}; // tin-can
     private final int[] SLOTS_FOR_EAST = new int[]{2}; // fuel
-    private final int[] SLOTS_FOR_DOWN = new int[]{3}; // output
+    private final int[] SLOTS_FOR_DOWN = new int[]{3,4}; // output and container output
     private final int[] SLOTS_FOR_SIDES = new int[]{0}; // input slot by default
 
-    protected NonNullList<ItemStack> items = NonNullList.withSize(4, ItemStack.EMPTY);
+    protected NonNullList<ItemStack> items = NonNullList.withSize(5, ItemStack.EMPTY);
     private int processTime = 0;
     private int curProcessTime = 0;
     private boolean lit = false;
@@ -93,12 +93,20 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
     }
 
     private void craft(CanningMachineRecipe recipe) {
-        ItemStack output = recipe.getResultItem();
-        ItemStack existing = getItem(3);
-        // If there is nothing in the output slot, set the output slot to the output
-        if (existing.isEmpty()) setItem(3, output);
-            // Else, grow what is already there by 1
-        else existing.grow(1);
+        // Items to insert into output slots
+        ItemStack result = recipe.getResultItem();
+        ItemStack inputContainer = getItem(0).getContainerItem();
+        // Existing items in output slots
+        ItemStack existingOutput = getItem(3);
+        ItemStack existingContainer = getItem(4);
+
+        // Set output slot to result or grow by 1
+        if (existingOutput.isEmpty()) setItem(3, result);
+        else existingOutput.grow(1);
+        // Set container output slot to container item or grow by 1
+        if (existingContainer.isEmpty()) setItem(4, inputContainer);
+        else existingContainer.grow(1);
+
         // Extract inputs
         removeItem(0, 1);
         removeItem(1, 1);
@@ -106,27 +114,39 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
 
     // Can we craft this recipe?
     private boolean canCraft(CanningMachineRecipe recipe) {
-
-        int OUTPUT_SLOT_LIMIT = 1;
-
-        ItemStack output = recipe.getResultItem();
-        ItemStack existing = getItem(3);
-        int limit = Math.min(OUTPUT_SLOT_LIMIT, output.getMaxStackSize());
+        // Items to insert into output slots
+        ItemStack result = recipe.getResultItem();
+        ItemStack inputContainer = getItem(0).getContainerItem();
+        // Existing items in output slots
+        ItemStack existingOutput = getItem(3);
+        ItemStack existingContainer = getItem(4);
+        // Available space
+        int availableSpaceOutput = Math.min(64, result.getMaxStackSize());
+        int availableSpaceContainer = Math.min(64, inputContainer.getMaxStackSize());
 
         // If there is something in the output slot
-        if (!existing.isEmpty())
+        if (!existingOutput.isEmpty())
         {
             // If we cannot stack with what is already there, then return false
-            if (!ItemHandlerHelper.canItemStacksStack(output, existing)) return false;
-            // Else, set the limit to the limit - how much is already there
-            limit -= existing.getCount();
+            if (!ItemHandlerHelper.canItemStacksStack(result, existingOutput)) return false;
+            // Else, subtract how much is already there from the available space
+            availableSpaceOutput -= existingOutput.getCount();
+        }
+
+        // If there is something in the container output slot
+        if (!existingContainer.isEmpty())
+        {
+            // If we cannot stack with what is already there, then return false
+            if (!ItemHandlerHelper.canItemStacksStack(inputContainer, existingContainer)) return false;
+            // Else, subtract how much is already there from the available space
+            availableSpaceContainer -= existingContainer.getCount();
         }
 
         // If there is not enough energy to craft, then return false
         if (energyStorage.getEnergyStored() < ENERGY_PER_TICK) return false;
 
-        // If the limit is 0 or less then we cannot craft, so return false
-        return limit > 0;
+        // There needs to be at least 1 available space in each output slot, in order to craft
+        return availableSpaceOutput > 0 && availableSpaceContainer > 0;
     }
 
     private void burnFuel() {
@@ -264,7 +284,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
         return switch (slot) {
             case 1 -> stack.getItem() == ModItems.TIN_CAN.get();
             case 2 -> ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
-            case 3 -> false;
+            case 3,4 -> false;
             default -> true;
         };
     }
@@ -352,7 +372,6 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
                 else if (direction == Direction.WEST) {
                     return handlers[3].cast();
                 }
-
             } else if (cap == CapabilityEnergy.ENERGY) {
                 return energy.cast();
             }
