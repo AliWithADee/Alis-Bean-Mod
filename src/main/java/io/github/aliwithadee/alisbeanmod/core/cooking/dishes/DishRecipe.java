@@ -1,56 +1,47 @@
-package io.github.aliwithadee.alisbeanmod.core.cooking.drinks;
+package io.github.aliwithadee.alisbeanmod.core.cooking.dishes;
 
+import io.github.aliwithadee.alisbeanmod.common.cooking.item.DishItem;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class DrinkRecipe {
-    private final BaseDrink result;
-    private final BaseDrink cookingResult;
+import java.util.Arrays;
+
+public class DishRecipe {
+    private final DishItem result;
+    private final DishItem cookingResult;
     private final NonNullList<ItemStack> ingredients;
     private final int cookTime;
-    private final int distills;
-    private final int barrelAge;
 
-    public DrinkRecipe(BaseDrink result, BaseDrink cookingResult, int cookTime, int distills, int barrelAge, ItemStack... ingredients) {
+    public DishRecipe(DishItem result, int cookTime, ItemStack... ingredients) {
+        this(result, null, cookTime, ingredients);
+    }
+
+    public DishRecipe(DishItem result, DishItem cookingResult, int cookTime, ItemStack... ingredients) {
         this.result = result;
         this.cookingResult = cookingResult;
         this.ingredients = NonNullList.of(new ItemStack(null), ingredients);
         this.cookTime = cookTime;
-        this.distills = distills;
-        this.barrelAge = barrelAge;
     }
 
     public String getName() {
-        return result.getName();
+        ResourceLocation regName = result.getRegistryName();
+        if (regName == null) return null;
+
+        return regName.toString();
     }
 
-    public BaseDrink getResult() {
+    public DishItem getResult() {
         return result;
     }
 
-    public BaseDrink getCookingResult() {
+    public DishItem getCookingResult() {
         if (cookingResult == null) return result;
         return cookingResult;
     }
 
     public int getCookTime() {
         return cookTime;
-    }
-
-    public int getDistills() {
-        return distills;
-    }
-
-    public int getBarrelYears() {
-        return barrelAge;
-    }
-
-    public boolean requiresDistilling() {
-        return distills > 0;
-    }
-
-    public boolean requiresAgeing() {
-        return barrelAge > 0;
     }
 
     public NonNullList<ItemStack> getIngredients() {

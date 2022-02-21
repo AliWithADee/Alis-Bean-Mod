@@ -17,7 +17,7 @@ public class DrinkUtils {
     private static final String NBT_NAME = "name";
     private static final String NBT_RATING = "rating";
     private static final String NBT_DATA = "data";
-    private static final String NBT_RESULT = "result";
+    private static final String NBT_RECIPE = "recipe";
     private static final String NBT_ING = "ingredients";
     private static final String NBT_COOK = "minutes";
     private static final String NBT_DISTILLS = "distills";
@@ -28,7 +28,7 @@ public class DrinkUtils {
         if (tag == null) return ModDrinks.DEFAULT;
         CompoundTag dataTag = tag.getCompound(NBT_DATA);
 
-        return new Drink(tag.getString(NBT_NAME), tag.getInt(NBT_RATING), ModDrinks.getDrinkRecipe(dataTag.getString(NBT_RESULT)),
+        return new Drink(ModDrinks.getBaseDrink(tag.getString(NBT_NAME)), tag.getInt(NBT_RATING), ModDrinks.getDrinkRecipe(dataTag.getString(NBT_RECIPE)),
                 getIngredients(dataTag), dataTag.getInt(NBT_COOK), dataTag.getInt(NBT_DISTILLS), dataTag.getInt(NBT_AGE));
     }
 
@@ -40,7 +40,7 @@ public class DrinkUtils {
         if (drink.inProgress()) {
             CompoundTag dataTag = new CompoundTag();
 
-            dataTag.putString(NBT_RESULT, drink.getRecipe().getResult().getName());
+            dataTag.putString(NBT_RECIPE, drink.getRecipe().getName());
             saveIngredients(dataTag, drink.getIngredients());
             dataTag.putInt(NBT_COOK, drink.getCookTime());
             dataTag.putInt(NBT_DISTILLS, drink.getDistills());
@@ -114,19 +114,28 @@ public class DrinkUtils {
         return getDrink(stack).getColor();
     }
 
+    public static boolean stackInList(ItemStack stack, NonNullList<ItemStack> list) {
+        for (ItemStack itemStack : list) {
+            if (stack.getItem() == itemStack.getItem()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Integer showing how far the recipe ingredients are away from the stacks the pot
     public static int getIngredientError(DrinkRecipe recipe, NonNullList<ItemStack> ingredients) {
-        int diff = 0;
+        int error = 0;
         for (ItemStack stack : ingredients) {
-            int d;
-            if (recipe.getIngredients().contains(stack)) {
-                d = Math.abs(stack.getCount() - recipe.getIngredientCount(stack));
+            int diff;
+            if (stackInList(stack, recipe.getIngredients())) {
+                diff = Math.abs(stack.getCount() - recipe.getIngredientCount(stack));
             } else {
-                d = stack.getCount();
+                diff = stack.getCount();
             }
-            diff += d;
+            error += diff;
         }
-        return diff;
+        return error;
     }
 
     public static void gradeDrink(Drink drink) {

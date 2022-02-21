@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.common.brewery.block;
+package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -45,22 +45,12 @@ public class CookingPotBlock extends Block {
                 return fillBucket(state, level, pos, player, hand, stack);
             } else if (stack.getItem() == Items.GLASS_BOTTLE) {
                 return fillBottle(state, level, pos, player, hand, stack);
+            } else if (stack.getItem() == Items.BOWL) {
+                return fillBowl(state, level, pos, player, hand, stack);
             }
             return addIngredient(state, level, pos, player, hand, stack);
         }
         return super.use(state, level, pos, player, hand, hit);
-    }
-
-    protected InteractionResult addIngredient(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        return InteractionResult.PASS;
-    }
-
-    protected InteractionResult fillBottle(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    protected InteractionResult fillBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     protected InteractionResult emptyBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
@@ -74,6 +64,22 @@ public class CookingPotBlock extends Block {
             level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    protected InteractionResult fillBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    protected InteractionResult fillBottle(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    protected InteractionResult fillBowl(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    protected InteractionResult addIngredient(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        return InteractionResult.PASS;
     }
 
     @Override

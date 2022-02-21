@@ -134,12 +134,12 @@ public class BeanModConfig {
             MIN_STRENGTH = builder
                     .comment(" Minimum strength a drink can have. 0% strength is allowed for non-alcoholic drinks.",
                             " Default = 0.1")
-                    .define("MIN_STRENGTH", 0f);
+                    .define("MIN_STRENGTH", 0.1f);
 
             MAX_STRENGTH = builder
                     .comment(" Maximum strength a drink can have.",
                             " Default = 3.0")
-                    .define("MAX_STRENGTH", 3f);
+                    .define("MAX_STRENGTH", 3.0f);
 
             MAX_ALCOHOL = builder
                     .comment(" Maximum alcohol a player can take before effects become fatal.",

@@ -1,7 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.*;
+import io.github.aliwithadee.alisbeanmod.common.cooking.block.*;
 import io.github.aliwithadee.alisbeanmod.common.general.block.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -52,19 +52,19 @@ public class ModBlocks {
 
     // Brewing
     public static final RegistryObject<Block> COOKING_POT = registerBlock(
-            "cooking_pot", CookingPotBlock::new, ModItems.BREWERY_TAB);
+            "cooking_pot", CookingPotBlock::new, ModItems.COOKING_TAB);
 
     public static final RegistryObject<Block> FILLED_COOKING_POT = registerBlockNoItem(
-            "filled_cooking_pot", FilledCookingPotBlock::new, ModItems.BREWERY_TAB);
+            "filled_cooking_pot", FilledCookingPotBlock::new, ModItems.COOKING_TAB);
 
     public static final RegistryObject<Block> BREWING_ALEMBIC = registerBlock(
-            "brewing_alembic", BrewingAlembicBlock::new, ModItems.BREWERY_TAB);
+            "brewing_alembic", BrewingAlembicBlock::new, ModItems.COOKING_TAB);
 
     public static final RegistryObject<Block> AGEING_BARREL = registerBlock(
-            "ageing_barrel", AgeingBarrelBlock::new, ModItems.BREWERY_TAB);
+            "ageing_barrel", AgeingBarrelBlock::new, ModItems.COOKING_TAB);
 
     public static final RegistryObject<Block> SEALING_TABLE = registerBlock(
-            "sealing_table", SealingTableBlock::new, ModItems.BREWERY_TAB);
+            "sealing_table", SealingTableBlock::new, ModItems.COOKING_TAB);
 
     // -------- Blocks --------
 

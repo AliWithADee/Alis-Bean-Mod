@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.common.brewery.block;
+package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;

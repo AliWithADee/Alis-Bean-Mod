@@ -1,7 +1,7 @@
-package io.github.aliwithadee.alisbeanmod.common.brewery.block;
+package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.common.brewery.menu.BrewingAlembicMenu;
+import io.github.aliwithadee.alisbeanmod.common.cooking.menu.BrewingAlembicMenu;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkRecipe;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
@@ -105,7 +105,7 @@ public class BrewingAlembicBE extends BlockEntity implements Container, MenuProv
                     DrinkRecipe recipe = drink.getRecipe();
                     if (!drink.isGraded()) {
                         if (recipe.requiresDistilling() && !recipe.requiresAgeing()) {
-                            drink.setName(recipe.getResult().getName());
+                            drink.setBaseDrink(recipe.getResult());
                             DrinkUtils.gradeDrink(drink);
                         }
                     }

@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.common.brewery.block;
+package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.CapabilityAlcohol;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.IAlcoholCapability;

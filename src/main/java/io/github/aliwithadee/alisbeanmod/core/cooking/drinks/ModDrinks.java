@@ -29,7 +29,7 @@ public class ModDrinks {
     public static final BaseDrink GRAPE_MUST = createBaseDrink(new BaseDrink("grape_must", 12720968));
 
     // Default Drink
-    public static final Drink DEFAULT = new Drink(ModDrinks.SCUFFED);
+    public static final Drink DEFAULT = new Drink(SCUFFED);
 
     // Drink Recipes
     public static final DrinkRecipe CIDER_RECIPE = createDrinkRecipe(
@@ -59,7 +59,7 @@ public class ModDrinks {
     }
 
     private static DrinkRecipe createDrinkRecipe(DrinkRecipe recipe) {
-        RECIPES.put(recipe.getResult().getName(), recipe);
+        RECIPES.put(recipe.getName(), recipe);
         return recipe;
     }
 

@@ -1,7 +1,7 @@
 package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.common.brewery.menu.BrewingAlembicMenu;
+import io.github.aliwithadee.alisbeanmod.common.cooking.menu.BrewingAlembicMenu;
 import io.github.aliwithadee.alisbeanmod.common.general.menu.CanningMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.MenuType;

@@ -1,4 +1,4 @@
-package io.github.aliwithadee.alisbeanmod.common.brewery.block;
+package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
@@ -37,31 +37,7 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
     public static final BooleanProperty BOILING = BooleanProperty.create("boiling");
 
     @Override
-    protected InteractionResult addIngredient(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        if (isFull(state)) {
-            if (!level.isClientSide) {
-                FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
-                blockEntity.addIngredient(new ItemStack(stack.getItem(), 1));
-
-                player.getItemInHand(hand).shrink(1);
-                level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        }
-        return InteractionResult.PASS;
-    }
-
-    @Override
-    protected InteractionResult fillBottle(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-        if (!level.isClientSide) {
-            FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
-
-            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, blockEntity.getResult()));
-            lowerFillLevel(state, level, pos);
-
-            level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-            level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
-        }
+    protected InteractionResult emptyBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
@@ -79,8 +55,46 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
     }
 
     @Override
-    protected InteractionResult emptyBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+    protected InteractionResult fillBottle(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        if (!level.isClientSide) {
+            FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
+
+            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, blockEntity.getDrinkResult()));
+            lowerFillLevel(state, level, pos);
+
+            level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected InteractionResult fillBowl(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        if (!level.isClientSide) {
+            FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
+
+            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, blockEntity.getDishResult()));
+            lowerFillLevel(state, level, pos);
+
+            level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected InteractionResult addIngredient(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
+        if (isFull(state)) {
+            if (!level.isClientSide) {
+                FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
+                blockEntity.addIngredient(new ItemStack(stack.getItem(), 1));
+
+                player.getItemInHand(hand).shrink(1);
+                level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return InteractionResult.PASS;
     }
 
     public void lowerFillLevel(BlockState state, Level level, BlockPos pos) {

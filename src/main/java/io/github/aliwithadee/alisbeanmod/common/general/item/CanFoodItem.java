@@ -10,8 +10,8 @@ import net.minecraft.world.level.Level;
 
 public class CanFoodItem extends BowlFoodItem {
 
-    public CanFoodItem(Item.Properties builder) {
-        super(builder);
+    public CanFoodItem(Item.Properties properties) {
+        super(properties);
     }
 
     @Override

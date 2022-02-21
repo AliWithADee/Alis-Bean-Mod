@@ -1,6 +1,6 @@
-package io.github.aliwithadee.alisbeanmod.common.brewery.menu;
+package io.github.aliwithadee.alisbeanmod.common.cooking.menu;
 
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.BrewingAlembicBE;
+import io.github.aliwithadee.alisbeanmod.common.cooking.block.BrewingAlembicBE;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModContainers;
 import net.minecraft.core.BlockPos;

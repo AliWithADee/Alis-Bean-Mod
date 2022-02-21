@@ -1,10 +1,10 @@
 package io.github.aliwithadee.alisbeanmod.core.init;
 
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.AgeingBarrelBE;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.FilledCookingPotBE;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.SealingTableBE;
-import io.github.aliwithadee.alisbeanmod.common.brewery.block.BrewingAlembicBE;
+import io.github.aliwithadee.alisbeanmod.common.cooking.block.AgeingBarrelBE;
+import io.github.aliwithadee.alisbeanmod.common.cooking.block.FilledCookingPotBE;
+import io.github.aliwithadee.alisbeanmod.common.cooking.block.SealingTableBE;
+import io.github.aliwithadee.alisbeanmod.common.cooking.block.BrewingAlembicBE;
 import io.github.aliwithadee.alisbeanmod.common.general.block.CanningMachineBE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;

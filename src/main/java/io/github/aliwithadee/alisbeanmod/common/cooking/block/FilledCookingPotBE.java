@@ -1,10 +1,15 @@
-package io.github.aliwithadee.alisbeanmod.common.brewery.block;
+package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
+import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishStats;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishRecipe;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.ModDishes;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkRecipe;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
+import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -47,23 +52,23 @@ public class FilledCookingPotBE extends BlockEntity {
         System.out.println(stacksInPot); // TODO: Remove debug print statements
     }
 
-    private boolean canMakeRecipe(DrinkRecipe recipe) {
-        for (ItemStack ingredient : recipe.getIngredients()) {
-            if (!stacksInPot.contains(ingredient)) {
+    private boolean containsIngredients(NonNullList<ItemStack> ingredients) {
+        for (ItemStack ingredient : ingredients) {
+            if (!DishUtils.stackInList(ingredient, stacksInPot)) {
                 return false;
             }
         }
         return true;
     }
 
-    public ItemStack getResult() {
+    public ItemStack getDrinkResult() {
         if (stacksInPot.isEmpty()) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
         if (minutes == 0) return PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.MUNDANE);
 
         DrinkRecipe resultRecipe = null;
         int bestDiff = 0;
         for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
-            if (canMakeRecipe(recipe)) {
+            if (containsIngredients(recipe.getIngredients())) {
                 int thisDiff = DrinkUtils.getIngredientError(recipe, stacksInPot);
                 if (resultRecipe != null) {
                     if (thisDiff < bestDiff) {
@@ -78,13 +83,41 @@ public class FilledCookingPotBE extends BlockEntity {
         }
         if (resultRecipe == null) return DrinkUtils.createDrinkItem(new Drink(ModDrinks.SCUFFED));
 
-        Drink drink = new Drink(resultRecipe, stacksInPot, minutes);
+        Drink drink = Drink.fromCooking(resultRecipe, stacksInPot, minutes);
 
         if (!resultRecipe.requiresAgeing() && !resultRecipe.requiresDistilling()) {
             DrinkUtils.gradeDrink(drink);
         }
 
         return DrinkUtils.createDrinkItem(drink);
+    }
+
+    public ItemStack getDishResult() {
+        if (stacksInPot.isEmpty()) return new ItemStack(Items.MUSHROOM_STEW); // TODO: Bowl of water
+        if (minutes == 0) return new ItemStack(Items.MUSHROOM_STEW);
+
+        DishRecipe resultRecipe = null;
+        int bestDiff = 0;
+        for (DishRecipe recipe : ModDishes.RECIPES.values()) {
+            if (containsIngredients(recipe.getIngredients())) {
+                int thisDiff = DishUtils.getIngredientError(recipe, stacksInPot);
+                if (resultRecipe != null) {
+                    if (thisDiff < bestDiff) {
+                        resultRecipe = recipe;
+                        bestDiff = thisDiff;
+                    }
+                } else if (thisDiff <= BeanModConfig.MAX_RECIPE_DIFFERENCE) { // TODO: Different config option?
+                    resultRecipe = recipe;
+                    bestDiff = thisDiff;
+                }
+            }
+        }
+        if (resultRecipe == null) return DishUtils.createDishItem(ModItems.SCUFFED_CUISINE.get());
+
+        DishStats dishStats = DishStats.fromCooking(resultRecipe, stacksInPot, minutes);
+        DishUtils.gradeDish(dishStats);
+
+        return DishUtils.createDishItem(resultRecipe.getCookingResult(), dishStats);
     }
 
     public void tickServer(FilledCookingPotBE blockEntity) {

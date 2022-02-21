@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Drink {
-    private String name;
+    private BaseDrink base;
     private int rating;
     private final DrinkRecipe recipe;
     private final NonNullList<ItemStack> ingredients;
@@ -17,24 +17,19 @@ public class Drink {
     private int distills;
     private int barrelAge;
 
-    // Create drink after cooking
-    public Drink(DrinkRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime) {
-        this(recipe.getCookingResult().getName(), 0, recipe, ingredients, cookTime, 0, 0);
-    }
-
-    // Create blank drink from a base drink
+    // Create sealed drink (drink with no stats) from a base drink
     public Drink(BaseDrink base) {
         this(base, 1);
     }
 
-    // Create blank drink from a base drink with a specified rating
+    // Create sealed drink (drink with no stats), with specified rating, from a base drink
     public Drink(BaseDrink base, int rating) {
-        this(base.getName(), rating, null, null, 0, 0, 0);
+        this(base, rating, null, null, 0, 0, 0);
     }
 
-    public Drink(String name, int rating, DrinkRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime,
+    public Drink(BaseDrink base, int rating, DrinkRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime,
                  int distills, int barrelAge) {
-        this.name = name;
+        this.base = base;
         this.rating = rating;
         this.recipe = recipe;
         this.ingredients = ingredients;
@@ -43,12 +38,17 @@ public class Drink {
         this.barrelAge = barrelAge;
     }
 
-    public String getName() {
-        return this.name;
+    // Create drink from cooking pot
+    public static Drink fromCooking(DrinkRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime) {
+        return new Drink(recipe.getCookingResult(), 0, recipe, ingredients, cookTime, 0, 0);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return base.getName();
+    }
+
+    public void setBaseDrink(BaseDrink base) {
+        this.base = base;
     }
 
     public int getRating() {
@@ -100,12 +100,12 @@ public class Drink {
     }
 
     public int getColor() {
-        return ModDrinks.getBaseDrink(this.name).getColor();
+        return base.getColor();
     }
 
     public float getStrength() {
         // TODO: Remove debug
-        float baseStrength = ModDrinks.getBaseDrink(this.name).getStrength();
+        float baseStrength = base.getStrength();
         System.out.println("Base Strength: " + baseStrength);
         float ratingModifier = (float) this.rating / BeanModConfig.MAX_RATING;
 
@@ -120,7 +120,7 @@ public class Drink {
         List<MobEffectInstance> newList = new ArrayList<>();
         float ratingModifier = (float) this.rating / BeanModConfig.MAX_RATING;
 
-        List<MobEffectInstance> list = ModDrinks.getBaseDrink(this.name).getEffects();
+        List<MobEffectInstance> list = base.getEffects();
         System.out.println("List before: " + list);
         for (MobEffectInstance effectInstance : list) {
             int duration = effectInstance.getDuration();
