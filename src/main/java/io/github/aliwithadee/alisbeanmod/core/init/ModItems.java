@@ -83,14 +83,16 @@ public class ModItems {
                     .food(ModFoods.CAN_OF_BAKED_BEANS).stacksTo(1).craftRemainder(TIN_CAN.get())));
 
     // Cooking
-    public static final RegistryObject<Item> DRINK = ITEMS.register("drink",
-            () -> new DrinkItem(new Item.Properties().tab(COOKING_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> DRINK = ITEMS.register("drink", DrinkItem::new);
 
     public static final RegistryObject<DishItem> SCUFFED_CUISINE = ITEMS.register("scuffed_cuisine",
-            () -> new DishItem(new Item.Properties().stacksTo(1).tab(COOKING_TAB), ModFoods.SCUFFED_CUISINE));
+            () -> new DishItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL), ModFoods.SCUFFED_CUISINE));
+
+    public static final RegistryObject<DishItem> BOWL_OF_RICE = ITEMS.register("bowl_of_rice",
+            () -> new DishItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL), ModFoods.CHILI_CON_CARNE));
 
     public static final RegistryObject<DishItem> CHILI_CON_CARNE = ITEMS.register("chili_con_carne",
-            () -> new DishItem(new Item.Properties().stacksTo(1).tab(COOKING_TAB), ModFoods.CHILI_CON_CARNE));
+            () -> new DishItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL), ModFoods.CHILI_CON_CARNE));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,9 +1,10 @@
 package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
-import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishStats;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishRecipe;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishUtils;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.ModDishes;
+import io.github.aliwithadee.alisbeanmod.core.cooking.CookingUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.DishUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.ModDishes;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.CookingRecipe;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats.CookingStats;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkRecipe;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
@@ -33,28 +34,30 @@ public class FilledCookingPotBE extends BlockEntity {
     }
 
     public void addIngredient(ItemStack stack) {
-        ItemStack current = ItemStack.EMPTY;
-
-        int index = -1;
-        for (int i = 0; i < stacksInPot.size(); i++) {
-            ItemStack other = stacksInPot.get(i);
-            if (stack.sameItem(other)) {
-                current = other;
-                index = i;
-            }
-        }
-
-        if (index == -1) {
+        if (stack.hasTag()) {
             stacksInPot.add(stack);
         } else {
-            stacksInPot.set(index, new ItemStack(stack.getItem(), current.getCount() + stack.getCount()));
+            ItemStack existing = ItemStack.EMPTY;
+            int index = -1;
+
+            for (int i = 0; i < stacksInPot.size(); i++) {
+                ItemStack otherStack = stacksInPot.get(i);
+                if (otherStack.sameItem(stack)) {
+                    existing = otherStack;
+                    index = i;
+                }
+            }
+
+            if (index == -1) stacksInPot.add(stack);
+            else stacksInPot.set(index, new ItemStack(stack.getItem(), existing.getCount() + stack.getCount()));
         }
+
         System.out.println(stacksInPot); // TODO: Remove debug print statements
     }
 
     private boolean containsIngredients(NonNullList<ItemStack> ingredients) {
         for (ItemStack ingredient : ingredients) {
-            if (!DishUtils.stackInList(ingredient, stacksInPot)) {
+            if (!CookingUtils.stackInList(ingredient, stacksInPot)) {
                 return false;
             }
         }
@@ -69,7 +72,7 @@ public class FilledCookingPotBE extends BlockEntity {
         int bestDiff = 0;
         for (DrinkRecipe recipe : ModDrinks.RECIPES.values()) {
             if (containsIngredients(recipe.getIngredients())) {
-                int thisDiff = DrinkUtils.getIngredientError(recipe, stacksInPot);
+                int thisDiff = CookingUtils.getIngredientError(recipe.getIngredients(), stacksInPot);
                 if (resultRecipe != null) {
                     if (thisDiff < bestDiff) {
                         resultRecipe = recipe;
@@ -96,11 +99,11 @@ public class FilledCookingPotBE extends BlockEntity {
         if (stacksInPot.isEmpty()) return new ItemStack(Items.MUSHROOM_STEW); // TODO: Bowl of water
         if (minutes == 0) return new ItemStack(Items.MUSHROOM_STEW);
 
-        DishRecipe resultRecipe = null;
+        CookingRecipe resultRecipe = null;
         int bestDiff = 0;
-        for (DishRecipe recipe : ModDishes.RECIPES.values()) {
+        for (CookingRecipe recipe : ModDishes.COOKING_RECIPES.values()) {
             if (containsIngredients(recipe.getIngredients())) {
-                int thisDiff = DishUtils.getIngredientError(recipe, stacksInPot);
+                int thisDiff = CookingUtils.getIngredientError(recipe.getIngredients(), stacksInPot);
                 if (resultRecipe != null) {
                     if (thisDiff < bestDiff) {
                         resultRecipe = recipe;
@@ -114,10 +117,10 @@ public class FilledCookingPotBE extends BlockEntity {
         }
         if (resultRecipe == null) return DishUtils.createDishItem(ModItems.SCUFFED_CUISINE.get());
 
-        DishStats dishStats = DishStats.fromCooking(resultRecipe, stacksInPot, minutes);
-        DishUtils.gradeDish(dishStats);
+        CookingStats cookingStats = new CookingStats(resultRecipe, stacksInPot, minutes);
+        cookingStats.computeRating();
 
-        return DishUtils.createDishItem(resultRecipe.getCookingResult(), dishStats);
+        return DishUtils.createDishItem(resultRecipe.getResult(), cookingStats);
     }
 
     public void tickServer(FilledCookingPotBE blockEntity) {

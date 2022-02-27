@@ -15,15 +15,16 @@ public class ModFoods {
     public static final FoodProperties CAN_OF_BAKED_BEANS = new FoodProperties.Builder().nutrition(8).saturationMod(0.9f).build();
 
     // Dishes
+    public static final FoodProperties DEFAULT_DISH_PROPERTIES = new FoodProperties.Builder().nutrition(2).saturationMod(0.1f)
+            .effect(() -> new MobEffectInstance(MobEffects.POISON, 500), 1.0f).build();
+
     public static final Map<Integer, FoodProperties> SCUFFED_CUISINE = Map.of(
-            1, new FoodProperties.Builder().nutrition(2).saturationMod(0.1f)
-                    .effect(() -> new MobEffectInstance(MobEffects.BLINDNESS, 500), 1.0f).build());
+            1, DEFAULT_DISH_PROPERTIES);
 
     public static final Map<Integer, FoodProperties> CHILI_CON_CARNE = Map.of(
-            1, new FoodProperties.Builder().nutrition(2).saturationMod(0.1f)
-                    .effect(() -> new MobEffectInstance(MobEffects.BLINDNESS, 500), 1.0f).build(),
+            1, DEFAULT_DISH_PROPERTIES,
             2, new FoodProperties.Builder().nutrition(4).saturationMod(0.2f)
-                    .effect(() -> new MobEffectInstance(MobEffects.POISON, 500), 1.0f).build(),
+                    .effect(() -> new MobEffectInstance(MobEffects.BLINDNESS, 500), 1.0f).build(),
             3, new FoodProperties.Builder().nutrition(6).saturationMod(0.3f)
                     .effect(() -> new MobEffectInstance(MobEffects.JUMP, 500), 1.0f).build(),
             4, new FoodProperties.Builder().nutrition(8).saturationMod(0.4f)

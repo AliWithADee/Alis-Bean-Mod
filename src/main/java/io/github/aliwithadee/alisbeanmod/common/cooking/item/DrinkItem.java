@@ -6,6 +6,7 @@ import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.IAlcoholCap
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.ModDrinks;
+import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
@@ -27,8 +28,11 @@ import java.util.List;
 public class DrinkItem extends Item {
     private static final int USE_DURATION = 32;
 
-    public DrinkItem(Properties properties) {
-        super(properties);
+    public DrinkItem() {
+        super(new Item.Properties()
+                .tab(ModItems.COOKING_TAB)
+                .stacksTo(1)
+                .craftRemainder(Items.GLASS_BOTTLE));
     }
 
     @Override

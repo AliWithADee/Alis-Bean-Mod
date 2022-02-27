@@ -1,12 +1,12 @@
 package io.github.aliwithadee.alisbeanmod.core.cooking.drinks;
 
+import io.github.aliwithadee.alisbeanmod.core.cooking.CookingUtils;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
@@ -14,39 +14,33 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class DrinkUtils {
-    private static final String NBT_NAME = "name";
-    private static final String NBT_RATING = "rating";
-    private static final String NBT_DATA = "data";
-    private static final String NBT_RECIPE = "recipe";
-    private static final String NBT_ING = "ingredients";
-    private static final String NBT_COOK = "minutes";
-    private static final String NBT_DISTILLS = "distills";
-    private static final String NBT_AGE = "years";
-
     public static Drink getDrink(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null) return ModDrinks.DEFAULT;
-        CompoundTag dataTag = tag.getCompound(NBT_DATA);
+        CompoundTag dataTag = tag.getCompound(CookingUtils.NBT_DATA);
 
-        return new Drink(ModDrinks.getBaseDrink(tag.getString(NBT_NAME)), tag.getInt(NBT_RATING), ModDrinks.getDrinkRecipe(dataTag.getString(NBT_RECIPE)),
-                getIngredients(dataTag), dataTag.getInt(NBT_COOK), dataTag.getInt(NBT_DISTILLS), dataTag.getInt(NBT_AGE));
+        return new Drink(ModDrinks.getBaseDrink(tag.getString(CookingUtils.NBT_DRINK_NAME)),
+                tag.getInt(CookingUtils.NBT_RATING),
+                ModDrinks.getDrinkRecipe(dataTag.getString(CookingUtils.NBT_RECIPE)),
+                CookingUtils.ingredientsFromTag(dataTag), dataTag.getInt(CookingUtils.NBT_COOK),
+                dataTag.getInt(CookingUtils.NBT_DISTILLS), dataTag.getInt(CookingUtils.NBT_AGE));
     }
 
     public static ItemStack setDrink(ItemStack stack, Drink drink) {
         CompoundTag tag = stack.getOrCreateTag();
-        tag.putString(NBT_NAME, drink.getName());
-        tag.putInt(NBT_RATING, drink.getRating());
+        tag.putString(CookingUtils.NBT_DRINK_NAME, drink.getName());
+        tag.putInt(CookingUtils.NBT_RATING, drink.getRating());
 
         if (drink.inProgress()) {
             CompoundTag dataTag = new CompoundTag();
 
-            dataTag.putString(NBT_RECIPE, drink.getRecipe().getName());
-            saveIngredients(dataTag, drink.getIngredients());
-            dataTag.putInt(NBT_COOK, drink.getCookTime());
-            dataTag.putInt(NBT_DISTILLS, drink.getDistills());
-            dataTag.putInt(NBT_AGE, drink.getBarrelMinutes());
+            dataTag.putString(CookingUtils.NBT_RECIPE, drink.getRecipe().getName());
+            CookingUtils.ingredientsToTag(dataTag, drink.getIngredients());
+            dataTag.putInt(CookingUtils.NBT_COOK, drink.getCookTime());
+            dataTag.putInt(CookingUtils.NBT_DISTILLS, drink.getDistills());
+            dataTag.putInt(CookingUtils.NBT_AGE, drink.getBarrelMinutes());
 
-            tag.put(NBT_DATA, dataTag);
+            tag.put(CookingUtils.NBT_DATA, dataTag);
         }
 
         stack.setTag(tag);
@@ -57,26 +51,8 @@ public class DrinkUtils {
         return setDrink(new ItemStack(ModItems.DRINK.get()), drink);
     }
 
-    private static void saveIngredients(CompoundTag tag, NonNullList<ItemStack> ingredients) {
-        ListTag listTag = new ListTag();
-        for (ItemStack stack : ingredients) {
-            if (!stack.isEmpty()) {
-                CompoundTag compoundTag = new CompoundTag();
-                stack.save(compoundTag);
-                listTag.add(compoundTag);
-            }
-        }
-        tag.put(NBT_ING, listTag);
-    }
-
-    private static NonNullList<ItemStack> getIngredients(CompoundTag tag) {
-        NonNullList<ItemStack> ingredients = NonNullList.create();
-        ListTag listTag = tag.getList(NBT_ING, 10);
-        for (int i = 0; i < listTag.size(); i++) {
-            CompoundTag compoundTag = listTag.getCompound(i);
-            ingredients.add(ItemStack.of(compoundTag));
-        }
-        return ingredients;
+    public static int getDrinkColor(ItemStack stack) {
+        return getDrink(stack).getColor();
     }
 
     public static void addDrinkTooltip(ItemStack stack, List<Component> tooltips) {
@@ -110,39 +86,11 @@ public class DrinkUtils {
         }
     }
 
-    public static int getDrinkColor(ItemStack stack) {
-        return getDrink(stack).getColor();
-    }
-
-    public static boolean stackInList(ItemStack stack, NonNullList<ItemStack> list) {
-        for (ItemStack itemStack : list) {
-            if (stack.getItem() == itemStack.getItem()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Integer showing how far the recipe ingredients are away from the stacks the pot
-    public static int getIngredientError(DrinkRecipe recipe, NonNullList<ItemStack> ingredients) {
-        int error = 0;
-        for (ItemStack stack : ingredients) {
-            int diff;
-            if (stackInList(stack, recipe.getIngredients())) {
-                diff = Math.abs(stack.getCount() - recipe.getIngredientCount(stack));
-            } else {
-                diff = stack.getCount();
-            }
-            error += diff;
-        }
-        return error;
-    }
-
     public static void gradeDrink(Drink drink) {
         DrinkRecipe recipe = drink.getRecipe();
 
         int ing_rating;
-        int ing_diff = getIngredientError(recipe, drink.getIngredients());
+        int ing_diff = CookingUtils.getIngredientError(recipe.getIngredients(), drink.getIngredients());
         if (ing_diff == 0) ing_rating = 5;
         else if (0 < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_GREAT) ing_rating = 4;
         else if (BeanModConfig.ING_DIFF_GREAT < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_FINE) ing_rating = 3;

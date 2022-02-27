@@ -87,7 +87,9 @@ public class FilledCookingPotBlock extends CookingPotBlock implements EntityBloc
         if (isFull(state)) {
             if (!level.isClientSide) {
                 FilledCookingPotBE blockEntity = (FilledCookingPotBE) level.getBlockEntity(pos);
-                blockEntity.addIngredient(new ItemStack(stack.getItem(), 1));
+                ItemStack stackToAdd = stack.copy();
+                if (!player.isCrouching()) stackToAdd.setCount(1);
+                blockEntity.addIngredient(stackToAdd);
 
                 player.getItemInHand(hand).shrink(1);
                 level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);

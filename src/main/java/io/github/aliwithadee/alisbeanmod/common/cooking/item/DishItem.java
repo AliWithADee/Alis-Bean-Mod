@@ -1,8 +1,10 @@
 package io.github.aliwithadee.alisbeanmod.common.cooking.item;
 
-import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishStats;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.DishUtils;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dishes.ModDishes;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats.DishStats;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.DishUtils;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.ModDishes;
+import io.github.aliwithadee.alisbeanmod.core.init.ModFoods;
+import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -21,8 +23,12 @@ public class DishItem extends Item {
     private final Item.Properties itemProperties;
     private final Map<Integer, FoodProperties> foodPropertiesMap;
 
+    public DishItem(Item.Properties itemProperties) {
+        this(itemProperties, null);
+    }
+
     public DishItem(Item.Properties itemProperties, Map<Integer, FoodProperties> foodPropertiesMap) {
-        super(itemProperties);
+        super(itemProperties.tab(ModItems.COOKING_TAB));
         this.itemProperties = itemProperties;
         this.foodPropertiesMap = foodPropertiesMap;
     }
@@ -38,13 +44,16 @@ public class DishItem extends Item {
             System.out.println(player.getItemInHand(hand).getTag()); // TODO: Remove debug print statements
         }
 
-        ItemStack stack = player.getItemInHand(hand);
-        if (player.canEat(false)) {
-            player.startUsingItem(hand);
-            System.out.println("Start");
-            return InteractionResultHolder.consume(stack);
+        if (isEdible()) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (player.canEat(false)) {
+                player.startUsingItem(hand);
+                System.out.println("Start");
+                return InteractionResultHolder.consume(stack);
+            }
+            return InteractionResultHolder.fail(stack);
         }
-        return InteractionResultHolder.fail(stack);
+        return InteractionResultHolder.pass(player.getItemInHand(hand));
     }
 
     @Override
@@ -61,12 +70,15 @@ public class DishItem extends Item {
 
     @Override
     public boolean isEdible() {
-        return true;
+        return this.foodPropertiesMap != null;
     }
 
     public FoodProperties getFoodProperties(int rating) {
-        if (!foodPropertiesMap.containsKey(rating)) return null;
-        return foodPropertiesMap.get(rating);
+        if (isEdible()) {
+            if (!foodPropertiesMap.containsKey(rating)) return ModFoods.DEFAULT_DISH_PROPERTIES;
+            return foodPropertiesMap.get(rating);
+        }
+        return null;
     }
 
     // Returns an item stack with the same item properties, plus the specified food properties
@@ -77,22 +89,22 @@ public class DishItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-        System.out.println("Finished");
-        DishStats dish = DishUtils.getDishStats(stack);
-        FoodProperties foodProperties = getFoodProperties(dish.getRating());
+        if (isEdible()) {
+            DishStats dishStats = DishUtils.getDishStats(stack);
+            FoodProperties foodProperties = getFoodProperties(dishStats.getRating());
 
-        ItemStack edibleStack = createEdibleStack(foodProperties, stack.getCount());
-        System.out.println(edibleStack);
-        System.out.println(livingEntity.eat(level, edibleStack));
-        System.out.println(stack);
-        stack.setCount(edibleStack.getCount());
-        System.out.println(stack);
+            ItemStack edibleStack = createEdibleStack(foodProperties, stack.getCount());
+            livingEntity.eat(level, edibleStack);
+
+            if (stack.getCount() <= 1 && stack.hasContainerItem()) return stack.getContainerItem();
+            stack.setCount(edibleStack.getCount());
+        }
         return stack;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltips, TooltipFlag flag) {
-        DishUtils.addDishTooltip(stack, tooltips);
+        DishUtils.getDishStats(stack).addTooltip(stack, tooltips);
     }
 
     @Override
