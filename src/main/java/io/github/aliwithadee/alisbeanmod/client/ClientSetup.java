@@ -7,6 +7,7 @@ import io.github.aliwithadee.alisbeanmod.core.init.ModContainers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup {
@@ -17,9 +18,11 @@ public class ClientSetup {
             MenuScreens.register(ModContainers.CANNING_MACHINE_MENU.get(), CanningMachineScreen::new);
             MenuScreens.register(ModContainers.BREWING_ALEMBIC_MENU.get(), BrewingAlembicScreen::new);
 
-            // Set crops and other plant blocks to render layer cut out
+            // Render layer cutout
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.HARICOT_CROP.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.WILD_HARICOT_CROP.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_RUNNER_BEANS.get(), RenderType.cutout());
         });
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "alisbeanmod:block/template_obelisk_upper",
+  "textures": {
+    "plant": "alisbeanmod:block/haricot_crop_stage0"
+  }
+}

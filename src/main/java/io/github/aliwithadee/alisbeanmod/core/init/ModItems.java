@@ -44,6 +44,9 @@ public class ModItems {
     public static final RegistryObject<Item> COFFEE_BEANS = ITEMS.register("coffee_beans",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.COFFEE_BEANS)));
 
+    public static final RegistryObject<Item> RUNNER_BEANS = ITEMS.register("runner_beans",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RUNNER_BEANS)));
+
     public static final RegistryObject<Item> BOWL_OF_HARICOT_BEANS = ITEMS.register("bowl_of_haricot_beans",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB)
                     .stacksTo(1).craftRemainder(Items.BOWL)));

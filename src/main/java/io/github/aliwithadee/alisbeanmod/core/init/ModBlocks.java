@@ -33,14 +33,18 @@ public class ModBlocks {
     // Crops
     public static final RegistryObject<Block> HARICOT_CROP = registerBlockNoItem("haricot_crop",
             () -> new HaricotCropBlock(BlockBehaviour.Properties.of(Material.PLANT)
-                    .noCollission().randomTicks().instabreak().sound(SoundType.CROP)), ModItems.GENERAL_TAB);
+                    .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
 
     public static final RegistryObject<Block> WILD_HARICOT_CROP = registerBlockNoItem("wild_haricot_crop",
             () -> new WildHaricotCropBlock(BlockBehaviour.Properties.of(Material.PLANT)
-                    .noCollission().randomTicks().instabreak().sound(SoundType.CROP)), ModItems.GENERAL_TAB);
+                    .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
 
+    // Obelisks
     public static final RegistryObject<Block> OBELISK = registerBlock(
             "obelisk", ObeliskBlock::new, ModItems.GENERAL_TAB);
+
+    public static final RegistryObject<Block> OBELISK_RUNNER_BEANS = registerBlockNoItem(
+            "obelisk_runner_beans", PlantedObeliskBlock::new);
 
     // Machines
     public static final RegistryObject<Block> CANNING_MACHINE = registerNoStackBlock(
@@ -55,7 +59,7 @@ public class ModBlocks {
             "cooking_pot", CookingPotBlock::new, ModItems.COOKING_TAB);
 
     public static final RegistryObject<Block> FILLED_COOKING_POT = registerBlockNoItem(
-            "filled_cooking_pot", FilledCookingPotBlock::new, ModItems.COOKING_TAB);
+            "filled_cooking_pot", FilledCookingPotBlock::new);
 
     public static final RegistryObject<Block> BREWING_ALEMBIC = registerBlock(
             "brewing_alembic", BrewingAlembicBlock::new, ModItems.COOKING_TAB);
@@ -82,7 +86,7 @@ public class ModBlocks {
         return regObject;
     }
 
-    public static <T extends Block>RegistryObject<T> registerBlockNoItem(String name, Supplier<T> block, CreativeModeTab tab) {
+    public static <T extends Block>RegistryObject<T> registerBlockNoItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
     }
 
