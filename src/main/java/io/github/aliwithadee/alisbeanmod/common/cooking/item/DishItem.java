@@ -48,7 +48,6 @@ public class DishItem extends Item {
             ItemStack stack = player.getItemInHand(hand);
             if (player.canEat(false)) {
                 player.startUsingItem(hand);
-                System.out.println("Start");
                 return InteractionResultHolder.consume(stack);
             }
             return InteractionResultHolder.fail(stack);
@@ -65,7 +64,8 @@ public class DishItem extends Item {
     public int getUseDuration(ItemStack stack) {
         DishStats dish = DishUtils.getDishStats(stack);
         FoodProperties foodProperties = getFoodProperties(dish.getRating());
-        return foodProperties.isFastFood() ? 16 : 32;
+        if (foodProperties != null) return foodProperties.isFastFood() ? 16 : 32;
+        return 0;
     }
 
     @Override

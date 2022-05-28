@@ -43,7 +43,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> OBELISK = registerBlock(
             "obelisk", ObeliskBlock::new, ModItems.GENERAL_TAB);
 
-    public static final RegistryObject<Block> OBELISK_RUNNER_BEANS = registerBlockNoItem(
+    public static final RegistryObject<PlantedObeliskBlock> OBELISK_RUNNER_BEANS = registerBlockNoItem(
             "obelisk_runner_beans", PlantedObeliskBlock::new);
 
     // Machines
@@ -75,14 +75,12 @@ public class ModBlocks {
     public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> regObject = BLOCKS.register(name, block);
         registerBlockItem(name, regObject, tab);
-
         return regObject;
     }
 
     public static <T extends Block>RegistryObject<T> registerNoStackBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> regObject = BLOCKS.register(name, block);
         registerNoStackItem(name, regObject, tab);
-
         return regObject;
     }
 

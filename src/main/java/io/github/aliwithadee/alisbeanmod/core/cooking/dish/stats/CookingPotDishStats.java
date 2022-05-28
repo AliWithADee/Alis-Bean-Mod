@@ -3,7 +3,7 @@ package io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats;
 import io.github.aliwithadee.alisbeanmod.common.cooking.item.DishItem;
 import io.github.aliwithadee.alisbeanmod.core.cooking.CookingUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.DishUtils;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.CookingRecipe;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.CookingPotDishRecipe;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.DishRecipe;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
 import net.minecraft.ChatFormatting;
@@ -15,17 +15,17 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class CookingStats extends DishStats {
+public class CookingPotDishStats extends DishStats {
     public static final String TYPE = "cooking";
 
     private final int cookTime;
     private final NonNullList<ItemStack> ingredients;
 
-    public CookingStats(DishRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime) {
+    public CookingPotDishStats(DishRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime) {
         this(0, recipe, ingredients, cookTime);
     }
 
-    public CookingStats(int rating, DishRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime) {
+    public CookingPotDishStats(int rating, DishRecipe recipe, NonNullList<ItemStack> ingredients, int cookTime) {
         super(rating, recipe);
         this.ingredients = ingredients;
         this.cookTime = cookTime;
@@ -41,7 +41,7 @@ public class CookingStats extends DishStats {
 
     @Override
     public void computeRating() {
-        CookingRecipe cookingRecipe = (CookingRecipe) this.recipe;
+        CookingPotDishRecipe cookingRecipe = (CookingPotDishRecipe) this.recipe;
 
         // ===== Ingredient Quantity =====
 
@@ -110,7 +110,7 @@ public class CookingStats extends DishStats {
 
     public void addTooltip(ItemStack stack, List<Component> tooltips) {
         super.addTooltip(stack, tooltips);
-        CookingStats cookingStats = (CookingStats) DishUtils.getDishStats(stack);
+        CookingPotDishStats cookingStats = (CookingPotDishStats) DishUtils.getDishStats(stack);
 
         if (cookingStats.inProgress()) {
             NonNullList<ItemStack> ingredients = cookingStats.getIngredients();

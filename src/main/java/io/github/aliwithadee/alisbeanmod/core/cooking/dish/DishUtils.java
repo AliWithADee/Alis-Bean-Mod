@@ -2,7 +2,7 @@ package io.github.aliwithadee.alisbeanmod.core.cooking.dish;
 
 import io.github.aliwithadee.alisbeanmod.common.cooking.item.DishItem;
 import io.github.aliwithadee.alisbeanmod.core.cooking.CookingUtils;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats.CookingStats;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats.CookingPotDishStats;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats.DishStats;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -14,8 +14,8 @@ public class DishUtils {
         CompoundTag dataTag = tag.getCompound(CookingUtils.NBT_DATA);
         String type = dataTag.getString(CookingUtils.NBT_DISH_TYPE);
 
-        if (type.equals(CookingStats.TYPE)) {
-            return new CookingStats(tag.getInt(CookingUtils.NBT_RATING),
+        if (type.equals(CookingPotDishStats.TYPE)) {
+            return new CookingPotDishStats(tag.getInt(CookingUtils.NBT_RATING),
                     ModDishes.getDishRecipe(dataTag.getString(CookingUtils.NBT_RECIPE)),
                     CookingUtils.ingredientsFromTag(dataTag), dataTag.getInt(CookingUtils.NBT_COOK));
         }
@@ -31,8 +31,8 @@ public class DishUtils {
             CompoundTag dataTag = new CompoundTag();
             dataTag.putString(CookingUtils.NBT_RECIPE, dishStats.getRecipe().getName());
 
-            if (dishStats instanceof CookingStats cookingStats) {
-                dataTag.putString(CookingUtils.NBT_DISH_TYPE, CookingStats.TYPE);
+            if (dishStats instanceof CookingPotDishStats cookingStats) {
+                dataTag.putString(CookingUtils.NBT_DISH_TYPE, CookingPotDishStats.TYPE);
                 dataTag.putInt(CookingUtils.NBT_COOK, cookingStats.getCookTime());
                 CookingUtils.ingredientsToTag(dataTag, cookingStats.getIngredients());
             }

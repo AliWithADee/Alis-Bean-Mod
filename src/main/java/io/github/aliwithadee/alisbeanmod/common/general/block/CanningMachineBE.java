@@ -333,7 +333,7 @@ public class CanningMachineBE extends BlockEntity implements WorldlyContainer, M
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
-        return side == Direction.DOWN && slot == 3;
+        return slot == 3 && side == Direction.DOWN;
     }
 
     @Override

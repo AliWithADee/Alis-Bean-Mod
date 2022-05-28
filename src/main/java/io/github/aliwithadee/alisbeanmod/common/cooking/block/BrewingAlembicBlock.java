@@ -173,13 +173,6 @@ public class BrewingAlembicBlock extends Block implements EntityBlock {
 
             if(blockEntity instanceof BrewingAlembicBE) {
                 NetworkHooks.openGui(((ServerPlayer) player), (MenuProvider) blockEntity, blockEntity.getBlockPos());
-
-                LazyOptional<IAlcoholCapability> cap = player.getCapability(CapabilityAlcohol.ALCOHOL_CAPABILITY);
-                cap.ifPresent((alcoholCap) -> {
-                    alcoholCap.setAlcohol(0);
-                    System.out.println("Alcohol set to: " + alcoholCap.getAlcohol()); // TODO: Remove debug
-                });
-
             } else {
                 throw new IllegalStateException("Menu provider is missing!");
             }

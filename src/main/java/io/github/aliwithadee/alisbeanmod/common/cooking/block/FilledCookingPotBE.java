@@ -3,8 +3,8 @@ package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 import io.github.aliwithadee.alisbeanmod.core.cooking.CookingUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.DishUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.ModDishes;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.CookingRecipe;
-import io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats.CookingStats;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.CookingPotDishRecipe;
+import io.github.aliwithadee.alisbeanmod.core.cooking.dish.stats.CookingPotDishStats;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkRecipe;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
@@ -99,9 +99,9 @@ public class FilledCookingPotBE extends BlockEntity {
         if (stacksInPot.isEmpty()) return new ItemStack(Items.MUSHROOM_STEW); // TODO: Bowl of water
         if (minutes == 0) return new ItemStack(Items.MUSHROOM_STEW);
 
-        CookingRecipe resultRecipe = null;
+        CookingPotDishRecipe resultRecipe = null;
         int bestDiff = 0;
-        for (CookingRecipe recipe : ModDishes.COOKING_RECIPES.values()) {
+        for (CookingPotDishRecipe recipe : ModDishes.COOKING_POT_DISH_RECIPES.values()) {
             if (containsIngredients(recipe.getIngredients())) {
                 int thisDiff = CookingUtils.getIngredientError(recipe.getIngredients(), stacksInPot);
                 if (resultRecipe != null) {
@@ -117,7 +117,7 @@ public class FilledCookingPotBE extends BlockEntity {
         }
         if (resultRecipe == null) return DishUtils.createDishItem(ModItems.SCUFFED_CUISINE.get());
 
-        CookingStats cookingStats = new CookingStats(resultRecipe, stacksInPot, minutes);
+        CookingPotDishStats cookingStats = new CookingPotDishStats(resultRecipe, stacksInPot, minutes);
         cookingStats.computeRating();
 
         return DishUtils.createDishItem(resultRecipe.getResult(), cookingStats);

@@ -1,6 +1,6 @@
 {
   "parent": "alisbeanmod:block/obelisk_planted_lower",
   "textures": {
-    "plant": "alisbeanmod:block/runner_beans_lower_stage0"
+    "plant": "alisbeanmod:block/runner_beans_lower_stage7"
   }
 }

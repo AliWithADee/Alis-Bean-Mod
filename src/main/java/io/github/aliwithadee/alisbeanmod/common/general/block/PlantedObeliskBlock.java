@@ -1,5 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.common.general.block;
 
+import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -7,14 +8,16 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -23,10 +26,12 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Random;
 
 public class PlantedObeliskBlock extends ObeliskBlock implements BonemealableBlock, IPlantable {
-    private static final IntegerProperty AGE = BlockStateProperties.AGE_7;
+    private static final int MAX_AGE = 14;
+    private static final IntegerProperty AGE = IntegerProperty.create("age", 0, 14);
 
     public PlantedObeliskBlock() {
         super();
@@ -35,35 +40,54 @@ public class PlantedObeliskBlock extends ObeliskBlock implements BonemealableBlo
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, HALF, AGE);
+        builder.add(HALF, AGE);
     }
 
-    // TODO
-    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.is(Blocks.FARMLAND);
+    private static void giveItems(Level level, BlockState state, BlockPos pos, Player player) {
+        if (!level.isClientSide) {
+            List<ItemStack> drops = getDrops(state.setValue(HALF, DoubleBlockHalf.LOWER), (ServerLevel) level, pos, null);
+            for (ItemStack drop : drops) {
+                if (!drop.is(ModBlocks.OBELISK.get().asItem())) {
+                    player.addItem(drop);
+                }
+            }
+        }
     }
 
     @NotNull
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return InteractionResult.SUCCESS;
-    }
-
-    public int getMaxAge() {
-        return 7;
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (isMaxAge(state)) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (stack.is(Items.AIR)) {
+                giveItems(level, state, pos, player);
+                updateAge(level, pos, 7);
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.PASS;
     }
 
     public boolean isMaxAge(BlockState state) {
-        return state.getValue(AGE) >= getMaxAge();
+        return state.getValue(AGE) >= MAX_AGE;
     }
 
-    protected int getAge(BlockState pState) {
-        return pState.getValue(AGE);
+    protected void updateAge(Level level, BlockPos pos, int newAge) {
+        BlockState state = level.getBlockState(pos);
+        if(!state.is(this)) return;
+
+        level.setBlockAndUpdate(pos, state.setValue(AGE, newAge));
+
+        BlockPos posOther = state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
+        BlockState stateOther = level.getBlockState(posOther);
+        if (stateOther.is(state.getBlock())) {
+            level.setBlockAndUpdate(posOther, stateOther.setValue(AGE, newAge));
+        }
     }
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
-        return !isMaxAge(state);
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER && !isMaxAge(state);
     }
 
     @Override
@@ -71,13 +95,13 @@ public class PlantedObeliskBlock extends ObeliskBlock implements BonemealableBlo
         if (!level.isAreaLoaded(pos, 1)) return;
         if (state.getValue(HALF) == DoubleBlockHalf.UPPER) return;
 
-        if (level.getRawBrightness(pos, 0) >= 9) {
-            int curAge = getAge(state);
-            if (curAge < getMaxAge()) {
+        BlockState stateBelow = level.getBlockState(pos.below());
+        if (stateBelow.is(Blocks.FARMLAND) && stateBelow.getValue(FarmBlock.MOISTURE) > 0) {
+            int curAge = state.getValue(AGE);
+            if (level.getRawBrightness(pos, 0) >= 9 && curAge < MAX_AGE) {
                 float growthSpeed = getGrowthSpeed(this, level, pos);
                 if (ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt((int)(25.0F / growthSpeed) + 1) == 0)) {
-                    level.setBlock(pos, state.setValue(AGE, curAge + 1), 2);
-                    level.setBlock(pos.above(), state.setValue(AGE, curAge + 1).setValue(HALF, DoubleBlockHalf.UPPER), 2);
+                    updateAge(level, pos, curAge + 1);
                     ForgeHooks.onCropsGrowPost(level, pos, state);
                 }
             }
@@ -119,7 +143,7 @@ public class PlantedObeliskBlock extends ObeliskBlock implements BonemealableBlo
 
     @Override
     public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
-        return !isMaxAge(state);
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER && !isMaxAge(state);
     }
 
     @Override
@@ -133,13 +157,11 @@ public class PlantedObeliskBlock extends ObeliskBlock implements BonemealableBlo
 
     @Override
     public void performBonemeal(ServerLevel level, Random random, BlockPos pos, BlockState state) {
-        int newAge = getAge(state) + getBoneMealAgeIncrease(level);
-        if (newAge > getMaxAge()) {
-            newAge = getMaxAge();
+        int newAge = state.getValue(AGE) + getBoneMealAgeIncrease(level);
+        if (newAge > MAX_AGE) {
+            newAge = MAX_AGE;
         }
-
-        level.setBlock(pos, state.setValue(AGE, newAge), 2);
-        level.setBlock(pos.above(), state.setValue(AGE, newAge).setValue(HALF, DoubleBlockHalf.UPPER), 2);
+        updateAge(level, pos, newAge);
     }
 
     @Override

@@ -1,244 +1,94 @@
 {
   "variants": {
-    "facing=north,half=lower,age=0": { "__comment": "North Lower",
+    "half=lower,age=0": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage0"
     },
-    "facing=north,half=lower,age=1": {
+    "half=lower,age=1": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage1"
     },
-    "facing=north,half=lower,age=2": {
+    "half=lower,age=2": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage2"
     },
-    "facing=north,half=lower,age=3": {
+    "half=lower,age=3": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3"
     },
-    "facing=north,half=lower,age=4": {
+    "half=lower,age=4": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3"
     },
-    "facing=north,half=lower,age=5": {
+    "half=lower,age=5": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3"
     },
-    "facing=north,half=lower,age=6": {
+    "half=lower,age=6": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3"
     },
-    "facing=north,half=lower,age=7": {
+    "half=lower,age=7": {
       "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3"
     },
-    "facing=north,half=upper,age=0": { "__comment": "North Upper",
+    "half=lower,age=8": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage4"
+    },
+    "half=lower,age=9": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage4"
+    },
+    "half=lower,age=10": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage5"
+    },
+    "half=lower,age=11": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage5"
+    },
+    "half=lower,age=12": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage6"
+    },
+    "half=lower,age=13": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage6"
+    },
+    "half=lower,age=14": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage7"
+    },
+    "half=upper,age=0": {
       "model": "alisbeanmod:block/obelisk_upper"
     },
-    "facing=north,half=upper,age=1": {
+    "half=upper,age=1": {
       "model": "alisbeanmod:block/obelisk_upper"
     },
-    "facing=north,half=upper,age=2": {
+    "half=upper,age=2": {
       "model": "alisbeanmod:block/obelisk_upper"
     },
-    "facing=north,half=upper,age=3": {
+    "half=upper,age=3": {
       "model": "alisbeanmod:block/obelisk_upper"
     },
-    "facing=north,half=upper,age=4": {
+    "half=upper,age=4": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage0"
+    },
+    "half=upper,age=5": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage1"
+    },
+    "half=upper,age=6": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage2"
+    },
+    "half=upper,age=7": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage3"
+    },
+    "half=upper,age=8": {
       "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage4"
     },
-    "facing=north,half=upper,age=5": {
+    "half=upper,age=9": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage4"
+    },
+    "half=upper,age=10": {
       "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage5"
     },
-    "facing=north,half=upper,age=6": {
+    "half=upper,age=11": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage5"
+    },
+    "half=upper,age=12": {
       "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage6"
     },
-    "facing=north,half=upper,age=7": {
+    "half=upper,age=13": {
+      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage6"
+    },
+    "half=upper,age=14": {
       "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage7"
-    },
-    "facing=south,half=lower,age=0": { "__comment": "South Lower",
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage0",
-      "y": 180
-    },
-    "facing=south,half=lower,age=1": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage1",
-      "y": 180
-    },
-    "facing=south,half=lower,age=2": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage2",
-      "y": 180
-    },
-    "facing=south,half=lower,age=3": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 180
-    },
-    "facing=south,half=lower,age=4": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 180
-    },
-    "facing=south,half=lower,age=5": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 180
-    },
-    "facing=south,half=lower,age=6": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 180
-    },
-    "facing=south,half=lower,age=7": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 180
-    },
-    "facing=south,half=upper,age=0": { "__comment": "South Upper",
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 180
-    },
-    "facing=south,half=upper,age=1": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 180
-    },
-    "facing=south,half=upper,age=2": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 180
-    },
-    "facing=south,half=upper,age=3": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 180
-    },
-    "facing=south,half=upper,age=4": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage4",
-      "y": 180
-    },
-    "facing=south,half=upper,age=5": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage5",
-      "y": 180
-    },
-    "facing=south,half=upper,age=6": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage6",
-      "y": 180
-    },
-    "facing=south,half=upper,age=7": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage7",
-      "y": 180
-    },
-    "facing=east,half=lower,age=0": { "__comment": "East Lower",
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage0",
-      "y": 90
-    },
-    "facing=east,half=lower,age=1": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage1",
-      "y": 90
-    },
-    "facing=east,half=lower,age=2": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage2",
-      "y": 90
-    },
-    "facing=east,half=lower,age=3": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 90
-    },
-    "facing=east,half=lower,age=4": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 90
-    },
-    "facing=east,half=lower,age=5": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 90
-    },
-    "facing=east,half=lower,age=6": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 90
-    },
-    "facing=east,half=lower,age=7": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 90
-    },
-    "facing=east,half=upper,age=0": { "__comment": "East Upper",
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 90
-    },
-    "facing=east,half=upper,age=1": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 90
-    },
-    "facing=east,half=upper,age=2": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 90
-    },
-    "facing=east,half=upper,age=3": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 90
-    },
-    "facing=east,half=upper,age=4": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage4",
-      "y": 90
-    },
-    "facing=east,half=upper,age=5": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage5",
-      "y": 90
-    },
-    "facing=east,half=upper,age=6": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage6",
-      "y": 90
-    },
-    "facing=east,half=upper,age=7": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage7",
-      "y": 90
-    },
-    "facing=west,half=lower,age=0": { "__comment": "West Lower",
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage0",
-      "y": 270
-    },
-    "facing=west,half=lower,age=1": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage1",
-      "y": 270
-    },
-    "facing=west,half=lower,age=2": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage2",
-      "y": 270
-    },
-    "facing=west,half=lower,age=3": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 270
-    },
-    "facing=west,half=lower,age=4": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 270
-    },
-    "facing=west,half=lower,age=5": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 270
-    },
-    "facing=west,half=lower,age=6": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 270
-    },
-    "facing=west,half=lower,age=7": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_lower_stage3",
-      "y": 270
-    },
-    "facing=west,half=upper,age=0": { "__comment": "West Upper",
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 270
-    },
-    "facing=west,half=upper,age=1": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 270
-    },
-    "facing=west,half=upper,age=2": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 270
-    },
-    "facing=west,half=upper,age=3": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 270
-    },
-    "facing=west,half=upper,age=4": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage4",
-      "y": 270
-    },
-    "facing=west,half=upper,age=5": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage5",
-      "y": 270
-    },
-    "facing=west,half=upper,age=6": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage6",
-      "y": 270
-    },
-    "facing=west,half=upper,age=7": {
-      "model": "alisbeanmod:block/obelisk_runner_beans_upper_stage7",
-      "y": 270
     }
   }
 }

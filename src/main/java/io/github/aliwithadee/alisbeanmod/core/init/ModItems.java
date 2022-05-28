@@ -3,8 +3,10 @@ package io.github.aliwithadee.alisbeanmod.core.init;
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.cooking.item.DishItem;
 import io.github.aliwithadee.alisbeanmod.common.cooking.item.DrinkItem;
+import io.github.aliwithadee.alisbeanmod.common.general.block.PlantedObeliskBlock;
 import io.github.aliwithadee.alisbeanmod.common.general.item.CanFoodItem;
 import io.github.aliwithadee.alisbeanmod.common.general.item.MultiuseItem;
+import io.github.aliwithadee.alisbeanmod.common.general.item.ObeliskSeedItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -44,8 +46,9 @@ public class ModItems {
     public static final RegistryObject<Item> COFFEE_BEANS = ITEMS.register("coffee_beans",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.COFFEE_BEANS)));
 
-    public static final RegistryObject<Item> RUNNER_BEANS = ITEMS.register("runner_beans",
-            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RUNNER_BEANS)));
+    public static final RegistryObject<ObeliskSeedItem> RUNNER_BEANS = ITEMS.register("runner_beans",
+            () -> new ObeliskSeedItem(ModBlocks.OBELISK_RUNNER_BEANS.get(),
+                    new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RUNNER_BEANS)));
 
     public static final RegistryObject<Item> BOWL_OF_HARICOT_BEANS = ITEMS.register("bowl_of_haricot_beans",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB)
@@ -92,7 +95,7 @@ public class ModItems {
             () -> new DishItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL), ModFoods.SCUFFED_CUISINE));
 
     public static final RegistryObject<DishItem> BOWL_OF_RICE = ITEMS.register("bowl_of_rice",
-            () -> new DishItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL), ModFoods.CHILI_CON_CARNE));
+            () -> new DishItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL)));
 
     public static final RegistryObject<DishItem> CHILI_CON_CARNE = ITEMS.register("chili_con_carne",
             () -> new DishItem(new Item.Properties().stacksTo(1).craftRemainder(Items.BOWL), ModFoods.CHILI_CON_CARNE));

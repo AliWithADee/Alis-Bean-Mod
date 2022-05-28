@@ -1,34 +1,10 @@
 {
   "variants": {
-    "facing=north,half=lower": {
+    "half=lower": {
       "model": "alisbeanmod:block/obelisk_lower"
     },
-    "facing=north,half=upper": {
+    "half=upper": {
       "model": "alisbeanmod:block/obelisk_upper"
-    },
-    "facing=south,half=lower": {
-      "model": "alisbeanmod:block/obelisk_lower",
-      "y": 180
-    },
-    "facing=south,half=upper": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 180
-    },
-    "facing=east,half=lower": {
-      "model": "alisbeanmod:block/obelisk_lower",
-      "y": 90
-    },
-    "facing=east,half=upper": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 90
-    },
-    "facing=west,half=lower": {
-      "model": "alisbeanmod:block/obelisk_lower",
-      "y": 270
-    },
-    "facing=west,half=upper": {
-      "model": "alisbeanmod:block/obelisk_upper",
-      "y": 270
     }
   }
 }
