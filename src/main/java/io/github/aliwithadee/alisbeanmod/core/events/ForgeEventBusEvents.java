@@ -5,7 +5,7 @@ import io.github.aliwithadee.alisbeanmod.common.general.block.ObeliskBlock;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.AlcoholCapabilityAttacher;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.CapabilityAlcohol;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.alcohol.IAlcoholCapability;
-import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -41,7 +41,7 @@ public class ForgeEventBusEvents {
                 LazyOptional<IAlcoholCapability> cap = event.player.getCapability(CapabilityAlcohol.ALCOHOL_CAPABILITY);
                 cap.ifPresent((alcoholCap) -> {
                     if (alcoholCap.getAlcohol() > 0) {
-                        if (playerTicks >= BeanModConfig.ALCOHOL_DECREASE_TICKS) {
+                        if (playerTicks >= BeanModCommonConfig.ALCOHOL_DECREASE_TICKS.get()) {
                             playerTicks = 0;
                             alcoholCap.removeAlcohol(1f);
                             System.out.println("Alcohol decreased to: " + alcoholCap.getAlcohol());

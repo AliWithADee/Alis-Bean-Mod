@@ -49,7 +49,7 @@ public class ModDrinks {
 
     public static final DrinkRecipe COFFEE_RECIPE = createDrinkRecipe(
             new DrinkRecipe(COFFEE, null, 2, 0, 0,
-                    new ItemStack(ModItems.COFFEE_BEANS.get(), 6)));
+                    new ItemStack(ModItems.COFFEE_BEAN.get(), 6)));
 
     // ---------- Methods ----------
 

@@ -75,7 +75,6 @@ public class ObeliskBlock extends Block {
     public ObeliskBlock() {
         super(BlockBehaviour.Properties.of(new Material.Builder(MaterialColor.WOOD).nonSolid().build())
                 .noOcclusion()
-                .requiresCorrectToolForDrops()
                 .strength(1.5f)
                 .sound(SoundType.BAMBOO));
 

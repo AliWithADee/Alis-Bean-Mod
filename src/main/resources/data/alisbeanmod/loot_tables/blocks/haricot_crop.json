@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:haricot_beans"
+          "name": "alisbeanmod:haricot_bean"
         }
       ]
     },
@@ -15,7 +15,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:haricot_beans",
+          "name": "alisbeanmod:haricot_bean",
           "functions": [
             {
               "function": "minecraft:apply_bonus",

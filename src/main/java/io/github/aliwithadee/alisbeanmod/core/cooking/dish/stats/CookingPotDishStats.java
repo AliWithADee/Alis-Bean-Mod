@@ -5,7 +5,7 @@ import io.github.aliwithadee.alisbeanmod.core.cooking.CookingUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.DishUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.CookingPotDishRecipe;
 import io.github.aliwithadee.alisbeanmod.core.cooking.dish.recipe.DishRecipe;
-import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.NonNullList;
@@ -49,9 +49,9 @@ public class CookingPotDishStats extends DishStats {
         int ing_diff = CookingUtils.getIngredientError(cookingRecipe.getIngredients(), ingredients);
 
         if (ing_diff == 0) ing_quantity = 5;
-        else if (0 < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_GREAT) ing_quantity = 4;
-        else if (BeanModConfig.ING_DIFF_GREAT < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_FINE) ing_quantity = 3;
-        else if (BeanModConfig.ING_DIFF_FINE < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_POOR) ing_quantity = 2;
+        else if (0 < ing_diff && ing_diff <= BeanModCommonConfig.ING_DIFF_GREAT.get()) ing_quantity = 4;
+        else if (BeanModCommonConfig.ING_DIFF_GREAT.get() < ing_diff && ing_diff <= BeanModCommonConfig.ING_DIFF_FINE.get()) ing_quantity = 3;
+        else if (BeanModCommonConfig.ING_DIFF_FINE.get() < ing_diff && ing_diff <= BeanModCommonConfig.ING_DIFF_POOR.get()) ing_quantity = 2;
         else ing_quantity = 1;
 
         // ===== Ingredient Quality =====
@@ -72,10 +72,10 @@ public class CookingPotDishStats extends DishStats {
 
         float ing_rating_ratio;
         if (num_dishes == 0) ing_rating_ratio = 0;
-        else ing_rating_ratio = ing_rating_total / (BeanModConfig.MAX_RATING * (float)num_dishes);
+        else ing_rating_ratio = ing_rating_total / (BeanModCommonConfig.MAX_RATING.get() * (float)num_dishes);
         System.out.println(ing_rating_ratio);
 
-        int ing_quality = (int)(ing_rating_ratio * BeanModConfig.MAX_RATING);
+        int ing_quality = (int)(ing_rating_ratio * BeanModCommonConfig.MAX_RATING.get());
         System.out.println(ing_quality);
 
         // ===== Cooking Quality =====
@@ -84,18 +84,18 @@ public class CookingPotDishStats extends DishStats {
         int cook_diff = Math.abs(cookingRecipe.getCookTime() - cookTime);
 
         if (cook_diff == 0) cook_quality = 5;
-        else if (0 < cook_diff && cook_diff <= BeanModConfig.COOK_DIFF_GREAT) cook_quality = 4;
-        else if (BeanModConfig.COOK_DIFF_GREAT < cook_diff && cook_diff <= BeanModConfig.COOK_DIFF_FINE) cook_quality = 3;
-        else if (BeanModConfig.COOK_DIFF_FINE < cook_diff && cook_diff <= BeanModConfig.COOK_DIFF_POOR) cook_quality = 2;
+        else if (0 < cook_diff && cook_diff <= BeanModCommonConfig.COOK_DIFF_GREAT.get()) cook_quality = 4;
+        else if (BeanModCommonConfig.COOK_DIFF_GREAT.get() < cook_diff && cook_diff <= BeanModCommonConfig.COOK_DIFF_FINE.get()) cook_quality = 3;
+        else if (BeanModCommonConfig.COOK_DIFF_FINE.get() < cook_diff && cook_diff <= BeanModCommonConfig.COOK_DIFF_POOR.get()) cook_quality = 2;
         else cook_quality = 1;
 
         // ===== Final Rating =====
 
         float ratio;
-        if (ing_quality == 0) ratio = (ing_quantity + cook_quality) / (BeanModConfig.MAX_RATING * 2.0f);
-        else ratio = (ing_quantity + ing_quality + cook_quality) / (BeanModConfig.MAX_RATING * 3.0f);
+        if (ing_quality == 0) ratio = (ing_quantity + cook_quality) / (BeanModCommonConfig.MAX_RATING.get() * 2.0f);
+        else ratio = (ing_quantity + ing_quality + cook_quality) / (BeanModCommonConfig.MAX_RATING.get() * 3.0f);
 
-        int rating = (int)(ratio * BeanModConfig.MAX_RATING);
+        int rating = (int)(ratio * BeanModCommonConfig.MAX_RATING.get());
 
         // TODO: Remove debug print statements
         System.out.println("-------------");

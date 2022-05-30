@@ -11,7 +11,7 @@ import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlockEntities;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
-import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModCommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -78,7 +78,7 @@ public class FilledCookingPotBE extends BlockEntity {
                         resultRecipe = recipe;
                         bestDiff = thisDiff;
                     }
-                } else if (thisDiff <= BeanModConfig.MAX_RECIPE_DIFFERENCE) {
+                } else if (thisDiff <= BeanModCommonConfig.MAX_RECIPE_DIFFERENCE.get()) {
                     resultRecipe = recipe;
                     bestDiff = thisDiff;
                 }
@@ -109,7 +109,7 @@ public class FilledCookingPotBE extends BlockEntity {
                         resultRecipe = recipe;
                         bestDiff = thisDiff;
                     }
-                } else if (thisDiff <= BeanModConfig.MAX_RECIPE_DIFFERENCE) { // TODO: Different config option?
+                } else if (thisDiff <= BeanModCommonConfig.MAX_RECIPE_DIFFERENCE.get()) { // TODO: Different config option?
                     resultRecipe = recipe;
                     bestDiff = thisDiff;
                 }
@@ -155,7 +155,7 @@ public class FilledCookingPotBE extends BlockEntity {
 
     private void cook() {
         int before = minutes;
-        ticks++;
+        ticks++; // TODO: Put a cap on the ticks (maybe maximum of 100 minutes)
         minutes = (ticks) / 100; // TODO: Don't forget to set timer back to irl minutes
         if (minutes > before) System.out.println(minutes + " Minutes");
     }

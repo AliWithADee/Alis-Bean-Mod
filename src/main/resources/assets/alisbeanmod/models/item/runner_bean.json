@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "alisbeanmod:item/runner_beans"
+    "layer0": "alisbeanmod:item/runner_bean"
   }
 }

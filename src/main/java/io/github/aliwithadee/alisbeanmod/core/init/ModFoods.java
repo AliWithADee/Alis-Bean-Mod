@@ -8,9 +8,15 @@ import java.util.Map;
 
 public class ModFoods {
     // TODO: Finish setting up foods
-    public static final FoodProperties HARICOT_BEANS = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
-    public static final FoodProperties COFFEE_BEANS = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
-    public static final FoodProperties RUNNER_BEANS = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties BLACK_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties BLACK_EYED_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties BROAD_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties COFFEE_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties HARICOT_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties KIDNEY_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties RATTLESNAKE_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+    public static final FoodProperties RUNNER_BEAN = new FoodProperties.Builder().nutrition(1).saturationMod(0.1f).fast().build();
+
     public static final FoodProperties TOMATO = new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).build();
     public static final FoodProperties CORN = new FoodProperties.Builder().nutrition(3).saturationMod(0.6f).build();
     public static final FoodProperties BOWL_OF_BAKED_BEANS = new FoodProperties.Builder().nutrition(6).saturationMod(0.6f).build();

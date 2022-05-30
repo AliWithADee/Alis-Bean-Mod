@@ -2,7 +2,7 @@ package io.github.aliwithadee.alisbeanmod.core.cooking.drinks;
 
 import io.github.aliwithadee.alisbeanmod.core.cooking.CookingUtils;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
-import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.NonNullList;
@@ -92,17 +92,17 @@ public class DrinkUtils {
         int ing_rating;
         int ing_diff = CookingUtils.getIngredientError(recipe.getIngredients(), drink.getIngredients());
         if (ing_diff == 0) ing_rating = 5;
-        else if (0 < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_GREAT) ing_rating = 4;
-        else if (BeanModConfig.ING_DIFF_GREAT < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_FINE) ing_rating = 3;
-        else if (BeanModConfig.ING_DIFF_FINE < ing_diff && ing_diff <= BeanModConfig.ING_DIFF_POOR) ing_rating = 2;
+        else if (0 < ing_diff && ing_diff <= BeanModCommonConfig.ING_DIFF_GREAT.get()) ing_rating = 4;
+        else if (BeanModCommonConfig.ING_DIFF_GREAT.get() < ing_diff && ing_diff <= BeanModCommonConfig.ING_DIFF_FINE.get()) ing_rating = 3;
+        else if (BeanModCommonConfig.ING_DIFF_FINE.get() < ing_diff && ing_diff <= BeanModCommonConfig.ING_DIFF_POOR.get()) ing_rating = 2;
         else ing_rating = 1;
 
         int cook_rating;
         int cook_diff = Math.abs(recipe.getCookTime() - drink.getCookTime());
         if (cook_diff == 0) cook_rating = 5;
-        else if (0 < cook_diff && cook_diff <= BeanModConfig.COOK_DIFF_GREAT) cook_rating = 4;
-        else if (BeanModConfig.COOK_DIFF_GREAT < cook_diff && cook_diff <= BeanModConfig.COOK_DIFF_FINE) cook_rating = 3;
-        else if (BeanModConfig.COOK_DIFF_FINE < cook_diff && cook_diff <= BeanModConfig.COOK_DIFF_POOR) cook_rating = 2;
+        else if (0 < cook_diff && cook_diff <= BeanModCommonConfig.COOK_DIFF_GREAT.get()) cook_rating = 4;
+        else if (BeanModCommonConfig.COOK_DIFF_GREAT.get() < cook_diff && cook_diff <= BeanModCommonConfig.COOK_DIFF_FINE.get()) cook_rating = 3;
+        else if (BeanModCommonConfig.COOK_DIFF_FINE.get() < cook_diff && cook_diff <= BeanModCommonConfig.COOK_DIFF_POOR.get()) cook_rating = 2;
         else cook_rating = 1;
 
         int wrongStepsTaken = 0;
@@ -112,9 +112,9 @@ public class DrinkUtils {
         if (recipe.getDistills() == 0 && distill_diff > 0) wrongStepsTaken++;
 
         if (distill_diff == 0) distill_rating = 5;
-        else if (0 < distill_diff && distill_diff <= BeanModConfig.DISTILL_DIFF_GREAT) distill_rating = 4;
-        else if (BeanModConfig.DISTILL_DIFF_GREAT < distill_diff && distill_diff <= BeanModConfig.DISTILL_DIFF_FINE) distill_rating = 3;
-        else if (BeanModConfig.DISTILL_DIFF_FINE < distill_diff && distill_diff <= BeanModConfig.DISTILL_DIFF_POOR) distill_rating = 2;
+        else if (0 < distill_diff && distill_diff <= BeanModCommonConfig.DISTILL_DIFF_GREAT.get()) distill_rating = 4;
+        else if (BeanModCommonConfig.DISTILL_DIFF_GREAT.get() < distill_diff && distill_diff <= BeanModCommonConfig.DISTILL_DIFF_FINE.get()) distill_rating = 3;
+        else if (BeanModCommonConfig.DISTILL_DIFF_FINE.get() < distill_diff && distill_diff <= BeanModCommonConfig.DISTILL_DIFF_POOR.get()) distill_rating = 2;
         else distill_rating = 1;
 
         int age_rating;
@@ -122,13 +122,13 @@ public class DrinkUtils {
         if (recipe.getBarrelYears() == 0 && age_diff > 0) wrongStepsTaken++;
 
         if (age_diff == 0) age_rating = 5;
-        else if (0 < age_diff && age_diff <= BeanModConfig.AGE_DIFF_GREAT) age_rating = 4;
-        else if (BeanModConfig.AGE_DIFF_GREAT < age_diff && age_diff <= BeanModConfig.AGE_DIFF_FINE) age_rating = 3;
-        else if (BeanModConfig.AGE_DIFF_FINE < age_diff && age_diff <= BeanModConfig.AGE_DIFF_POOR) age_rating = 2;
+        else if (0 < age_diff && age_diff <= BeanModCommonConfig.AGE_DIFF_GREAT.get()) age_rating = 4;
+        else if (BeanModCommonConfig.AGE_DIFF_GREAT.get() < age_diff && age_diff <= BeanModCommonConfig.AGE_DIFF_FINE.get()) age_rating = 3;
+        else if (BeanModCommonConfig.AGE_DIFF_FINE.get() < age_diff && age_diff <= BeanModCommonConfig.AGE_DIFF_POOR.get()) age_rating = 2;
         else age_rating = 1;
 
-        float ratio = (ing_rating + cook_rating + distill_rating + age_rating) / (BeanModConfig.MAX_RATING * 4.0f);
-        int rating = (int)(ratio * BeanModConfig.MAX_RATING);
+        float ratio = (ing_rating + cook_rating + distill_rating + age_rating) / (BeanModCommonConfig.MAX_RATING.get() * 4.0f);
+        int rating = (int)(ratio * BeanModCommonConfig.MAX_RATING.get());
 
         // TODO: Remove debug print statements
 

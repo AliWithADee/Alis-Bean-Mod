@@ -52,14 +52,14 @@ public class CanningMachineMenu extends AbstractContainerMenu {
             }
         });
 
-        addSlot(new Slot(blockEntity, 3, 85, 27) { // output
+        addSlot(new Slot(blockEntity, 3, 85, 49) { // output
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(3, stack);
             }
         });
 
-        addSlot(new Slot(blockEntity, 4, 85, 49) { // container output
+        addSlot(new Slot(blockEntity, 4, 85, 27) { // container output
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return blockEntity.canPlaceItem(4, stack);

@@ -12,6 +12,6 @@ public class HaricotCropBlock extends CropBlock {
 
     @Override
     protected ItemLike getBaseSeedId() {
-        return ModItems.HARICOT_BEANS.get();
+        return ModItems.HARICOT_BEAN.get();
     }
 }

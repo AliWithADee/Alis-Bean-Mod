@@ -12,6 +12,6 @@ public class WildHaricotCropBlock extends CropBlock {
 
     @Override
     protected ItemLike getBaseSeedId() {
-        return ModItems.WILD_HARICOT_BEANS.get();
+        return ModItems.WILD_HARICOT_BEAN.get();
     }
 }

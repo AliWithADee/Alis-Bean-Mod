@@ -2,6 +2,7 @@ package io.github.aliwithadee.alisbeanmod.common.cooking.block;
 
 import io.github.aliwithadee.alisbeanmod.core.init.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -47,8 +48,9 @@ public class CookingPotBlock extends Block {
                 return fillBottle(state, level, pos, player, hand, stack);
             } else if (stack.getItem() == Items.BOWL) {
                 return fillBowl(state, level, pos, player, hand, stack);
+            } else if (hit.getDirection() == Direction.UP) {
+                return addIngredient(state, level, pos, player, hand, stack);
             }
-            return addIngredient(state, level, pos, player, hand, stack);
         }
         return super.use(state, level, pos, player, hand, hit);
     }

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "alisbeanmod:haricot_beans"
+      "item": "alisbeanmod:haricot_bean"
     },
     "title": {
       "translate": "advancements.alisbeanmod.main.root.title"
@@ -21,8 +21,8 @@
         "items": [
           {
             "items": [
-              "alisbeanmod:wild_haricot_beans",
-              "alisbeanmod:haricot_beans"
+              "alisbeanmod:wild_haricot_bean",
+              "alisbeanmod:haricot_bean"
             ]
           }
         ]

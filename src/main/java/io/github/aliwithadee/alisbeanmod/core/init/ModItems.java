@@ -3,7 +3,6 @@ package io.github.aliwithadee.alisbeanmod.core.init;
 import io.github.aliwithadee.alisbeanmod.AlisBeanMod;
 import io.github.aliwithadee.alisbeanmod.common.cooking.item.DishItem;
 import io.github.aliwithadee.alisbeanmod.common.cooking.item.DrinkItem;
-import io.github.aliwithadee.alisbeanmod.common.general.block.PlantedObeliskBlock;
 import io.github.aliwithadee.alisbeanmod.common.general.item.CanFoodItem;
 import io.github.aliwithadee.alisbeanmod.common.general.item.MultiuseItem;
 import io.github.aliwithadee.alisbeanmod.common.general.item.ObeliskSeedItem;
@@ -22,7 +21,7 @@ public class ModItems {
     public static final CreativeModeTab GENERAL_TAB = new CreativeModeTab("alis_bean_mod_general") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(HARICOT_BEANS.get());
+            return new ItemStack(HARICOT_BEAN.get());
         }
     };
 
@@ -35,20 +34,35 @@ public class ModItems {
 
     // ---------- Items ----------
 
-    public static final RegistryObject<Item> WILD_HARICOT_BEANS = ITEMS.register("wild_haricot_beans",
-            () -> new ItemNameBlockItem(ModBlocks.WILD_HARICOT_CROP.get(), new Item.Properties()
-                    .tab(GENERAL_TAB).food(ModFoods.HARICOT_BEANS)));
+    public static final RegistryObject<Item> BLACK_BEAN = ITEMS.register("black_bean",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BLACK_BEAN)));
 
-    public static final RegistryObject<Item> HARICOT_BEANS = ITEMS.register("haricot_beans",
+    public static final RegistryObject<Item> BLACK_EYED_BEAN = ITEMS.register("black_eyed_bean",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BLACK_EYED_BEAN)));
+
+    public static final RegistryObject<Item> BROAD_BEAN = ITEMS.register("broad_bean",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BROAD_BEAN)));
+
+    public static final RegistryObject<Item> COFFEE_BEAN = ITEMS.register("coffee_bean",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.COFFEE_BEAN)));
+
+    public static final RegistryObject<Item> HARICOT_BEAN = ITEMS.register("haricot_bean",
             () -> new ItemNameBlockItem(ModBlocks.HARICOT_CROP.get(), new Item.Properties()
-                    .tab(GENERAL_TAB).food(ModFoods.HARICOT_BEANS)));
+                    .tab(GENERAL_TAB).food(ModFoods.HARICOT_BEAN)));
 
-    public static final RegistryObject<Item> COFFEE_BEANS = ITEMS.register("coffee_beans",
-            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.COFFEE_BEANS)));
+    public static final RegistryObject<Item> KIDNEY_BEAN = ITEMS.register("kidney_bean",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.KIDNEY_BEAN)));
 
-    public static final RegistryObject<ObeliskSeedItem> RUNNER_BEANS = ITEMS.register("runner_beans",
+    public static final RegistryObject<Item> RATTLESNAKE_BEAN = ITEMS.register("rattlesnake_bean",
+            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RATTLESNAKE_BEAN)));
+
+    public static final RegistryObject<ObeliskSeedItem> RUNNER_BEAN = ITEMS.register("runner_bean",
             () -> new ObeliskSeedItem(ModBlocks.OBELISK_RUNNER_BEANS.get(),
-                    new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RUNNER_BEANS)));
+                    new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RUNNER_BEAN)));
+
+    public static final RegistryObject<Item> WILD_HARICOT_BEAN = ITEMS.register("wild_haricot_bean",
+            () -> new ItemNameBlockItem(ModBlocks.WILD_HARICOT_CROP.get(), new Item.Properties()
+                    .tab(GENERAL_TAB).food(ModFoods.HARICOT_BEAN)));
 
     public static final RegistryObject<Item> BOWL_OF_HARICOT_BEANS = ITEMS.register("bowl_of_haricot_beans",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB)

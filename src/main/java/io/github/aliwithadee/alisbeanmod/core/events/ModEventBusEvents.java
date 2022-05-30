@@ -26,7 +26,7 @@ public class ModEventBusEvents {
 
         event.getRegistry().registerAll(
                 new ItemFromGrassModifier.Serializer().setRegistryName(
-                        new ResourceLocation(AlisBeanMod.MOD_ID, "wild_haricot_beans_from_grass"))
+                        new ResourceLocation(AlisBeanMod.MOD_ID, "wild_haricot_bean_from_grass"))
         );
     }
 

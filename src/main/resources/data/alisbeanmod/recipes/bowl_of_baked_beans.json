@@ -2,8 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "alisbeanmod:boiling_haricot_beans",
-      "count": 7
+      "item": "alisbeanmod:boiling_haricot_beans"
     },
     {
       "item": "alisbeanmod:corn_flour"

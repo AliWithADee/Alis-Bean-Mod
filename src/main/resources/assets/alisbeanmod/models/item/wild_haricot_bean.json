@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "alisbeanmod:item/haricot_beans"
+    "layer0": "alisbeanmod:item/wild_haricot_bean"
   }
 }

@@ -1,6 +1,6 @@
 package io.github.aliwithadee.alisbeanmod.core.cooking.drinks;
 
-import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModCommonConfig;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
@@ -96,7 +96,7 @@ public class Drink {
     }
 
     public int getBarrelYears() {
-        return this.barrelAge / BeanModConfig.MINUTES_PER_BARREL_YEAR;
+        return this.barrelAge / BeanModCommonConfig.MINUTES_PER_BARREL_YEAR.get();
     }
 
     public int getColor() {
@@ -107,7 +107,7 @@ public class Drink {
         // TODO: Remove debug
         float baseStrength = base.getStrength();
         System.out.println("Base Strength: " + baseStrength);
-        float ratingModifier = (float) this.rating / BeanModConfig.MAX_RATING;
+        float ratingModifier = (float) this.rating / BeanModCommonConfig.MAX_RATING.get();
 
         System.out.println("Rating modifier: " + ratingModifier);
         float strength = baseStrength * ratingModifier;
@@ -118,7 +118,7 @@ public class Drink {
     public List<MobEffectInstance> getEffects() {
         // TODO: Remove debug
         List<MobEffectInstance> newList = new ArrayList<>();
-        float ratingModifier = (float) this.rating / BeanModConfig.MAX_RATING;
+        float ratingModifier = (float) this.rating / BeanModCommonConfig.MAX_RATING.get();
 
         List<MobEffectInstance> list = base.getEffects();
         System.out.println("List before: " + list);

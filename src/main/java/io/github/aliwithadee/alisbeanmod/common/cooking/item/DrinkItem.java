@@ -7,7 +7,7 @@ import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.Drink;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.DrinkUtils;
 import io.github.aliwithadee.alisbeanmod.core.cooking.drinks.ModDrinks;
 import io.github.aliwithadee.alisbeanmod.core.init.ModItems;
-import io.github.aliwithadee.alisbeanmod.core.util.BeanModConfig;
+import io.github.aliwithadee.alisbeanmod.core.util.BeanModCommonConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -80,7 +80,7 @@ public class DrinkItem extends Item {
         if (!level.isClientSide && player != null && drink.getStrength() > 0) {
             LazyOptional<IAlcoholCapability> cap = player.getCapability(CapabilityAlcohol.ALCOHOL_CAPABILITY);
             cap.ifPresent((alcoholCap) -> {
-                float increase = BeanModConfig.BASE_ALCOHOL_INCREASE * drink.getStrength();
+                float increase = BeanModCommonConfig.BASE_ALCOHOL_INCREASE.get() * drink.getStrength();
                 alcoholCap.addAlcohol(increase);
                 System.out.println("Alcohol increase to: " + alcoholCap.getAlcohol());
             });

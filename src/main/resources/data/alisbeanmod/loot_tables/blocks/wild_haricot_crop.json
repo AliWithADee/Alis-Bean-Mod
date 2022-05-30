@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:wild_haricot_beans",
+          "name": "alisbeanmod:wild_haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -19,7 +19,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:wild_haricot_beans",
+          "name": "alisbeanmod:wild_haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -32,7 +32,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:wild_haricot_beans",
+          "name": "alisbeanmod:wild_haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -45,7 +45,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:wild_haricot_beans",
+          "name": "alisbeanmod:wild_haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -58,7 +58,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:wild_haricot_beans",
+          "name": "alisbeanmod:wild_haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -71,7 +71,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:wild_haricot_beans",
+          "name": "alisbeanmod:wild_haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -84,7 +84,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:wild_haricot_beans",
+          "name": "alisbeanmod:wild_haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -97,7 +97,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:haricot_beans",
+          "name": "alisbeanmod:haricot_bean",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
@@ -115,7 +115,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "alisbeanmod:haricot_beans",
+          "name": "alisbeanmod:haricot_bean",
           "functions": [
             {
               "function": "minecraft:apply_bonus",

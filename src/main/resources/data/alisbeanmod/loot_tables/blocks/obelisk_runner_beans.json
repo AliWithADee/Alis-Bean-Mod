@@ -39,11 +39,11 @@
                   }
                 }
               ],
-              "name": "alisbeanmod:runner_beans"
+              "name": "alisbeanmod:runner_bean"
             },
             {
               "type": "minecraft:item",
-              "name": "alisbeanmod:runner_beans"
+              "name": "alisbeanmod:runner_bean"
             }
           ]
         }
@@ -79,7 +79,7 @@
               }
             }
           ],
-          "name": "alisbeanmod:runner_beans"
+          "name": "alisbeanmod:runner_bean"
         }
       ],
       "conditions": [

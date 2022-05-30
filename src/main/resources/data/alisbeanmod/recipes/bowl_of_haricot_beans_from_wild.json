@@ -2,8 +2,25 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "alisbeanmod:wild_haricot_beans",
-      "count": 7
+      "item": "alisbeanmod:wild_haricot_bean"
+    },
+    {
+      "item": "alisbeanmod:wild_haricot_bean"
+    },
+    {
+      "item": "alisbeanmod:wild_haricot_bean"
+    },
+    {
+      "item": "alisbeanmod:wild_haricot_bean"
+    },
+    {
+      "item": "alisbeanmod:wild_haricot_bean"
+    },
+    {
+      "item": "alisbeanmod:wild_haricot_bean"
+    },
+    {
+      "item": "alisbeanmod:wild_haricot_bean"
     },
     {
       "item": "minecraft:water_bucket"
