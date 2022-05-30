@@ -51,7 +51,8 @@ public class ModItems {
                     .tab(GENERAL_TAB).food(ModFoods.HARICOT_BEAN)));
 
     public static final RegistryObject<Item> KIDNEY_BEAN = ITEMS.register("kidney_bean",
-            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.KIDNEY_BEAN)));
+            () -> new ObeliskSeedItem(ModBlocks.OBELISK_KIDNEY_BEANS.get(),
+                    new Item.Properties().tab(GENERAL_TAB).food(ModFoods.KIDNEY_BEAN)));
 
     public static final RegistryObject<Item> RATTLESNAKE_BEAN = ITEMS.register("rattlesnake_bean",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RATTLESNAKE_BEAN)));

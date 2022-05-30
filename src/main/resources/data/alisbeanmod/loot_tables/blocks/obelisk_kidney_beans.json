@@ -1,0 +1,108 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "alisbeanmod:obelisk"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "alisbeanmod:obelisk_kidney_beans",
+          "properties": {
+            "half": "lower"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "alisbeanmod:obelisk_kidney_beans",
+                  "properties": {
+                    "age": "14"
+                  }
+                }
+              ],
+              "name": "alisbeanmod:kidney_bean"
+            },
+            {
+              "type": "minecraft:item",
+              "name": "alisbeanmod:kidney_bean"
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "alisbeanmod:obelisk_kidney_beans",
+          "properties": {
+            "half": "lower"
+          }
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:explosion_decay"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:apply_bonus",
+              "enchantment": "minecraft:fortune",
+              "formula": "minecraft:binomial_with_bonus_count",
+              "parameters": {
+                "extra": 3,
+                "probability": 0.5714286
+              }
+            }
+          ],
+          "name": "alisbeanmod:kidney_bean"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "alisbeanmod:obelisk_kidney_beans",
+          "properties": {
+            "half": "lower"
+          }
+        },
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "alisbeanmod:obelisk_kidney_beans",
+          "properties": {
+            "age": "14"
+          }
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:explosion_decay"
+        }
+      ]
+    }
+  ]
+}

@@ -23,6 +23,7 @@ public class ClientSetup {
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.WILD_HARICOT_CROP.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_RUNNER_BEANS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_KIDNEY_BEANS.get(), RenderType.cutout());
         });
     }
 }
