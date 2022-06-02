@@ -62,10 +62,6 @@ public class ModBlocks {
     public static final RegistryObject<Block> CANNING_MACHINE = registerNoStackBlock(
             "canning_machine", CanningMachineBlock::new, ModItems.GENERAL_TAB);
 
-    // Test
-    public static final RegistryObject<Block> TEST_TELEPORT_BLOCK = registerBlock(
-            "test_teleport_block", TestTeleportBlock::new, ModItems.GENERAL_TAB);
-
     // Brewing
     public static final RegistryObject<Block> COOKING_POT = registerBlock(
             "cooking_pot", CookingPotBlock::new, ModItems.COOKING_TAB);
