@@ -43,11 +43,20 @@ public class ModBlocks {
     public static final RegistryObject<Block> OBELISK = registerBlock(
             "obelisk", ObeliskBlock::new, ModItems.GENERAL_TAB);
 
-    public static final RegistryObject<PlantedObeliskBlock> OBELISK_RUNNER_BEANS = registerBlockNoItem(
-            "obelisk_runner_beans", PlantedObeliskBlock::new);
+    public static final RegistryObject<PlantedObeliskBlock> OBELISK_BLACK_BEANS = registerBlockNoItem(
+            "obelisk_black_beans", PlantedObeliskBlock::new);
+
+    public static final RegistryObject<PlantedObeliskBlock> OBELISK_BLACK_EYED_BEANS = registerBlockNoItem(
+            "obelisk_black_eyed_beans", PlantedObeliskBlock::new);
 
     public static final RegistryObject<PlantedObeliskBlock> OBELISK_KIDNEY_BEANS = registerBlockNoItem(
             "obelisk_kidney_beans", PlantedObeliskBlock::new);
+
+    public static final RegistryObject<PlantedObeliskBlock> OBELISK_RATTLESNAKE_BEANS = registerBlockNoItem(
+            "obelisk_rattlesnake_beans", PlantedObeliskBlock::new);
+
+    public static final RegistryObject<PlantedObeliskBlock> OBELISK_RUNNER_BEANS = registerBlockNoItem(
+            "obelisk_runner_beans", PlantedObeliskBlock::new);
 
     // Machines
     public static final RegistryObject<Block> CANNING_MACHINE = registerNoStackBlock(

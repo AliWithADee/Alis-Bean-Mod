@@ -1,30 +1,34 @@
 package io.github.aliwithadee.alisbeanmod.core.cooking.drinks;
 
-import com.google.common.collect.ImmutableList;
 import io.github.aliwithadee.alisbeanmod.core.util.BeanModCommonConfig;
 import net.minecraft.world.effect.MobEffectInstance;
 
 import java.util.List;
+import java.util.Map;
 
 public class BaseDrink {
     private final String name;
     private final int color;
-    private final float strength;
-    private final ImmutableList<MobEffectInstance> effects;
+    private final float alcoholStrength;
+    private final Map<Integer, List<MobEffectInstance>> effects;
 
-    public BaseDrink(String name, int colour, MobEffectInstance... effects) {
-        this(name, colour, 0.0f, List.of(effects));
+    public BaseDrink(String name, int colour) {
+        this(name, colour, null);
     }
 
-    public BaseDrink(String name, int colour, float strength, MobEffectInstance... effects) {
-        this(name, colour, strength, List.of(effects));
+    public BaseDrink(String name, int colour, Map<Integer, List<MobEffectInstance>> effects) {
+        this(name, colour, 0.0f, effects);
     }
 
-    private BaseDrink(String name, int color, float strength, List<MobEffectInstance> effects) {
+    public BaseDrink(String name, int colour, float alcoholStrength) {
+        this(name, colour, alcoholStrength, null);
+    }
+
+    public BaseDrink(String name, int color, float alcoholStrength, Map<Integer, List<MobEffectInstance>> effects) {
         this.name = name;
         this.color = color;
-        this.strength = (strength >= BeanModCommonConfig.MIN_STRENGTH.get() && strength <= BeanModCommonConfig.MAX_STRENGTH.get()) || strength == 0.0f ? strength : 1.0f;
-        this.effects = ImmutableList.copyOf(effects);
+        this.alcoholStrength = (alcoholStrength >= BeanModCommonConfig.MIN_STRENGTH.get() && alcoholStrength <= BeanModCommonConfig.MAX_STRENGTH.get()) || alcoholStrength == 0.0f ? alcoholStrength : 1.0f;
+        this.effects = effects;
     }
 
     public String getName() {
@@ -35,11 +39,11 @@ public class BaseDrink {
         return color;
     }
 
-    public float getStrength() {
-        return strength;
+    public float getAlcoholStrength() {
+        return alcoholStrength;
     }
 
-    public List<MobEffectInstance> getEffects() {
-        return effects;
+    public List<MobEffectInstance> getEffects(int rating) {
+        return effects.get(rating);
     }
 }

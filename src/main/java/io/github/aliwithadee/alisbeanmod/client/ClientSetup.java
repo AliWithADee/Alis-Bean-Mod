@@ -22,8 +22,11 @@ public class ClientSetup {
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.HARICOT_CROP.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.WILD_HARICOT_CROP.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_RUNNER_BEANS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_BLACK_BEANS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_BLACK_EYED_BEANS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_KIDNEY_BEANS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_RATTLESNAKE_BEANS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.OBELISK_RUNNER_BEANS.get(), RenderType.cutout());
         });
     }
 }

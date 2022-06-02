@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ModDrinks {
@@ -14,13 +15,15 @@ public class ModDrinks {
     public static final Map<String, DrinkRecipe> RECIPES = new HashMap<>();
 
     // Alcoholic Drinks
-    public static final BaseDrink SCUFFED = createBaseDrink(new BaseDrink("scuffed", 78953176, 0.0f,
-            new MobEffectInstance(MobEffects.POISON, 500)));
+    public static final BaseDrink SCUFFED = createBaseDrink(new BaseDrink("scuffed", 78953176, 0.0f, Map.of(
+            1, List.of(new MobEffectInstance(MobEffects.POISON, 500)),
+            2, List.of(new MobEffectInstance(MobEffects.POISON, 500)),
+            3, List.of(new MobEffectInstance(MobEffects.POISON, 500)),
+            4, List.of(new MobEffectInstance(MobEffects.POISON, 500)),
+            5, List.of(new MobEffectInstance(MobEffects.POISON, 500)))));
     public static final BaseDrink BEER = createBaseDrink(new BaseDrink("beer", 12421704, 1.0f));
-    public static final BaseDrink CIDER = createBaseDrink(new BaseDrink("cider", 12080187, 1.0f,
-            new MobEffectInstance(MobEffects.ABSORPTION, 500)));
-    public static final BaseDrink DARK_CIDER = createBaseDrink(new BaseDrink("dark_cider", 9850939, 1.0f,
-            new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 500)));
+    public static final BaseDrink CIDER = createBaseDrink(new BaseDrink("cider", 12080187, 1.0f));
+    public static final BaseDrink DARK_CIDER = createBaseDrink(new BaseDrink("dark_cider", 9850939, 1.0f));
 
     // Non-Alcoholic Drinks
     public static final BaseDrink COFFEE = createBaseDrink(new BaseDrink("coffee", 0));

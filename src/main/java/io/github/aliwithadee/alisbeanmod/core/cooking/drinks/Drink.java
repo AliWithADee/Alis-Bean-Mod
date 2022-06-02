@@ -105,7 +105,7 @@ public class Drink {
 
     public float getStrength() {
         // TODO: Remove debug
-        float baseStrength = base.getStrength();
+        float baseStrength = base.getAlcoholStrength();
         System.out.println("Base Strength: " + baseStrength);
         float ratingModifier = (float) this.rating / BeanModCommonConfig.MAX_RATING.get();
 
@@ -116,18 +116,6 @@ public class Drink {
     }
 
     public List<MobEffectInstance> getEffects() {
-        // TODO: Remove debug
-        List<MobEffectInstance> newList = new ArrayList<>();
-        float ratingModifier = (float) this.rating / BeanModCommonConfig.MAX_RATING.get();
-
-        List<MobEffectInstance> list = base.getEffects();
-        System.out.println("List before: " + list);
-        for (MobEffectInstance effectInstance : list) {
-            int duration = effectInstance.getDuration();
-            newList.add(new MobEffectInstance(effectInstance.getEffect(), (int) (duration * ratingModifier)));
-        }
-        System.out.println("List After: " + newList);
-
-        return newList;
+        return base.getEffects(this.rating);
     }
 }

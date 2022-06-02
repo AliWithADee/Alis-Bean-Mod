@@ -35,10 +35,12 @@ public class ModItems {
     // ---------- Items ----------
 
     public static final RegistryObject<Item> BLACK_BEAN = ITEMS.register("black_bean",
-            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BLACK_BEAN)));
+            () -> new ObeliskSeedItem(ModBlocks.OBELISK_BLACK_BEANS.get(),
+                    new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BLACK_BEAN)));
 
     public static final RegistryObject<Item> BLACK_EYED_BEAN = ITEMS.register("black_eyed_bean",
-            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BLACK_EYED_BEAN)));
+            () -> new ObeliskSeedItem(ModBlocks.OBELISK_BLACK_EYED_BEANS.get(),
+                    new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BLACK_EYED_BEAN)));
 
     public static final RegistryObject<Item> BROAD_BEAN = ITEMS.register("broad_bean",
             () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.BROAD_BEAN)));
@@ -55,7 +57,8 @@ public class ModItems {
                     new Item.Properties().tab(GENERAL_TAB).food(ModFoods.KIDNEY_BEAN)));
 
     public static final RegistryObject<Item> RATTLESNAKE_BEAN = ITEMS.register("rattlesnake_bean",
-            () -> new Item(new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RATTLESNAKE_BEAN)));
+            () -> new ObeliskSeedItem(ModBlocks.OBELISK_RATTLESNAKE_BEANS.get(),
+                    new Item.Properties().tab(GENERAL_TAB).food(ModFoods.RATTLESNAKE_BEAN)));
 
     public static final RegistryObject<ObeliskSeedItem> RUNNER_BEAN = ITEMS.register("runner_bean",
             () -> new ObeliskSeedItem(ModBlocks.OBELISK_RUNNER_BEANS.get(),

@@ -13,12 +13,13 @@ public class MultiuseItem extends Item {
 
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
-        ItemStack container = itemStack.copy();
-        if(container.hurt(1, new Random(), null)) {
+        ItemStack copy = itemStack.copy();
+        if(copy.hurt(1, new Random(), null)) {
             return ItemStack.EMPTY;
         } else {
-            return container;
+            return copy;
         }
+        // TODO: Break sound? Use events?
     }
 
     @Override
